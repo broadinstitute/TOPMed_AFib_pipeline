@@ -12,9 +12,8 @@ workflow vcf_filter {
 		}
 	}
 
-
 	output {
-		Array[File] gds_files = this_ancount.out_file
+		Array[File] filt_files = this_ancount.out_file
 	}
 }
 
@@ -37,7 +36,7 @@ bcftools view -Ou -S ${sample} ${vcf} | bcftools view -Oz -o ${out_base}.vcf.gz 
 		docker: "biocontainers/bcftools:v1.5_cv2"
 		disks: "local-disk ${disk} HDD"
 		memory: "${memory} GB"
-		cpu : "${cpus}"
+
 	}
 
 	output {
