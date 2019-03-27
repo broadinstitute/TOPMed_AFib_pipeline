@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+### setup envirnment
 ### setup htslib
 cd /tmp/
 git clone git://github.com/samtools/htslib.git
