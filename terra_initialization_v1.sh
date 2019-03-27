@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-
 ### setup envirnment
 ### setup htslib
 cd /tmp/
@@ -31,6 +30,3 @@ cd /tmp/
 echo 'install.packages("BiocManager",lib="/home/jupyter-user/.rpackages")' > install.R
 echo "BiocManager::install(c('SeqArray'),lib.loc ='/home/jupyter-user/.rpackages',  lib='/home/jupyter-user/.rpackages', dependencies=TRUE, clean=TRUE, INSTALL_opts='--no-docs --no-demo --byte-compile',version="3.8");" >> install.R
 R CMD BATCH install.R
-
-#####
-#####
