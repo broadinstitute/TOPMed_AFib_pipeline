@@ -8,12 +8,12 @@ workflow vcf_filter {
 
 	scatter(this_file in vcf_files) {
 		call ac_an_filter {
-			input: vcf = this_file, sample = this_sample, ancount = this_ancount, acount = this_account, disk = this_disk, memory = this_memory
+			input: vcf = this_file, sample = this_sample, ancount = this_ancount, account = this_account, disk = this_disk, memory = this_memory
 		}
 	}
 
 	output {
-		Array[File] filt_files = this_ancount.out_file
+		Array[File] filt_files = ac_an_filter.out_file
 	}
 }
 
