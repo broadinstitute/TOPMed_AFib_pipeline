@@ -1,0 +1,9 @@
+{
+  "vcf_filter.this_ancount": "Float",
+  "vcf_filter.vcf_files": "Array[File]",
+  "vcf_filter.this_account": "Int",
+  "vcf_filter.this_disk": "Int",
+  "vcf_filter.this_memory": "Float",
+  "vcf_filter.this_sample": "File"
+}
+
