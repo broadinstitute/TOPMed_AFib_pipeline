@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 set -e
 
 ### setup htslib
@@ -9,7 +9,6 @@ make
 ln -s /tmp/htslib/bgzip /bin/bgzip
 ln -s /tmp/htslib/htsfile /bin/htsfile
 ln -s /tmp/htslib/tabix /bin/tabix
-
 
 ### setup bcftools
 cd /tmp/
