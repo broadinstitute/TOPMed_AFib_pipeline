@@ -20,3 +20,5 @@ RUN conda install bcftools=1.3.1
 WORKDIR /data/
 
 CMD ["bcftools"]
+
+RUN git clone https://github.com/broadinstitute/TOPMed_AFib_pipeline.git && cd ./TOPMed_AFib_pipeline && git pull origin master
