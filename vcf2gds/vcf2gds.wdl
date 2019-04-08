@@ -19,7 +19,8 @@ R CMD BATCH "--args ${vcf} ${out_base} ${cpus}" ./TOPMed_AFib_pipeline/vcf2gds/v
 		disks: "local-disk ${disk} HDD"
 		memory: "${memory} GB"
 		cpu : "${cpus}"
-	}
+		bootDiskSizeGb: 50
+}
 
 	output {
 		File out_file1 = "${out_base}.gds"
