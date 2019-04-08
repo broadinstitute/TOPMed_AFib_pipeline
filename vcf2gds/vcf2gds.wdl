@@ -8,9 +8,9 @@ task runGds {
 
 
 	command {
-git clone https://github.com/seuchoi/vcf2gds.git
+git clone https://github.com/broadinstitute/TOPMed_AFib_pipeline.git
 
-R CMD BATCH "--args ${vcf} ${out_base} ${cpus}" ./vcf2gds/vcf2gds.R > ${out_base}.out
+R CMD BATCH "--args ${vcf} ${out_base} ${cpus}" ./TOPMed_AFib_pipeline/vcf2gds/vcf2gds.R > ${out_base}.out
 
 	}
 
