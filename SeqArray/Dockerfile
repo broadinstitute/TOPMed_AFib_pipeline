@@ -5,4 +5,4 @@ FROM uwgac/$base_name:$itag
 
 RUN git clone https://github.com/broadinstitute/TOPMed_AFib_pipeline.git
 
-RUN R CMD BATCH install.R
+RUN R CMD BATCH /TOPMed_AFib_pipeline/install.R
