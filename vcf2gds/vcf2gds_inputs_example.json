@@ -1,0 +1,6 @@
+{
+  "makegds.this_disk": 50,
+  "makegds.this_memory": 50,
+  "makegds.this_cpus": 2,
+  "makegds.vcf_files": ["./vcf2gds/test_inputs/ALL.chr22.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.MAC10.01p.vcf.gz"]
+}

@@ -1,0 +1,7 @@
+{
+  "makegds.this_disk": "Int",
+  "makegds.this_memory": "Float",
+  "makegds.this_cpus": "Int",
+  "makegds.vcf_files": "Array[File]"
+}
+

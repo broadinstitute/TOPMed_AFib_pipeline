@@ -1,0 +1,8 @@
+{
+  "vcf_filter.this_ancount": 10,
+  "vcf_filter.vcf_files": ["/Users/schoi/github/vcf2gds/test_inputs/ALL.chr22.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.MAC10.01p.vcf.gz"],
+  "vcf_filter.this_account": 2,
+  "vcf_filter.this_disk": 50,
+  "vcf_filter.this_memory": 10,
+  "vcf_filter.this_sample": "/Users/schoi/github/TOPMed_AFib_pipeline/data/sampleid.txt"
+}
