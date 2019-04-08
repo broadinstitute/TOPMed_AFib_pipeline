@@ -11,8 +11,11 @@ vcf <- args[1]
 gds_out <- paste(args[2],".gds",sep="")
 ncpu <- as.numeric(args[3])
 
+##### Read header2
+h <- seqVCF_Header("header2.txt")
+
 ##### convert vcf to gds
-seqVCF2GDS(vcf, gds_out, storage.option="LZMA_RA", parallel=ncpu, verbose=TRUE)
+seqVCF2GDS(vcf, gds_out, header=h, storage.option="LZMA_RA", parallel=ncpu, verbose=TRUE)
 
 ##### complete conversion
 end_time <- Sys.time()
