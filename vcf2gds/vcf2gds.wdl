@@ -8,12 +8,23 @@ task runGds {
 
 
 	command {
+
+#### clone the pipeline
 git clone https://github.com/broadinstitute/TOPMed_AFib_pipeline.git
 
+#### call header
 bcftools view -h ${vcf} > header.txt
 
+#### modify the header
 sed s/"BETA_IF,Number=%d"/"BETA_IF,Number=."/g header.txt > header2.txt
 
+#### modify the vcf file
+bcftools reheader -h header2.txt -o tmp.vcf.gz ${vcf}
+
+#### move tmp file to vcf
+mv tmp.vcf.gz ${vcf}
+
+#### onvert vcf to gds
 R CMD BATCH "--args ${vcf} ${out_base} ${cpus}" ./TOPMed_AFib_pipeline/vcf2gds/vcf2gds.R ${out_base}.out
 
 	}
