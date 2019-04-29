@@ -1,3 +1,4 @@
+library(SeqArray)
 highqulityvariants<-function(num,bucket){
 
 #### copy gdsfile to notebook space
@@ -59,9 +60,10 @@ system(com0,intern=T)
 }
 
 
-library(SeqArray)
-for (num in c(1:22,"X")){
 #
-
-bucket<- Sys.getenv('WORKSPACE_BUCKET')
-highqulityvariants(num=1,bucket=bucket)
+#for (num in c(1:22,"X")){
+#
+#
+#bucket<- Sys.getenv('WORKSPACE_BUCKET')
+#highqulityvariants(num=1,bucket=bucket)
+#}
