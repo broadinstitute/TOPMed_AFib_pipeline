@@ -3,7 +3,7 @@ highqulityvariants<-function(num,bucket){
 
 #### copy gdsfile to notebook space
 gdsfile<-paste0("freeze.8.chr",num,".pass_only.phased.gds")
-copycommand<-paste0("gstil -m cp ",bucket,"/genotype/freeze8_gds/",gdsfile," ./")
+copycommand<-paste0("gsutil -m cp ",bucket,"/genotype/freeze8_gds/",gdsfile," ./")
 system(copycommand)
 
 #### open gds file
@@ -65,5 +65,5 @@ system(com0,intern=T)
 #
 #
 #bucket<- Sys.getenv('WORKSPACE_BUCKET')
-#highqulityvariants(num=1,bucket=bucket)
+#highqulityvariants(num=22,bucket=bucket)
 #}
