@@ -27,8 +27,8 @@ callrate0<-(AN/2)/length(allsamples)
 summary(callrate0)
 
 ##### length check
-cat("Total number of variants with callrate",length(callrate0))
-cat("Total number of variants with freqency",length(freq0))
+cat("Total number of variants with callrate",length(callrate0),"/n")
+cat("Total number of variants with freqency",length(freq0),"/n")
 
 ##### find gds.id and variant information
 allvar <- seqGetData(gds, "variant.id")
@@ -39,11 +39,11 @@ alleleinfo1<-gsub(",",":",alleleinfo)
 
 ##### create variant ID
 varid<-paste(num,allpos,alleleinfo1,sep=":")
-cat("Total number variant with variantid",length(varid))
+cat("Total number variant with variantid",length(varid),"/n")
 
 ##### fiter high quality variants
 highqual<-which(freq0 >=0.05 & freq0 <=0.95 & callrate0 >= 0.99)
-cat("Total number variant with MAF >=0.05 and callrate 0.99",length(highqual))
+cat("Total number variant with MAF >=0.05 and callrate 0.99",length(highqual),"/n")
 
 ##### find gds and variant id
 highqual.gds<-allvar[highqual]
@@ -55,8 +55,10 @@ write.table(data0,paste0("TOPMed_Freeze8_chr",num,"_Highquality_variants.tsv"),c
 
 ##### copy result to the bucket
 com0<-paste0("gsutil cp TOPMed_Freeze8_chr",num,"_Highquality_variants.tsv ",bucket,"/QC/High_Quality_TOPMed/")
-
 system(com0,intern=T)
+cat("chromosome",num,"done")
+
+seqClose(gds)
 }
 
 
