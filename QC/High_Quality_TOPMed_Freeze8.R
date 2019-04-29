@@ -61,11 +61,7 @@ cat("chromosome",num,"done\n")
 seqClose(gds)
 }
 
-
-#
-#for (num in c(1:22,"X")){
-#
-#
-#bucket<- Sys.getenv('WORKSPACE_BUCKET')
-#highqulityvariants(num=22,bucket=bucket)
-#}
+bucket<- Sys.getenv('WORKSPACE_BUCKET')
+for (num in c(1:20,"X")){
+highqulityvariants(num,bucket=bucket)
+}
