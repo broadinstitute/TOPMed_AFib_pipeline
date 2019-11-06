@@ -2,12 +2,12 @@ library(SeqArray)
 highqulityvariants<-function(num,bucket){
 
 #### copy gdsfile to notebook space
-gdsfile<-paste0("freeze.8.chr",num,".pass_only.phased.gds")
+gdsfile<-paste0("freeze.8.chr",num,".pass_only.phased.01_QC.gds")
 copycommand<-paste0("gsutil -m cp ",bucket,"/genotype/freeze8_gds/",gdsfile," ./")
 system(copycommand)
 
 #### open gds file
-gds <- seqOpen(paste0("freeze.8.chr",num,".pass_only.phased.gds"), allow.duplicate=T)
+gds <- seqOpen(gdsfile, allow.duplicate=T)
 
 #### call allele counts and allele numbers
 AC0 <- seqGetData(gds, "annotation/info/AC")
@@ -61,7 +61,7 @@ cat("chromosome",num,"done\n")
 seqClose(gds)
 }
 
-bucket<- Sys.getenv('WORKSPACE_BUCKET')
-for (num in c(1:20,"X")){
-highqulityvariants(num,bucket=bucket)
-}
+##### bucket<- Sys.getenv('WORKSPACE_BUCKET')
+##### for (num in c(1:20,"X")){
+##### highqulityvariants(num,bucket=bucket)
+##### }
