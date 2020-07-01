@@ -42,7 +42,8 @@ git clone https://github.com/broadinstitute/TOPMed_AFib_pipeline.git
 ##### plink 2 install
 PLINK_VERSION=2.0.Alpha
 PLINK_ZIP_PATH=/tmp/plink-$PLINK_VERSION.zip
-curl -L -o $PLINK_ZIP_PATH http://s3.amazonaws.com/plink2-assets/plink2_linux_avx2_20190429.zip
+curl -L -o $PLINK_ZIP_PATH http://s3.amazonaws.com/plink2-assets/plink2_linux_avx2_20191104.zip
+mkdir /tmp/plink2/
 unzip -o $PLINK_ZIP_PATH -d /tmp/plink2/
 ln -s /tmp/plink2/plink2 /bin/plink2
 
@@ -61,9 +62,9 @@ ln -s /tmp/admixture/admixture /bin/admixture
 ######
 ###### install king
 KING_VERSION=2.2
-KING_GZ_PATH=/tmp/admixture-$KING_VERSION.tar.gz
+KING_GZ_PATH=/tmp/king-$KING_VERSION.tar.gz
 
-curl -L -o $KING_GZ_PATH http://people.virginia.edu/~wc9c/KING/Ubuntu-king.tar.gz
+curl -L -o $KING_GZ_PATH http://people.virginia.edu/~wc9c/KING/Linux-king.tar.gz
 mkdir /tmp/king/
 tar -xvzf $KING_GZ_PATH -C /tmp/king/
 ln -s /tmp/admixture/admixture /bin/admixture
