@@ -32,7 +32,7 @@ newvar<-phrednewvars[phred]
 dat1[,newvar]<-ifelse(is.na(dat1[,phred1]),NA,ifelse(dat1[,phred1]>0.90,"D","B"))
 }
 }
-dat2<-dat1[,c(normvar,scorenewvars,scorenewvars)]
+dat2<-dat1[,c(normvar,scorenewvars,phrednewvars)]
 
 return(dat2)
 }
