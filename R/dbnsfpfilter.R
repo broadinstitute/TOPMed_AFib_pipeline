@@ -5,7 +5,7 @@
 ##### examples
 library(data.table)
 
-dbsfpfilter<-function(filename,normvar,scorevar=NULL,phredvar=NULL){
+dbnsfpfilter<-function(filename,normvar,scorevar=NULL,phredvar=NULL){
 
 name1<-fread(cmd=paste0("zcat ",filename,"| head -n 2"),header=T,data.table=F,sep="\t")
 name2<-names(name1)
@@ -68,7 +68,7 @@ return(dat2)
 
 library(data.table)
 
-dbsfpfilterexport<-function(filename,normvar,scorevar=NULL,phredvar=NULL,outfile){
+dbnsfpfilterexport<-function(filename,normvar,scorevar=NULL,phredvar=NULL,outfile){
 
 name1<-fread(cmd=paste0("zcat ",filename,"| head -n 2"),header=T,data.table=F,sep="\t")
 name2<-names(name1)
@@ -76,4 +76,42 @@ colnumbers<-which(name2 %in% c(normvar,scorevar,phredvar))
 
 com1<-paste0("zcat ",filename," | cut -f ",paste(colnumbers,collapse=",")," > ",outfile)
 system(com1)
+}
+
+
+
+#######
+####### create deleturious score
+dbnsfpscore<-function(filename,normvar,scorevar=NULL,phredvar=NULL){
+
+dat1<-dbnsfpfilter(filename=filename,normvar=normvar,scorevar=scorevar,phredvar=phredvar)
+
+scorenewvars<-gsub("rankscore","pred",scorevar)
+phrednewvars<-gsub("phred","pred",phredvar)
+
+prevars<-c(normvar[grep("_pred",normvar)],scorenewvars,phrednewvars)
+
+dat2<-dat1
+for( ii in 1:length(prevars)){
+
+prevar<-prevars[ii]
+if(prevar %in% c("MetaLR_pred","MetaSVM_pred","Polyphen2_HDIV_pred","Polyphen2_HVAR_pred","LRT_pred","PROVEAN_pred","M_CAP_pred","FATHMM_pred","SIFT4G_pred","SIFT_pred","PrimateAI_pred","DEOGEN2_pred","MutPred_pred","REVEL_pred","VEST4_pred")){
+
+dat2[,prevar]<-ifelse(is.na(dat2[,prevar]),NA,ifelse(dat2[,prevar]=="",NA,ifelse(dat2[,prevar]=="D",1,0)))
+
+}
+
+if(prevar %in% c("MutationAssessor_pred")){
+
+dat2[,prevar]<-ifelse(is.na(dat2[,prevar]),NA,ifelse(dat2[,prevar]=="",NA,ifelse(dat2[,prevar]=="H",1,0)))
+
+}
+
+}
+
+dat2$nmiss<-apply(dat2[,prevars],1,function(x){sum(!is.na(x))})
+dat2$dscore<-apply(dat2[,prevars],1,function(x){sum(x,na.rm=T)})
+dat2$dprop<-dat2$dscore/dat2$nmiss
+
+return(dat2)
 }
