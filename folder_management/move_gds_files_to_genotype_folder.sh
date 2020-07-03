@@ -9,3 +9,11 @@ IFS=" ";
 for ((i=0; i<${#gdsfiles[@]}; ++i)); do
 gsutil mv ${gdsfiles[$i]} gs://fc-306d0fc4-2f1d-4ea1-ae29-ea5b8fe0cb22/genotype/freeze8_gds/
 done
+
+
+
+
+#####
+##### copy varlist
+gsutil cp gs://fc-e6874e4a-c83c-4c52-b370-1da3c49153fe/gds/varlist/rm_mono/TOPMed_Freeze8_variantQC_noLCR_Callrate95p_HWE_nomono_chr*.tsv /home/jupyter-user/notebooks/BioData_catalyst_afib/edit/varlist/
+gsutil cp gs://fc-e6874e4a-c83c-4c52-b370-1da3c49153fe/phenotype/TOPMed_Freeze8_GQ_AFib_pheno_noMESA_QCed.tsv /home/jupyter-user/notebooks/BioData_catalyst_afib/edit/phenotype/
