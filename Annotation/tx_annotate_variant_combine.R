@@ -54,137 +54,143 @@ tx_score[which(tx_score$lof=="HC"),"dprop"]<-1
 write.table(tx_score,txdelannotfile,col.names=T,row.names=F,quote=F,sep="\t")
 }
 
+##### TTN
 ##### input files
 num=2
 groupfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/annot/var_grouping/hclof_missense/f8_hclof_missense_chr_",num,".RData")
-groupfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/annot/var_grouping/hclof_missense/f8_hclof_missense_chr_",num,"_ttn.RData")
 gdsfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/freeze.8.chr",num,".pass_and_fail.gtonly.minDP10.gds")
 varfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/varlist/TOPMed_Freeze8_variantQC_noLCR_Callrate95p_HWE_nomono_chr",num,".tsv")
 phenfile<-"/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/phenotype/TOPMed_Freeze8_GQ_AFib_pheno_noMESA_QCed.tsv"
 nullfile<-"/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/nullmodel/AF_maleassocatedPCs_kinship.RData"
 txannotfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/annot/tx_del/TOPMed_Freeze8_LOF_missense_delscore_chr",num,"_trinfo.RData")
-nweight<-2
-aweight<-c(7,3)
+aweight<-c(7)
 tissuename<-c("Heart_Left_Ventricle","dprop")
-outfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/results/hclof_missense/Heart_Left_Ventricle/TOPMed_freeze8_AF_hclof_missense_",tissuename,"_delscore_weighted_alpha",aweight,"_chr",num,".RData")
+geneid<-"ENSG00000155657"
+outfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/results/hclof_missense/Heart_Left_Ventricle/TOPMed_freeze8_AF_hclof_missense_",paste0(tissuename,collapse="_"),"_delscore_noweighted_cutoff_0_1_gene_",geneid,".tsv")
+
+########
+########
+result0<-opt.del.noweight.SMMAT(num=num,gdsfile=gdsfile,groupfile=groupfile,txannotfile=txannotfile,tissuename=tissuename,aweight=aweight,phenfile=phenfile,nullfile=nullfile,geneid=geneid)
+write.table(result0,outfile,col.names=T,row.names=F,quote=F,sep="\t")
+
+##### LMNA
+##### input files
+num=1
+groupfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/annot/var_grouping/hclof_missense/f8_hclof_missense_chr_",num,".RData")
+gdsfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/freeze.8.chr",num,".pass_and_fail.gtonly.minDP10.gds")
+varfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/varlist/TOPMed_Freeze8_variantQC_noLCR_Callrate95p_HWE_nomono_chr",num,".tsv")
+phenfile<-"/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/phenotype/TOPMed_Freeze8_GQ_AFib_pheno_noMESA_QCed.tsv"
+nullfile<-"/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/nullmodel/AF_maleassocatedPCs_kinship.RData"
+txannotfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/annot/tx_del/TOPMed_Freeze8_LOF_missense_delscore_chr",num,"_trinfo.RData")
+aweight<-c(7)
+tissuename<-c("Heart_Left_Ventricle","dprop")
+geneid<-"ENSG00000160789"
+outfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/results/hclof_missense/Heart_Left_Ventricle/TOPMed_freeze8_AF_hclof_missense_",paste0(tissuename,collapse="_"),"_delscore_noweighted_cutoff_0_1_gene_",geneid,".tsv")
+
+########
+########
+result0<-opt.del.noweight.SMMAT(num=num,gdsfile=gdsfile,groupfile=groupfile,txannotfile=txannotfile,tissuename=tissuename,aweight=aweight,phenfile=phenfile,nullfile=nullfile,geneid=geneid)
+write.table(result0,outfile,col.names=T,row.names=F,quote=F,sep="\t")
+
+##### MYBPC3
+##### input files
+num=11
+groupfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/annot/var_grouping/hclof_missense/f8_hclof_missense_chr_",num,".RData")
+gdsfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/freeze.8.chr",num,".pass_and_fail.gtonly.minDP10.gds")
+varfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/varlist/TOPMed_Freeze8_variantQC_noLCR_Callrate95p_HWE_nomono_chr",num,".tsv")
+phenfile<-"/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/phenotype/TOPMed_Freeze8_GQ_AFib_pheno_noMESA_QCed.tsv"
+nullfile<-"/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/nullmodel/AF_maleassocatedPCs_kinship.RData"
+txannotfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/annot/tx_del/TOPMed_Freeze8_LOF_missense_delscore_chr",num,"_trinfo.RData")
+aweight<-c(7)
+tissuename<-c("Heart_Left_Ventricle","dprop")
+geneid<-"ENSG00000134571"
+outfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/results/hclof_missense/Heart_Left_Ventricle/TOPMed_freeze8_AF_hclof_missense_",paste0(tissuename,collapse="_"),"_delscore_noweighted_cutoff_0_1_gene_",geneid,".tsv")
+
+########
+########
+result0<-opt.del.noweight.SMMAT(num=num,gdsfile=gdsfile,groupfile=groupfile,txannotfile=txannotfile,tissuename=tissuename,aweight=aweight,phenfile=phenfile,nullfile=nullfile,geneid=geneid)
+write.table(result0,outfile,col.names=T,row.names=F,quote=F,sep="\t")
+
+############
+############ PLAN2 wighted on del score
+
+##### TTN
+##### input files
+num=2
+groupfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/annot/var_grouping/hclof_missense/f8_hclof_missense_chr_",num,".RData")
+gdsfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/freeze.8.chr",num,".pass_and_fail.gtonly.minDP10.gds")
+varfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/varlist/TOPMed_Freeze8_variantQC_noLCR_Callrate95p_HWE_nomono_chr",num,".tsv")
+phenfile<-"/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/phenotype/TOPMed_Freeze8_GQ_AFib_pheno_noMESA_QCed.tsv"
+nullfile<-"/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/nullmodel/AF_maleassocatedPCs_kinship.RData"
+txannotfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/annot/tx_del/TOPMed_Freeze8_LOF_missense_delscore_chr",num,"_trinfo.RData")
+aweight<-c(7)
+tissuename<-c("Heart_Left_Ventricle","dprop")
+geneid<-"ENSG00000155657"
+outfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/results/hclof_missense/Heart_Left_Ventricle/TOPMed_freeze8_AF_hclof_missense_",paste0(tissuename,collapse="_"),"_delscore_weighted_alpha_1_10_gene_",geneid,".tsv")
+
+result1<-opt.del.weight.SMMAT(num=num,gdsfile=gdsfile,groupfile=groupfile,txannotfile=txannotfile,tissuename=tissuename,aweight=aweight,phenfile=phenfile,nullfile=nullfile,geneid=geneid)
+write.table(result1,outfile,col.names=T,row.names=F,quote=F,sep="\t")
+
+
+
+##### LMNA
+##### input files
+num=1
+groupfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/annot/var_grouping/hclof_missense/f8_hclof_missense_chr_",num,".RData")
+gdsfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/freeze.8.chr",num,".pass_and_fail.gtonly.minDP10.gds")
+varfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/varlist/TOPMed_Freeze8_variantQC_noLCR_Callrate95p_HWE_nomono_chr",num,".tsv")
+phenfile<-"/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/phenotype/TOPMed_Freeze8_GQ_AFib_pheno_noMESA_QCed.tsv"
+nullfile<-"/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/nullmodel/AF_maleassocatedPCs_kinship.RData"
+txannotfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/annot/tx_del/TOPMed_Freeze8_LOF_missense_delscore_chr",num,"_trinfo.RData")
+aweight<-c(7)
+tissuename<-c("Heart_Left_Ventricle","dprop")
+geneid<-"ENSG00000160789"
+outfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/results/hclof_missense/Heart_Left_Ventricle/TOPMed_freeze8_AF_hclof_missense_",paste0(tissuename,collapse="_"),"_delscore_weighted_alpha_1_10_gene_",geneid,".tsv")
+
+
+result1<-opt.del.weight.SMMAT(num=num,gdsfile=gdsfile,groupfile=groupfile,txannotfile=txannotfile,tissuename=tissuename,aweight=aweight,phenfile=phenfile,nullfile=nullfile,geneid=geneid)
+write.table(result1,outfile,col.names=T,row.names=F,quote=F,sep="\t")
+
+
+##### MYBPC3
+##### input files
+num=11
+groupfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/annot/var_grouping/hclof_missense/f8_hclof_missense_chr_",num,".RData")
+gdsfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/freeze.8.chr",num,".pass_and_fail.gtonly.minDP10.gds")
+varfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/varlist/TOPMed_Freeze8_variantQC_noLCR_Callrate95p_HWE_nomono_chr",num,".tsv")
+phenfile<-"/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/phenotype/TOPMed_Freeze8_GQ_AFib_pheno_noMESA_QCed.tsv"
+nullfile<-"/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/nullmodel/AF_maleassocatedPCs_kinship.RData"
+txannotfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/annot/tx_del/TOPMed_Freeze8_LOF_missense_delscore_chr",num,"_trinfo.RData")
+aweight<-c(7)
+tissuename<-c("Heart_Left_Ventricle","dprop")
+geneid<-"ENSG00000134571"
+outfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/results/hclof_missense/Heart_Left_Ventricle/TOPMed_freeze8_AF_hclof_missense_",paste0(tissuename,collapse="_"),"_delscore_weighted_alpha_1_10_gene_",geneid,".tsv")
+
+
+result1<-opt.del.weight.SMMAT(num=num,gdsfile=gdsfile,groupfile=groupfile,txannotfile=txannotfile,tissuename=tissuename,aweight=aweight,phenfile=phenfile,nullfile=nullfile,geneid=geneid)
+write.table(result1,outfile,col.names=T,row.names=F,quote=F,sep="\t")
+
+########
+##### input files
+num=2
+groupfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/annot/var_grouping/hclof_missense/f8_hclof_missense_chr_",num,".RData")
+gdsfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/freeze.8.chr",num,".pass_and_fail.gtonly.minDP10.gds")
+varfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/varlist/TOPMed_Freeze8_variantQC_noLCR_Callrate95p_HWE_nomono_chr",num,".tsv")
+phenfile<-"/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/phenotype/TOPMed_Freeze8_GQ_AFib_pheno_noMESA_QCed.tsv"
+nullfile<-"/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/nullmodel/AF_maleassocatedPCs_kinship.RData"
+txannotfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/annot/tx_del/TOPMed_Freeze8_LOF_missense_delscore_chr",num,"_trinfo.RData")
+aweight<-c(7,"X")
+tissuename<-c("Heart_Left_Ventricle","dprop")
+geneid<-"ENSG00000155657"
+outfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/results/hclof_missense/Heart_Left_Ventricle/TOPMed_freeze8_AF_hclof_missense_",paste0(tissuename,collapse="_"),"_delscore_weighted_",aweight[2],"cutoff_10p_90p_95p_gene_",geneid,".tsv")
+
+result2<-opt.del.weight.prop.SMMAT(num=num,gdsfile=gdsfile,groupfile=groupfile,txannotfile=txannotfile,tissuename=tissuename,aweight=aweight,phenfile=phenfile,nullfile=nullfile,geneid=geneid)
+write.table(result2,"TOPMed_LOF_missense_delscore_alpha_7_cutoff.tsv",col.names=T,row.names=F,quote=F,sep="\t")
 
 
 
 
-nweightSMMAT<-
-function(num,gdsfile,groupfile,txannotfile,tissuename,nweight,aweight,phenfile,nullfile,outfile){
 
-##### samples
-phen1<-fread(phenfile,header=T,data.table=F,sep="\t")
-names(phen1)[1]<-"sample.id"
-samid0<-phen1$sample.id
-
-######
-###### QCed variants
-vardata<-fread(varfile,header=F,sep="\t",data.table=F)
-varid0<-vardata$V1
-
-######
-###### read gds file
-gds <- seqOpen(gdsfile, allow.duplicate=T)
-samples <- seqGetData(gds, "sample.id")
-missamples<-samples[!samples %in% samid0]
-misphen<-data.frame(matrix(NA,nrow=length(missamples),ncol=ncol(phen1)))
-colnames(misphen)<-names(phen1)
-misphen$sample.id<-missamples
-combphen<-rbind(phen1,misphen)
-rownames(combphen)<-combphen$sample.id
-combphen2<-combphen[samples,]
-
-######
-###### # construct a SeqVarData object
-seqData <- SeqVarData(gds, sampleData=AnnotatedDataFrame(combphen2))
-
-######
-###### filter the gdsfile
-seqSetFilter(seqData, sample.id=samid0, variant.id=varid0)
-
-
-######
-###### load null model
-nullmod<-get(load(nullfile))
-
-###### read transcript expression information
-txannot<-get(load(txannotfile))
-
-
-##### library(doMC)
-##### library(doParallel)
-##### library(foreach)
-##### library(parallel)
-
-##### nCores <- as.numeric(detectCores())
-##### print(nCores)
-##### registerDoParallel(nCores)
-
-res0<-NULL
-delweights<-c(1:10)
-for (dw in 1:length(delweights)){
-#res0<-foreach(dw=1:length(delweights), .combine=rbind) %dopar% {
-
-print(dw)
-aweight[2]<-delweights[dw]
-
-###### tissue type tissuename="Heart_Atrial_Appendage"
-tissueweight<-paste0(tissuename,"_weight")
-for (nwei in 1:length(tissuename)){
-tissuename0<-tissuename[nwei]
-tissueweight0<-tissueweight[nwei]
-aweight0<-aweight[nwei]
-txannot[,tissuename0]<-as.numeric(txannot[,tissuename0])
-txannot[,tissuename0]<-ifelse(txannot[,tissuename0]>1,NA,txannot[,tissuename0])
-txannot[,tissueweight0]<-dbeta(txannot[,tissuename0],aweight0,1)
-}
-tissuedelweight<-paste0(c(tissuename,"weight"),collapse="_")
-txannot<-subset(txannot,txannot[,tissuename[2]]>=dw/10)
-txannot[,tissuedelweight]<-txannot[,tissueweight[1]]*txannot[,tissueweight[2]]
-txannot2<-txannot[,c("varid","ensg",tissuedelweight)]
-txannot2<-subset(txannot2,txannot2[,tissuedelweight]>=0.2)
-
-######
-###### annotation file
-annot<-get(load(groupfile))
-annot$varid<-paste(annot$chr,annot$pos,annot$ref,annot$alt,sep=":")
-annot2<-merge(annot,txannot2,by.x=c("group_id","varid"),by.y=c("ensg","varid"))
-annot2<-annot2[,c(1,3:6,2,7:ncol(annot2))]
-annot3<-subset(annot2,!is.na(annot2[,c(tissuedelweight)]))
-
-######
-###### grouping file
-gr<-aggregateGRangesList(annot3)
-
-######
-###### create the iterator
-iterator <- SeqVarListIterator(seqData, variantRanges=gr)
-
-
-###### perfrom assocation test
-assoc <- assocTestAggregate(iterator, nullmod, AF.max=0.001, test="SMMAT", weight.user=tissuedelweight, verbose=TRUE)
-
-######
-###### # construct a SeqVarData object
-seqData <- SeqVarData(gds, sampleData=AnnotatedDataFrame(combphen2))
-
-######
-###### filter the gdsfile
-seqSetFilter(seqData, sample.id=samid0, variant.id=varid0)
-
-##### results
-res1<-assoc$results
-
-res0<-rbind(res0,res1)
-}
-
-res0
-
-
-#######
-####### count
 
 #res0<-NULL
 delweights<-c(1:10)

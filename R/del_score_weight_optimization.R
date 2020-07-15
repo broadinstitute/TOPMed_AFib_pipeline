@@ -114,6 +114,7 @@ print(res1)
 res0<-rbind(res0,res1)
 }
 
+seqClose(seqData)
 print(res0)
 return(res0)
 }
@@ -242,6 +243,8 @@ cat(paste0(del_aweight," is done\n"))
 print(ares1)
 ares0<-rbind(ares0,ares1)
 }
+
+seqClose(seqData)
 print(ares0)
 return(ares0)
 }
@@ -366,6 +369,7 @@ print(bres1)
 bres0<-rbind(bres0,bres1)
 }
 
+seqClose(seqData)
 print(bres0)
 return(bres0)
 }
