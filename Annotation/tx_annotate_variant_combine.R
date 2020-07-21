@@ -111,6 +111,16 @@ outfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/results
 result0<-opt.del.noweight.SMMAT(num=num,gdsfile=gdsfile,groupfile=groupfile,txannotfile=txannotfile,tissuename=tissuename,aweight=aweight,phenfile=phenfile,nullfile=nullfile,geneid=geneid)
 write.table(result0,outfile,col.names=T,row.names=F,quote=F,sep="\t")
 
+
+######### PLAN 1 result figure
+geneids<-c("ENSG00000155657","ENSG00000160789","ENSG00000134571")
+outfiles<-paste("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/results/hclof_missense/Heart_Left_Ventricle/TOPMed_freeze8_AF_hclof_missense_",paste0(tissuename,collapse="_"),"_delscore_noweighted_cutoff_0_1_gene_",geneids,".tsv")
+
+outfile<-paste0("/home/jupyter-user/notebooks/BioData_catalyst_afib/edit/results/hclof_missense/Heart_Left_Ventricle/TOPMed_freeze8_AF_hclof_missense_",paste0(tissuename,collapse="_"),"_delscore_noweighted_cutoff_0_1_gene_",geneid,".tsv")
+
+
+
+
 ############
 ############ PLAN2 wighted on del score
 
