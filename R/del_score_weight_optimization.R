@@ -193,15 +193,15 @@ res0<-NULL
 ####### loop start
 for (dw in 1:length(prop0)){
 threprop<-prop0[dw]
-txannot2<-subset(txannot,txannot[,tissuename0]>=threprop)
-txannot2[,tissuedelweight]<-1
-txannot2<-txannot2[,c("varid","ensg",tissuedelweight)]
+#txannot2<-subset(txannot,txannot[,tissuename0]>=threprop)
+#txanno2[,tissuedelweight]<-1
+#txannot2<-txannot2[,c("varid","ensg",tissuedelweight)]
 
 ######
 ###### annotation file
 annot<-get(load(groupfile))
 annot$varid<-paste(annot$chr,annot$pos,annot$ref,annot$alt,sep=":")
-annot2<-merge(annot,txannot2,by.x=c("group_id","varid"),by.y=c("ensg","varid"))
+annot2<-merge(annot,txannot,by.x=c("group_id","varid"),by.y=c("ensg","varid"),all=T)
 annot2<-annot2[,c(1,3:6,2,7:ncol(annot2))]
 annot3<-subset(annot2,!is.na(annot2[,c(tissuedelweight)]))
 
