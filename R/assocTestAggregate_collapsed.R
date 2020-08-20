@@ -201,7 +201,7 @@ testVariantSet <- function( nullmod, G, weights,
 .testVariantSetCollapse <- function(nullmod, G, weights, burden.test){
               # multiply G by weights and compute burden
               if(is(G, "Matrix")){
-                  burden <- rowSums(G %*% Diagonal(x = weights))
+                  burden <- rowSums(G %*% Matrix::Diagonal(x = weights))
               }else{
                   burden <- colSums(t(G) * weights)
               }
