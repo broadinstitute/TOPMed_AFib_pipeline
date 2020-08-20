@@ -140,7 +140,7 @@ setMethod("assocTestAggregate_v2",
                       message(paste("Iteration", i , "of", n.iter, "completed"))
                   }
                   i <- i + 1
-                  iterate <- iterateFilter(gdsobj, verbose=FALSE)
+                  iterate <- iterateFilter(gdsobj)
               }
 
               res <- list(results=dplyr::bind_rows(res), variantInfo=res.var)
