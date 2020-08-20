@@ -1,3 +1,4 @@
+library(Matrix)
 setGeneric("assocTestAggregate_v2", function(gdsobj, ...) standardGeneric("assocTestAggregate_v2"))
 
 
