@@ -72,6 +72,7 @@ seqClose(gds)
 
 summarydata<-function(files,chrs,thre_cMAC=0){
 sumres<-NULL
+sumvar<-list()
 for (num in 1:length(files)){
 outfile<-files[num]
 chr0<-chrs[num]
@@ -90,10 +91,14 @@ mpos0<-c(mpos0,mpos1)
 sum0$cMAC<-cMAC0
 sum0$mpos<-mpos0
 sum1<-subset(sum0,cMAC>=thre_cMAC)
+sumvar0<-varinfo0[rownames(sum1)]
+sumvar[[num]]<-sumvar0
 sumres<-rbind(sumres,sum1)
 }
-return(sumres)
+summ<-list(generesult=sumres,varinfo=sumvar)
+return(summ)
 }
+
 
 #######
 ####### manhattan plot
