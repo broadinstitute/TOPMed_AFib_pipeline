@@ -15,7 +15,7 @@ groupfile=as.character(args[4])
 phenfile=as.character(args[5])
 nullfile=as.character(args[6])
 stat=as.character(args[7])
-cutoff=as.numberic(args[8])
+cutoff=as.numeric(args[8])
 outfile=as.character(args[9])
 
 ##### function start
