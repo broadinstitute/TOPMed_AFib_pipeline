@@ -23,6 +23,8 @@ maccutoff<-as.numeric(args[1])
 ####### read files
 outfiles<-list.files(pattern="_collapsed_results.RData")
 chrs<-gsub("Chr","",gsub("_collapsed_results.RData","",outfiles))
+print(outfiles)
+print(chrs)
 sumres0<-summarydata(files=outfiles,chrs=chrs,thre_cMAC=maccutoff)
 result0<-sumres0$generesult
 result0$gene<-rownames(result0)
