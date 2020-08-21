@@ -23,7 +23,7 @@ outfiles<-unlist(strsplit(args[2], ","))
 
 #######
 ####### read files
-chrs<-gsub("Chr","",gsub("_collapsed_results.RData","",outfiles))
+chrs<-gsub("Chr","",gsub("_collapsed_results.RData","",basename(outfiles)))
 print(outfiles)
 print(chrs)
 sumres0<-summarydata(files=outfiles,chrs=chrs,thre_cMAC=maccutoff)
