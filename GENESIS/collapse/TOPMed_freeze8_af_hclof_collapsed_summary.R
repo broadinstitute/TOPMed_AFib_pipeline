@@ -38,7 +38,7 @@ pcgenes<-subset(genes,gene_type=="protein_coding" & chr!="Y")
 ########
 ######## merge with protein coding genes
 result1<-merge(result0,pcgenes,by.x="gene",by.y="id")
-result1$chr<-as.numeric(ifelse(result1$chr=="X",23,result1$chr))
+result1$chr<-as.numeric(ifelse(result1$chr.x=="X",23,result1$chr.x))
 
 p_thre<-0.05/(nrow(result1))
 
