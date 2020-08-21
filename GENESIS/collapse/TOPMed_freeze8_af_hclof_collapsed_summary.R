@@ -48,7 +48,7 @@ save(result1,file="summary.RData")
 ######## make a manhattan plit
 png("manhattan_plot.png", width=1500,height=500,type="cairo",res=100)
 par(mar = c(5.1, 6.1, 5.1, 2.1))
-man(result1, chr="chr", bp="mpos", snp="gene", p="Score.pval",
+man(result1, chr="chr.x", bp="mpos", snp="gene", p="Score.pval",
          chrlabs=c(1:22, "X"),
          main="",
          col=c("dodgerblue4", "firebrick4"),
