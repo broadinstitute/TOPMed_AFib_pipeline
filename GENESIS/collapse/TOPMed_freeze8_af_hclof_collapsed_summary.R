@@ -15,7 +15,7 @@ library(qqman)
 args=(commandArgs(TRUE))
 print(args)
 maccutoff<-as.numeric(args[1])
-outfiles<-args[2:length(args)]
+outfiles<-unlist(strsplit(input_args[2], ","))
 ##### gencodgene=as.character(args[1])
 ##### manoutfile=as.character(args[2])
 ##### qqoutfile=as.character(args[3])
