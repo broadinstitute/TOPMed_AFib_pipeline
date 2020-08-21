@@ -41,7 +41,7 @@ R CMD BATCH "--args ${chrom} ${gds} ${varlist} ${group} ${phen} ${nulmod} ${stat
 
 task test_summary {
 	Array[File] resultfiles
-	Int cmaccutoff
+	Float cmaccutoff
 	Int disk
 	Float memory
 	Int cpus
@@ -80,7 +80,7 @@ workflow rare_variant_test {
 	File this_null
 	Float this_cutoff
 	String this_stat
-	Int this_mincmac
+	Float this_mincmac
 	Int this_disk
 	Int this_cpus
 	Float this_memory
