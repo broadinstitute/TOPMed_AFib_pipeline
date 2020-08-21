@@ -52,7 +52,7 @@ task test_summary {
 git clone https://github.com/broadinstitute/TOPMed_AFib_pipeline.git
 
 #### perform collapsed test
-R CMD BATCH "--args ${cmaccutoff}" ./TOPMed_AFib_pipeline/GENESIS/collapse/TOPMed_freeze8_af_hclof_collapsed_summary.R summary.out
+R CMD BATCH "--args ${cmaccutoff} ${resultfiles[*]}" ./TOPMed_AFib_pipeline/GENESIS/collapse/TOPMed_freeze8_af_hclof_collapsed_summary.R summary.out
 
 	}
 

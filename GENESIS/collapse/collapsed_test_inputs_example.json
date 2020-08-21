@@ -4,7 +4,7 @@
 	"rare_variant_test.this_null": "/Users/schoi/github/testdata/AF_maleassocatedPCs_kinship.RData",
 	"rare_variant_test.this_cutoff": 0.001,
 	"rare_variant_test.this_stat": "Collapse",
-  "rare_variant_test.this_mincmac": 01,
+  "rare_variant_test.this_mincmac": 0,
   "rare_variant_test.this_disk": 50,
 	"rare_variant_test.this_cpus": 1,
 	"rare_variant_test.this_memory": 50

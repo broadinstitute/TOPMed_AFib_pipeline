@@ -13,7 +13,9 @@ library(qqman)
 
 ##### argument : chromosome info
 args=(commandArgs(TRUE))
+print(args)
 maccutoff<-as.numeric(args[1])
+outfiles<-args[2:length(args)]
 ##### gencodgene=as.character(args[1])
 ##### manoutfile=as.character(args[2])
 ##### qqoutfile=as.character(args[3])
@@ -21,7 +23,6 @@ maccutoff<-as.numeric(args[1])
 
 #######
 ####### read files
-outfiles<-list.files(pattern="_collapsed_results.RData")
 chrs<-gsub("Chr","",gsub("_collapsed_results.RData","",outfiles))
 print(outfiles)
 print(chrs)
