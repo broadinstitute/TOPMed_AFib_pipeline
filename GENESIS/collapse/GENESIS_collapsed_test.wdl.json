@@ -5,7 +5,7 @@
   "rare_variant_test.this_phen": "File",
   "rare_variant_test.this_memory": "Float",
   "rare_variant_test.this_disk": "Int",
+  "rare_variant_test.this_mincmac": "Int",
   "rare_variant_test.this_cpus": "Int",
   "rare_variant_test.this_cutoff": "Float"
 }
-

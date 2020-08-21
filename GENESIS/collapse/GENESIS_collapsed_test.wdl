@@ -40,7 +40,8 @@ R CMD BATCH "--args ${chrom} ${gds} ${varlist} ${group} ${phen} ${nulmod} ${stat
 
 
 task test_summary {
-	Array[file] resultfiles
+	Array[File] resultfiles
+	Int cmaccutoff
 	Int disk
 	Float memory
 	Int cpus
@@ -51,7 +52,7 @@ task test_summary {
 git clone https://github.com/broadinstitute/TOPMed_AFib_pipeline.git
 
 #### perform collapsed test
-R CMD BATCH ./TOPMed_AFib_pipeline/GENESIS/collapse/TOPMed_freeze8_af_hclof_collapsed_summary.R summary.out
+R CMD BATCH "--args ${cmaccutoff}" ./TOPMed_AFib_pipeline/GENESIS/collapse/TOPMed_freeze8_af_hclof_collapsed_summary.R summary.out
 
 	}
 
@@ -66,7 +67,7 @@ R CMD BATCH ./TOPMed_AFib_pipeline/GENESIS/collapse/TOPMed_freeze8_af_hclof_coll
 	output {
 		File summary_file = "summary.RData"
 		File out_file = "summary.out"
-		File manhattan_plot = ""manhattan_plot.png""
+		File manhattan_plot = "manhattan_plot.png"
 		File qq_plot = "qqplot.png"
 
 	}
@@ -79,6 +80,7 @@ workflow rare_variant_test {
 	File this_null
 	Float this_cutoff
 	String this_stat
+	Int this_mincmac
 	Int this_disk
 	Int this_cpus
 	Float this_memory
@@ -101,6 +103,11 @@ workflow rare_variant_test {
 
 		call test_summary {
 		input: resultfiles = collapsed_test.out_file1,
+		cmaccutoff = this_mincmac,
+		disk = this_disk,
+		memory = this_memory,
+		cpus = this_cpus
+
 		}
 
 	output {

@@ -1,10 +1,11 @@
 {
   "rare_variant_test.Input_arrayfiles": "/Users/schoi/github/TOPMed_AFib_pipeline/GENESIS/collapse/example_inputfile.tsv",
-	"rare_variant_test.this_phen": "/Volumes/medpop_afib/projects/NHLBI_WGS/pheno_files/cohorts/TOPMed_Freeze8_GQ_AFib_pheno_noMESA_QCed.tsv",
-	"rare_variant_test.this_null": "/Volumes/medpop_afib/schoi/projects/TOPMed/Freeze8/Result/nullmodel/AF_maleassocatedPCs_kinship.RData",
+	"rare_variant_test.this_phen": "/Users/schoi/github/testdata/TOPMed_Freeze8_GQ_AFib_pheno_noMESA_QCed.tsv",
+	"rare_variant_test.this_null": "/Users/schoi/github/testdata/AF_maleassocatedPCs_kinship.RData",
 	"rare_variant_test.this_cutoff": 0.001,
 	"rare_variant_test.this_stat": "Collapse",
-	"rare_variant_test.this_disk": 50,
+  "rare_variant_test.this_mincmac": 01,
+  "rare_variant_test.this_disk": 50,
 	"rare_variant_test.this_cpus": 1,
 	"rare_variant_test.this_memory": 50
 }
