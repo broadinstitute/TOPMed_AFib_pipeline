@@ -12,7 +12,8 @@ library(qqman)
 
 
 ##### argument : chromosome info
-##### args=(commandArgs(TRUE))
+args=(commandArgs(TRUE))
+maccutoff<-as.numeric(args[1])
 ##### gencodgene=as.character(args[1])
 ##### manoutfile=as.character(args[2])
 ##### qqoutfile=as.character(args[3])
@@ -22,7 +23,7 @@ library(qqman)
 ####### read files
 outfiles<-list.files(pattern="_collapsed_results.RData")
 chrs<-gsub("Chr","",gsub("_collapsed_results.RData","",outfiles))
-sumres0<-summarydata(files=outfiles[1],chrs=chrs[1],thre_cMAC=10)
+sumres0<-summarydata(files=outfiles,chrs=chrs,thre_cMAC=maccutoff)
 result0<-sumres0$generesult
 result0$gene<-rownames(result0)
 
