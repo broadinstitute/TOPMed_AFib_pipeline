@@ -38,6 +38,8 @@ pcgenes<-subset(genes,gene_type=="protein_coding" & chr!="Y")
 ########
 ######## merge with protein coding genes
 result1<-merge(result0,pcgenes,by.x="gene",by.y="id")
+result1$chr<-as.numeric(ifelse(result1$chr=="X",23,result1$chr))
+
 p_thre<-0.05/(nrow(result1))
 
 ########
@@ -48,7 +50,7 @@ save(result1,file="summary.RData")
 ######## make a manhattan plit
 png("manhattan_plot.png", width=1500,height=500,type="cairo",res=100)
 par(mar = c(5.1, 6.1, 5.1, 2.1))
-man(result1, chr="chr.x", bp="mpos", snp="gene", p="Score.pval",
+man(result1, chr="chr", bp="mpos", snp="gene", p="Score.pval",
          chrlabs=c(1:22, "X"),
          main="",
          col=c("dodgerblue4", "firebrick4"),
