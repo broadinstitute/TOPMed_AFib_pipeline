@@ -130,8 +130,7 @@ man<-function (x, chr = "CHR", bp = "BP", p = "P", snp = "SNP", col = c("gray10"
     d <- d[order(d$CHR, d$BP), ]
     if (logp) {
         d$logp <- -log10(d$P)
-    }
-    else {
+    }else {
         d$logp <- d$P
     }
     d$pos = NA
@@ -148,8 +147,7 @@ man<-function (x, chr = "CHR", bp = "BP", p = "P", snp = "SNP", col = c("gray10"
         ticks = floor(length(d$pos))/2 + 1
         xlabel = paste("Chromosome", unique(d$CHR), "position(Mb)")
         labs = ticks
-    }
-    else {
+    }else {
         lastbase = 0
         ticks = NULL
         for (i in unique(d$index)) {
@@ -162,8 +160,7 @@ man<-function (x, chr = "CHR", bp = "BP", p = "P", snp = "SNP", col = c("gray10"
                 d[d$index == i, ]$pos = d[d$index == i, ]$BP +
                   lastbase
             }
-            ticks = c(ticks, (min(d[d$CHR == i, ]$pos) + max(d[d$CHR ==
-                i, ]$pos))/2 + 1)
+            ticks = c(ticks, (min(d[d$index == i, ]$pos) + max(d[d$index ==i, ]$pos))/2 + 1)
         }
         xlabel = "Chromosome"
         labs <- unique(d$CHR)
