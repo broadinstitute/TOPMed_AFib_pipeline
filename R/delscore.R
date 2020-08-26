@@ -9,9 +9,8 @@ vars<-c("SIFT_pred","SIFT4G_pred","Polyphen2_HDIV_pred","Polyphen2_HVAR_pred","L
 
 ##########
 ##########
-
 dselect<-c("SIFT_pred","SIFT4G_pred","Polyphen2_HDIV_pred","Polyphen2_HVAR_pred","LRT_pred","MutationTaster_pred","FATHMM_pred","PROVEAN_pred","MetaSVM_pred","MetaLR_pred","M-CAP_pred","PrimateAI_pred","DEOGEN2_pred","BayesDel_addAF_pred","BayesDel_noAF_pred","ClinPred_pred","LIST-S2_pred","fathmm-MKL_coding_pred","fathmm-XF_coding_pred")
-
+dselect<-vars[vars %in% dselect]
 for (ii in 1:length(dselect)){
 variable0<-dselect[ii]
 table(dat0[,variable0])
@@ -24,7 +23,7 @@ dat0[grep("D",dat0[,variable0],fixed=T),newvar]<-1
 ##########
 ##########
 hselect<-c("MutationAssessor_pred")
-
+hselect<-vars[vars %in% hselect]
 for (ii in 1:length(hselect)){
 variable0<-hselect[ii]
 ##table(dat0[,variable0])
@@ -38,6 +37,7 @@ dat0[grep("H",dat0[,variable0],fixed=T),newvar]<-1
 #########
 ######### ranks
 rank<-c("VEST4_rankscore","REVEL_rankscore","MutPred_rankscore","MVP_rankscore","MPC_rankscore","DANN_rankscore")
+rank<-vars[vars %in% rank]
 
 for (ii in 1:length(rank)){
 variable0<-rank[ii]
@@ -52,6 +52,7 @@ dat0[which(dat0[,variable0]>=0.9),newvar]<-1
 ########
 ######## phred scale
 phred<-c("CADD_phred","Eigen-phred_coding","Eigen-PC-phred_coding")
+phred<-vars[vars %in% phred]
 
 for (ii in 1:length(phred)){
 variable0<-phred[ii]
