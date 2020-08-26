@@ -1,8 +1,5 @@
-from ensemblorg/ensembl-vep:release_101.0
+from schoi/vep_loftee:latest
 
 MAINTAINER Seung Hoan Choi (schoi@broadinstitute.org)
 
-RUN sudo apt-get update
-RUN sudo apt-get -y install git
-
-RUN git clone https://github.com/konradjk/loftee.git
+RUN ./INSTALL.pl -y GRCh38 -a acfp -s homo_sapiens -g dbNSFP -l -n
