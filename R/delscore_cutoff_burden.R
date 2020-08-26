@@ -60,7 +60,7 @@ dscore[,scorename]<-ifelse(dscore[,scorename]>1,NA,dscore[,scorename])
 
 ######
 ###### annotation file
-threprop<-acutoff
+threprop<-scutoff
 annot<-get(load(groupfile))
 annot$varid<-paste(annot$chr,annot$pos,annot$ref,annot$alt,sep=":")
 annot2<-merge(annot,dscore,by.x=c("group_id","varid"),by.y=c("geneID","varid"),all=T)
