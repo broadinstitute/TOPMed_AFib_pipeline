@@ -92,6 +92,13 @@ assoc <- assocTestAggregate_v2(iterator, nullmod, AF.max=acutoff, test=stat,verb
 ###### add one variable
 assoc$results$cutoff<-threprop
 
+###### add varinfo
+for (gene in 1:length(assoc$variantInfo)){
+nvariants<-nrow(assoc$variantInfo[[gene]])
+if(nvariants>0){
+assoc$variantInfo[[gene]]<-merge(assoc$variantInfo[[gene]],annot4,by=c("chr","pos","alt","ref"))
+}
+}
 save(assoc,file=outfile)
 
 ######
