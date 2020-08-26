@@ -120,9 +120,9 @@ setMethod("assocTestAggregate_v2",
 
                   if (n.site > 0) {
                       # zero impute missing values
-                    if (any(n.obs < nrow(geno)) & test=="Collapse") {
+                    if (any(n.obs < nrow(geno)) & test %in% c("Collapse","Burden")) {
                         geno <- zeroImpute_Sean(geno, freq$freq)
-                    }else if(any(n.obs < nrow(geno)) & test!="Collapse") {
+                    }else if(any(n.obs < nrow(geno)) & !test %in% c("Collapse","Burden")) {
                       # mean impute missing values
                         geno <- GENESIS:::.meanImpute(geno, freq$freq)
                       }
