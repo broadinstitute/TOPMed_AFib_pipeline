@@ -1,5 +1,5 @@
 {
-  "rare_variant_delscore_test.Input_arrayfiles": "/Users/schoi/github/TOPMed_AFib_pipeline/GENESIS/del_score/example_inputfile.tsv",
+  "rare_variant_delscore_test.Input_arrayfiles": "/Users/schoi/github/TOPMed_AFib_pipeline/GENESIS/del_score/inputfile_chr22.tsv",
   "rare_variant_delscore_test.this_scorevar": "Dprop",
   "rare_variant_delscore_test.this_mintool": 7,
   "rare_variant_delscore_test.this_phen": "/Users/schoi/github/testdata/TOPMed_Freeze8_GQ_AFib_pheno_noMESA_QCed.tsv",
