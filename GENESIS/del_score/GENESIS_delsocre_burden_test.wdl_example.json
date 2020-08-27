@@ -1,0 +1,14 @@
+{
+  "rare_variant_delscore_test.Input_arrayfiles": "/Users/schoi/github/TOPMed_AFib_pipeline/GENESIS/del_score/example_inputfile.tsv",
+  "rare_variant_delscore_test.this_scorevar": "Dprop",
+  "rare_variant_delscore_test.this_mintool": 7,
+  "rare_variant_delscore_test.this_phen": "/Users/schoi/github/testdata/TOPMed_Freeze8_GQ_AFib_pheno_noMESA_QCed.tsv",
+  "rare_variant_delscore_test.this_null": "/Users/schoi/github/testdata/AF_maleassocatedPCs_kinship.RData",
+  "rare_variant_delscore_test.this_scorecutoff": 0.9,
+  "rare_variant_delscore_test.this_allelecutoff": 0.001,
+  "rare_variant_delscore_test.this_stat": "Burden",
+  "rare_variant_delscore_test.this_mincmac": 10,
+  "rare_variant_delscore_test.this_cpus": 1,
+  "rare_variant_delscore_test.this_disk": 50,
+  "rare_variant_delscore_test.this_memory": 80
+}

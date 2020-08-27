@@ -1,11 +1,12 @@
 
-delscore<-function(filename,mintool=7){
+delscore<-function(filename,delvar,mintool=7){
 library(data.table)
 library(tidyr)
 
 dat0<-fread(cmd=paste0("zcat ",filename),header=T,data.table=F,sep="\t")
 vars<-c("SIFT_pred","SIFT4G_pred","Polyphen2_HDIV_pred","Polyphen2_HVAR_pred","LRT_pred","MutationTaster_pred","MutationAssessor_pred","FATHMM_pred","PROVEAN_pred","VEST4_rankscore","MetaSVM_pred","MetaLR_pred","M-CAP_pred","REVEL_rankscore","MutPred_rankscore","MVP_rankscore","MPC_rankscore","PrimateAI_pred","DEOGEN2_pred","BayesDel_addAF_pred","BayesDel_noAF_pred","ClinPred_pred","LIST-S2_pred","Aloft_pred","Aloft_Confidence","CADD_phred","DANN_rankscore","fathmm-MKL_coding_pred","fathmm-XF_coding_pred","Eigen-phred_coding","Eigen-PC-phred_coding")
-
+varlist<-names(dat0)
+vars<-varlist[varlist %in% vars]
 
 ##########
 ##########
@@ -111,6 +112,7 @@ dat3<-dat2[order(dat2$gvarID,-dat2$Dprop),]
 dat4<-dat3[!duplicated(dat3$gvarID),]
 dat5<-dat4[,c("gvarID","Dscore","Dtools","Dprop")]
 ########## var deleterious info
+names(dat5)[4]<-delvar
 
 dat5<-separate(data=dat5,col="gvarID",into=c("chr","pos","ref","alt","geneID"))
 #write.table(dat5,outfile,col.names=T,row.names=F,quote=F,sep="\t")

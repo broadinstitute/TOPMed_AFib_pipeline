@@ -7,13 +7,11 @@ sapply(files.sources, source)
 ##### argument : chromosome info
 args=(commandArgs(TRUE))
 infile=as.character(args[1])
-
-##### input files
-filename<-infile
-outfile<-gsub(".gz",".score.tsv",filename)
-
+outfile=as.character(args[2])
+delvar=as.character(args[3])
+mintools=as.numeric(args[4])
 ##### perfrom scoring
-result0<-delscore(filename=filename)
+result0<-delscore(filename=infile,outfile,delvar,mintools)
 write.table(result0,outfile,col.names=T,row.names=F,quote=F,sep="\t")
 
 ##### DONE

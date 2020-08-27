@@ -1,0 +1,15 @@
+{
+  "rare_variant_delscore_test.this_cpus": "Int",
+  "rare_variant_delscore_test.this_scorecutoff": "Float",
+  "rare_variant_delscore_test.this_scorevar": "String",
+  "rare_variant_delscore_test.this_phen": "File",
+  "rare_variant_delscore_test.this_allelecutoff": "Float",
+  "rare_variant_delscore_test.Input_arrayfiles": "File",
+  "rare_variant_delscore_test.this_disk": "Int",
+  "rare_variant_delscore_test.this_memory": "Float",
+  "rare_variant_delscore_test.this_mincmac": "Float",
+  "rare_variant_delscore_test.this_stat": "String",
+  "rare_variant_delscore_test.this_mintool": "Float",
+  "rare_variant_delscore_test.this_null": "File"
+}
+
