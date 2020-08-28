@@ -5,7 +5,7 @@ java -jar /Users/schoi/cromwell/womtool-52.jar validate GENESIS_delsocre_burden_
 java -jar /Users/schoi/cromwell/womtool-52.jar inputs GENESIS_delsocre_burden_test.wdl > GENESIS_delsocre_burden_test.wdl.json
 
 #### excute!!!!
-java -jar /Users/schoi/cromwell/cromwell-52.jar run /Users/schoi/github/TOPMed_AFib_pipeline/GENESIS/del_score/GENESIS_delsocre_burden_test.wdl --inputs /Users/schoi/github/TOPMed_AFib_pipeline/GENESIS/del_score/GENESIS_delscore_burden_test.wdl_example.json
+java -jar /Users/schoi/cromwell/cromwell-52.jar run /Users/schoi/github/TOPMed_AFib_pipeline/GENESIS/del_score/GENESIS_delscore_burden_test.wdl --inputs /Users/schoi/github/TOPMed_AFib_pipeline/GENESIS/del_score/GENESIS_delscore_burden_test.wdl_example.json
 
 
 

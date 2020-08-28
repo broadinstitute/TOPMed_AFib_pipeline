@@ -16,7 +16,7 @@ task delscore_test {
 	Float memory
 	Int cpus
 
-	String out_base = "Chr" + chrom + "_delscore" + scutoff +"_" + stat +" _results.RData"
+	String out_base = "Chr" + chrom + "_delscore" + scutoff + "_" + stat + "_results.RData"
 
 	command {
 
@@ -27,7 +27,7 @@ git clone https://github.com/broadinstitute/TOPMed_AFib_pipeline.git
 R CMD BATCH "--args ${dbnsfp} ${score} ${scorevar} ${mintool} " ./TOPMed_AFib_pipeline/GENESIS/del_score/dbNSFP_delscore.R ${score}_delscore.out
 
 #### perform burden test
-R CMD BATCH "--args ${chrom} ${gds} ${varlist} ${group} ${phen} ${nulmod} ${stat} ${score} ${scorevar} ${scutoff} ${acutoff} ${stat} ${out_base} " ./TOPMed_AFib_pipeline/GENESIS/del_score/dbNSFP_delscore_hclof_missense_burden.R ${out_base}.out
+R CMD BATCH "--args ${chrom} ${gds} ${varlist} ${group} ${phen} ${nulmod} ${score} ${scorevar} ${scutoff} ${acutoff} ${stat} ${out_base} " ./TOPMed_AFib_pipeline/GENESIS/del_score/dbNSFP_delscore_hclof_missense_burden.R ${out_base}.out
 
 	}
 
