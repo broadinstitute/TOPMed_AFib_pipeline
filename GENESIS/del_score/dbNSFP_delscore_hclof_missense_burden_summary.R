@@ -20,10 +20,9 @@ outfiles<-unlist(strsplit(args[2], ","))
 ##### manoutfile=as.character(args[2])
 ##### qqoutfile=as.character(args[3])
 
-
 #######
 ####### read files
-chrs<-gsub("Chr","",gsub("_collapsed_results.RData","",basename(outfiles)))
+chrs<-gsub("Chr","",unlist(strsplit(basename(outfiles),"_",fixed=T))[1])
 print(outfiles)
 print(chrs)
 sumres0<-summarydata(files=outfiles,chrs=chrs,thre_cMAC=maccutoff)
