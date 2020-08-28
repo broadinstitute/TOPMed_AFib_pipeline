@@ -11,7 +11,7 @@ outfile=as.character(args[2])
 delvar=as.character(args[3])
 mintools=as.numeric(args[4])
 ##### perfrom scoring
-result0<-delscore(filename=infile,outfile,delvar,mintools)
+result0<-delscore(filename=infile,delvar,mintools)
 write.table(result0,outfile,col.names=T,row.names=F,quote=F,sep="\t")
 
 ##### DONE
