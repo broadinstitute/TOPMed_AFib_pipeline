@@ -31,7 +31,7 @@ scorename=as.character(args[8])
 scutoff=as.numeric(args[9])
 acutoff=as.numeric(args[10])
 stat=as.character(args[11])
-outfile=as.character(args[9])
+outfile=as.character(args[12])
 
 
 results<-del.cutoff.Burden(num,gdsfile,groupfile,scorefile,scorename,scutoff,acutoff,phenfile,nullfile,stat,outfile)
