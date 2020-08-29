@@ -60,7 +60,7 @@ task test_summary {
 git clone https://github.com/broadinstitute/TOPMed_AFib_pipeline.git
 
 #### perform collapsed test
-R CMD BATCH "--args ${cmaccutoff} ${sep="," resultfiles}" ./TOPMed_AFib_pipeline/GENESIS/collapse/TOPMed_freeze8_af_hclof_collapsed_summary.R summary.out
+R CMD BATCH "--args ${cmaccutoff} ${sep="," resultfiles}" ./TOPMed_AFib_pipeline/GENESIS/del_score/dbNSFP_delscore_hclof_missense_burden_summary.R summary.out
 
 	}
 
