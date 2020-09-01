@@ -71,7 +71,7 @@ annot2[is.na(annot2$pos),"pos"]<-annot2[is.na(annot2$pos),"pos.y"]
 annot2[is.na(annot2$ref),"ref"]<-annot2[is.na(annot2$ref),"ref.y"]
 annot2[is.na(annot2$alt),"alt"]<-annot2[is.na(annot2$alt),"alt.y"]
 annot2$pos<-as.numeric(annot2$pos)
-annot2$Dprop<-ifelse(annot2$func=="hclof",1,annot2$Dprop)
+annot2[,scorename]<-ifelse(annot2$func %in% c("hclof","hclof_noflag"),1,annot2[,scorename])
 annot3<-subset(annot2,!is.na(annot2[,c(scorename)]))
 annot3<-subset(annot3,annot3[,c(scorename)]>=threprop)
 annot4<-annot3[order(annot3$group_id,annot3$pos),]
