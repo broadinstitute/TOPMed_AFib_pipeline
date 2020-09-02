@@ -18,8 +18,6 @@ sapply(files.sources, source)
 
 ##### argument : chromosome info
 args=(commandArgs(TRUE))
-infile=as.character(args[1])
-
 num=as.character(args[1])
 gdsfile=as.character(args[2])
 varfile=as.character(args[3])
