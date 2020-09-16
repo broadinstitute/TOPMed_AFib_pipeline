@@ -63,7 +63,7 @@ dscore[,scorename]<-ifelse(dscore[,scorename]>1,NA,dscore[,scorename])
 threprop<-scutoff
 annot<-get(load(groupfile))
 annot$varid<-paste(annot$chr,annot$pos,annot$ref,annot$alt,sep=":")
-annot2<-merge(annot,dscore,by.x=c("group_id","varid"),by.y=c("geneID","varid"),all=T)
+annot2<-merge(annot,dscore,by.x=c("group_id","varid"),by.y=c("geneID","varid"),all.x=T) ### annotation file based result
 annot2<-annot2[,c(1,3:6,2,7:ncol(annot2))]
 names(annot2)[1:5]<-c("group_id","chr","pos","ref","alt")
 annot2[is.na(annot2$chr),"chr"]<-annot2[is.na(annot2$chr),"chr.y"]
