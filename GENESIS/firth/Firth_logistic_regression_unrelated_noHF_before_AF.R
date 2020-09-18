@@ -29,7 +29,7 @@ geneid<-geneids[gnum]
 mod1<-unrelated_firth(phenfile=phenfile,num=num,gdsfile=gdsfile,geneid=geneid,resultfile=resultfile,unrelcol=unrelcol,noHF_col=noHF_col)
 result[[geneid]]<-mod1
 }
-save(result,filename=outfile)
+save(result,file=outfile)
 
 
 sessionInfo()
