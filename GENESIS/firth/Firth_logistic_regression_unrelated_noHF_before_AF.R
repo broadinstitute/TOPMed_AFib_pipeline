@@ -11,7 +11,9 @@ num=as.character(args[2])
 gdsfile=as.character(args[3])
 genefile=as.character(args[4])
 resultfile=as.character(args[5])
-outfile=as.character(args[6])
+unrelcol=as.character(args[6])
+noHF_col=as.character(args[7])
+outfile=as.character(args[8])
 
 ####
 #### loop by the geneid
@@ -24,7 +26,7 @@ for (gnum in 1:length(geneids)){
 geneid<-geneids[gnum]
 
 #### perfrom the firth
-mod1<-unrelated_firth(phenfile=phenfile,num=num,gdsfile=gdsfile,geneid=geneid,resultfile=resultfile)
+mod1<-unrelated_firth(phenfile=phenfile,num=num,gdsfile=gdsfile,geneid=geneid,resultfile=resultfile,unrelcol=unrelcol,noHF_col=noHF_col)
 result[[geneid]]<-mod1
 }
 save(result,filename=outfile)

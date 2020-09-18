@@ -1,0 +1,12 @@
+{
+  "firth_test_scatter.this_unrelcol": "String",
+  "firth_test_scatter.this_disk": "Int",
+  "firth_test_scatter.this_noHF_col": "String",
+  "firth_test_scatter.this_resultfile": "File",
+  "firth_test_scatter.this_cpus": "Int",
+  "firth_test_scatter.this_memory": "Float",
+  "firth_test_scatter.Input_arrayfiles": "File",
+  "firth_test_scatter.this_genefile": "File",
+  "firth_test_scatter.this_phen": "File"
+}
+
