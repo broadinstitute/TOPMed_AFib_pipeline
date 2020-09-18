@@ -30,3 +30,7 @@ mod1<-unrelated_firth(phenfile=phenfile,num=num,gdsfile=gdsfile,geneid=geneid,re
 result[[geneid]]<-mod1
 }
 save(result,filename=outfile)
+
+
+sessionInfo()
+quit("no")
