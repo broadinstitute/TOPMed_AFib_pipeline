@@ -17,7 +17,7 @@ outfile=as.character(args[8])
 
 ####
 #### loop by the geneid
-genelist<-fread(genefile,header=F,sep="\t",data.table=F)
+genelist<-fread(genefile,header=T,sep="\t",data.table=F)
 chrgenes<-subset(genelist,chr==num)
 geneids<-chrgenes$geneid
 
