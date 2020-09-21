@@ -92,6 +92,5 @@ result0<-rbind(unrelres,unrel_noHF)
 
 result0$geneid<-geneid
 
-seqClose(gds)
 return(result0)
 }
