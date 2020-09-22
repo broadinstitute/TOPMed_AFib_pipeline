@@ -26,8 +26,13 @@ for (gnum in 1:length(geneids)){
 geneid<-geneids[gnum]
 
 #### perfrom the firth
-mod1<-unrelated_firth(phenfile=phenfile,num=num,gdsfile=gdsfile,geneid=geneid,resultfile=resultfile,unrelcol=unrelcol,noHF_col=noHF_col)
-result[[geneid]]<-mod1
+result0<-unrelated_firth(phenfile=phenfile,num=num,gdsfile=gdsfile,geneid=geneid,resultfile=resultfile,unrelcol=unrelcol,noHF_col=noHF_col)
+
+gresult0<-names(result0)
+for(ii in 1:length(gresult0)){
+result[[paste0(geneid,"_",gresult0[ii])]]<-result0[ii]
+}
+
 }
 save(result,file=outfile)
 
