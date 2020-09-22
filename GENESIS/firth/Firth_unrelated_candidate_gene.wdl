@@ -36,6 +36,37 @@ R CMD BATCH "--args ${phen} ${chrom} ${gds} ${genefile} ${resultfile} ${unrelcol
 	}
 }
 
+task combine_result {
+
+	Array[File] resultfiles
+	Int disk
+	Float memory
+	Int cpus
+
+	command {
+
+#### clone the pipeline
+git clone https://github.com/broadinstitute/TOPMed_AFib_pipeline.git
+
+##### Perform combine results
+R CMD BATCH "--args ${sep="," resultfiles}" ./TOPMed_AFib_pipeline/GENESIS/firth/Firth_logistic_regression_unrelated_noHF_before_AF_summary.R summary.out
+
+	}
+
+	runtime {
+		docker: "analysiscommon/genesis_wdl:v1.4.1"
+		disks: "local-disk ${disk} HDD"
+		memory: "${memory} GB"
+		cpu : "${cpus}"
+		bootDiskSizeGb: 50
+}
+
+	output {
+	File summary_file = "summary.RData"
+	File out_file = "summary.out"
+	}
+}
+
 
 workflow firth_test_scatter {
 	File Input_arrayfiles
@@ -63,10 +94,17 @@ workflow firth_test_scatter {
 
 		}
 	}
+	call combine_result {
+	input: resultfiles = firth_test.out_file1,
+	disk = this_disk,
+	memory = this_memory,
+	cpus = this_cpus
+
+	}
 
 	output {
-		Array[File] out_files = firth_test.out_file0
-		Array[File] sum_file = firth_test.out_file1
+		File out_file = combine_result.out_file
+		File sum_file = combine_result.summary_file
 
 	}
 }
