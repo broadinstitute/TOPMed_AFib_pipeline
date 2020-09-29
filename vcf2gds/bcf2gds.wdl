@@ -34,9 +34,9 @@ workflow makegds {
 	Int this_disk
 	Float this_memory
 
-	scatter(this_file in vcf_files) {
+	scatter(this_file in bcf_files) {
 		call runGds {
-			input: vcf = this_file, disk = this_disk, memory = this_memory
+			input: bcf = this_file, disk = this_disk, memory = this_memory
 		}
 	}
 
