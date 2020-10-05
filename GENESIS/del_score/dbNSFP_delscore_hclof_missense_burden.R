@@ -32,7 +32,7 @@ stat=as.character(args[11])
 outfile=as.character(args[12])
 
 
-results<-del.cutoff.Burden(num,gdsfile,groupfile,scorefile,scorename,scutoff,acutoff,phenfile,nullfile,stat,outfile)
+results<-del.cutoff.Burden(num,gdsfile,varfile,groupfile,scorefile,scorename,scutoff,acutoff,phenfile,nullfile,stat,outfile)
 
 
 ##### DONE
