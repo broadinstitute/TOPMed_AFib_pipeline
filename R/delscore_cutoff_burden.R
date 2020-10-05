@@ -12,7 +12,7 @@
 ####### results<-del.cutoff.SMMAT(num,gdsfile,groupfile,txannotfile,tissuename,cutoff,phenfile,nullfile)
 ####### write.table(results,outfile,col.names=T,row.names=F,quote=F,sep="\t")
 
-del.cutoff.Burden<-function(num,gdsfile,groupfile,scorefile,scorename,scutoff,acutoff,phenfile,nullfile,stat="Burden",outfile){
+del.cutoff.Burden<-function(num,gdsfile,varfile,groupfile,scorefile,scorename,scutoff,acutoff,phenfile,nullfile,stat="Burden",outfile){
 
 ##### samples
 phen1<-fread(phenfile,header=T,data.table=F,sep="\t")
@@ -21,9 +21,10 @@ samid0<-phen1$sample.id
 
 ######
 ###### QCed variants
+if(!is.null(varfile)){
 vardata<-fread(varfile,header=F,sep="\t",data.table=F)
 varid0<-vardata$V1
-
+}
 ######
 ###### read gds file
 gds <- seqOpen(gdsfile, allow.duplicate=T)
@@ -42,7 +43,12 @@ seqData <- SeqVarData(gds, sampleData=AnnotatedDataFrame(combphen2))
 
 ######
 ###### filter the gdsfile
+if(!is.null(varfile)){
 seqSetFilter(seqData, sample.id=samid0, variant.id=varid0)
+}else{
+seqSetFilter(seqData, sample.id=samid0)
+}
+
 
 ######
 ###### load null model
