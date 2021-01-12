@@ -3,6 +3,7 @@ task runGds {
 	File bed
 	File fam
 	File bim
+	File script
 	Int disk
 	Float memory
 	Int ncpus
@@ -12,11 +13,8 @@ task runGds {
 
 	command {
 
-#### clone the pipeline
-git clone https://github.com/broadinstitute/TOPMed_AFib_pipeline.git
-
 #### onvert vcf to gds
-R CMD BATCH "--args ${bed} ${fam} ${bim} ${ncpus}" ./TOPMed_AFib_pipeline/vcf2gds/plik2gds.R ${out_base}.out
+R CMD BATCH "--args ${bed} ${fam} ${bim} ${ncpus}" ${script} ${out_base}.out
 
 	}
 
@@ -37,6 +35,7 @@ R CMD BATCH "--args ${bed} ${fam} ${bim} ${ncpus}" ./TOPMed_AFib_pipeline/vcf2gd
 workflow makegds {
 	File Input_arrayfiles
 	Array[Array[File]] Inputfiles = read_tsv(Input_arrayfiles)
+	File R_script
 	Int this_disk
 	Float this_memory
 	Int this_cpus
@@ -46,6 +45,7 @@ workflow makegds {
 			bed = chrfile[1],
 			fam = chrfile[2],
 			bim = chrfile[3],
+			script = R_script,
 			disk = this_disk,
 			memory = this_memory,
 			ncpus = this_cpus
