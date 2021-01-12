@@ -16,7 +16,7 @@ ncpus <- as.numeric(args[4])
 bed.fn<-bedfile
 fam.fn<-famfile
 bim.fn<-bimfile
-out.fn<-gsub("bed","gds",bedfile)
+out.fn<-gsub(".bed",".gds",bedfile)
 seqBED2GDS(bed.fn, fam.fn, bim.fn, out.fn,parallel=ncpus, verbose=TRUE)
 
 ##### complete conversion
