@@ -1,4 +1,5 @@
 task runGds {
+	String chr
 	File bed
 	File fam
 	File bim
@@ -39,7 +40,7 @@ workflow makegds {
 	Int this_disk
 	Float this_memory
 	Int this_cpus
-	scatter(this_file in bed_files) {
+	scatter(chrfile in Inputfiles) {
 		call runGds {
 			input: chr = chrfile[0],
 			bed = chrfile[1],
