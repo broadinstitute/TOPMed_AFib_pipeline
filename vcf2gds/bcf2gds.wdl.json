@@ -1,0 +1,6 @@
+{
+  "makegds.bcf_files": "Array[File]",
+  "makegds.this_disk": "Int",
+  "makegds.this_memory": "Float"
+}
+
