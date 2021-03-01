@@ -225,7 +225,7 @@ testVariantSet <- function( nullmod, G, weights,
 
 ####
 ##### function start
-aggreated_test<-function(num,gdsfile,varfile,groupfile,phenfile,nullfile,cutoff,stat,outfile){
+aggreated_weighted_test<-function(num,gdsfile,varfile,groupfile,phenfile,nullfile,cutoff,stat,outfile){
 
 ##### samples
 phen1<-fread(phenfile,header=T,data.table=F,sep="\t")
