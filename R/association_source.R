@@ -31,7 +31,7 @@ colnames(misphen)<-names(phen1)
 misphen$sample.id<-missamples
 combphen<-rbind(phen1,misphen)
 rownames(combphen)<-combphen$sample.id
-combphen2<-combphen[samples,]
+combphen2<-combphen[as.character(samples),]
 
 ######
 ###### # construct a SeqVarData object
