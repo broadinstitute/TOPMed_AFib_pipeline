@@ -25,7 +25,7 @@ pheno$disease<-pheno[,disease0]
 
 ######
 ###### unrelaed samples
-if(!is.null(unrelcol){
+if(!is.null(unrelcol)){
 pheno<-subset(pheno,pheno[,unrelcol]==1)
 }
 print(nrow(pheno))
