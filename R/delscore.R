@@ -4,13 +4,13 @@ library(data.table)
 library(tidyr)
 
 dat0<-fread(cmd=paste0("zcat ",filename),header=T,data.table=F,sep="\t")
-vars<-c("SIFT_pred","SIFT4G_pred","Polyphen2_HDIV_pred","Polyphen2_HVAR_pred","LRT_pred","MutationTaster_pred","MutationAssessor_pred","FATHMM_pred","PROVEAN_pred","VEST4_rankscore","MetaSVM_pred","MetaLR_pred","M-CAP_pred","REVEL_rankscore","MutPred_rankscore","MVP_rankscore","MPC_rankscore","PrimateAI_pred","DEOGEN2_pred","BayesDel_addAF_pred","BayesDel_noAF_pred","ClinPred_pred","LIST-S2_pred","Aloft_pred","Aloft_Confidence","CADD_phred","DANN_rankscore","fathmm-MKL_coding_pred","fathmm-XF_coding_pred","Eigen-phred_coding","Eigen-PC-phred_coding")
+vars<-c("MetaRNN_pred","SIFT_pred","SIFT4G_pred","Polyphen2_HDIV_pred","Polyphen2_HVAR_pred","LRT_pred","MutationTaster_pred","MutationAssessor_pred","FATHMM_pred","PROVEAN_pred","VEST4_rankscore","MetaSVM_pred","MetaLR_pred","M-CAP_pred","REVEL_rankscore","MutPred_rankscore","MVP_rankscore","MPC_rankscore","PrimateAI_pred","DEOGEN2_pred","BayesDel_addAF_pred","BayesDel_noAF_pred","ClinPred_pred","LIST-S2_pred","Aloft_pred","Aloft_Confidence","CADD_phred","DANN_rankscore","fathmm-MKL_coding_pred","fathmm-XF_coding_pred","Eigen-phred_coding","Eigen-PC-phred_coding")
 varlist<-names(dat0)
 vars<-varlist[varlist %in% vars]
 
 ##########
 ##########
-dselect<-c("SIFT_pred","SIFT4G_pred","Polyphen2_HDIV_pred","Polyphen2_HVAR_pred","LRT_pred","MutationTaster_pred","FATHMM_pred","PROVEAN_pred","MetaSVM_pred","MetaLR_pred","M-CAP_pred","PrimateAI_pred","DEOGEN2_pred","BayesDel_addAF_pred","BayesDel_noAF_pred","ClinPred_pred","LIST-S2_pred","fathmm-MKL_coding_pred","fathmm-XF_coding_pred")
+dselect<-c("MetaRNN_pred","SIFT_pred","SIFT4G_pred","Polyphen2_HDIV_pred","Polyphen2_HVAR_pred","LRT_pred","MutationTaster_pred","FATHMM_pred","PROVEAN_pred","MetaSVM_pred","MetaLR_pred","M-CAP_pred","PrimateAI_pred","DEOGEN2_pred","BayesDel_addAF_pred","BayesDel_noAF_pred","ClinPred_pred","LIST-S2_pred","fathmm-MKL_coding_pred","fathmm-XF_coding_pred")
 dselect<-vars[vars %in% dselect]
 for (ii in 1:length(dselect)){
 variable0<-dselect[ii]
