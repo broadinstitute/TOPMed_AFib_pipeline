@@ -1,9 +1,11 @@
 library(data.table)
 library(jsonlite)
 
+LOF_missense<-function(infile){
+
 ##### read arguments
-args=(commandArgs(TRUE))
-infile=as.character(args[1])
+##### args=(commandArgs(TRUE))
+##### infile=as.character(args[1])
 
 HCoutfile=paste0(infile,"_hclof.RData")
 HCgroupfile=paste0(infile,"_hclof_group.RData")
@@ -128,8 +130,5 @@ names(group)[1]<-"group_id"
 
 save(group,file=missensegroupfile)
 
-
-sessionInfo()
-quit("no")
-
+}
 #####
