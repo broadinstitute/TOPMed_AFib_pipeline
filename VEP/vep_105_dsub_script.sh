@@ -10,10 +10,10 @@ mkdir $HOME/vep_data/Plugins/
 chmod a+rwx $HOME/vep_data
 chmod a+rwx $HOME/vep_data/Plugins/
 
-tar -xf ${MYBUCKET}/schoi/annotation/vep_105/GRCh38.tar -C /opt/vep/.vep/
-tar -zxf ${MYBUCKET}/schoi/annotation/vep_105/homo_sapiens_vep_105_GRCh38.tar.gz -C /opt/vep/.vep/
-tar -zxf ${MYBUCKET}/schoi/annotation/vep_105/Homo_sapiens.GRCh38.dna.toplevel.fa.gz.vep105.tar.gz -C /opt/vep/.vep/
-tar -zxf ${MYBUCKET}/schoi/annotation/vep_105/loftee_Plugins.tar.gz -C /opt/vep/.vep/Plugins/
+tar -xf ${LOFTEE_FILE} -C /opt/vep/.vep/
+tar -zxf ${VEP_FILE} -C /opt/vep/.vep/
+tar -zxf ${FASTA_FILE} -C /opt/vep/.vep/
+tar -zxf ${PLUGIN_FILE} -C /opt/vep/.vep/Plugins/
 
 #### instlal packages
 cpanm DBD::SQLite::VirtualTable::PerlData
