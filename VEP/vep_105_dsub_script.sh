@@ -4,11 +4,13 @@ set -o errexit
 # Author: Seung Hoan Choi <schoi@broadinstitute.org>
 # Feb 07 2022
 
-mkdir $HOME/vep_data
-mkdir $HOME/vep_data/Plugins/
+#mkdir $HOME/vep_data
+#mkdir $HOME/vep_data/Plugins/
+mkdir /opt/vep/.vep/
+mkdir /opt/vep/.vep/Plugins/
 
-chmod a+rwx $HOME/vep_data
-chmod a+rwx $HOME/vep_data/Plugins/
+chmod a+rwx /opt/vep/.vep/
+chmod a+rwx /opt/vep/.vep/Plugins/
 
 tar -xf ${LOFTEE_FILE} -C /opt/vep/.vep/
 tar -zxf ${VEP_FILE} -C /opt/vep/.vep/
