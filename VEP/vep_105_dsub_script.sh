@@ -18,7 +18,7 @@ tar -zxf ${FASTA_FILE} -C /opt/vep/.vep/
 tar -zxf ${PLUGIN_FILE} -C /opt/vep/.vep/Plugins/
 
 #### instlal packages
-cpanm DBD::SQLite::VirtualTable::PerlData
+cpanm --local-lib=/opt/vep/perl5 DBD::SQLite::VirtualTable::PerlData
 export PERL5LIB=$PERL5LIB://opt/vep/perl5/lib/perl5:${PERL5LIB}
 
 

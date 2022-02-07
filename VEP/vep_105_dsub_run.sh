@@ -17,7 +17,8 @@ dsub \
    --provider "google-cls-v2" \
    --use-private-address \
    --regions us-central1 us-east1 us-west1 \
-   --disk-type pd-ssd \
+   --boot-disk-size 500 \
+   --disk-type pd-standard \
    --disk-size 1000 \
    --machine-type "n2-custom-80-40960" \
    --image "gcr.io/broad-ml4cvd/vep:105" \
