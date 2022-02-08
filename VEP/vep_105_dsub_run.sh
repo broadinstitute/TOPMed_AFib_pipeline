@@ -20,10 +20,9 @@ dsub \
    --boot-disk-size 500 \
    --disk-type pd-standard \
    --disk-size 1000 \
-   --machine-type "n2-custom-80-40960" \
+   --machine-type "n2-standard-8" \
    --image "gcr.io/broad-ml4cvd/vep:105" \
    --skip \
-   --wait \
    --logging "gs://ml4cvd/schoi/annotation/MGB_53K/log/" \
    --input VCF_FILE="gs://ml4cvd/schoi/annotation/MGB_53K/IBM_PHB_WES_callset_53K_Jan2022.filtered.0.vcf.gz" \
    --input LOFTEE_FILE="gs://ml4cvd/schoi/annotation/vep_105/GRCh38.tar" \
@@ -32,4 +31,8 @@ dsub \
    --input PLUGIN_FILE="gs://ml4cvd/schoi/annotation/vep_105/loftee_Plugins.tar.gz" \
    --output OUTPUT_FILE="gs://ml4cvd/schoi/annotation/MGB_53K/annotated/IBM_PHB_WES_callset_53K_Jan2022.filtered.0.vcf.annotated.gz" \
    --output SEMAPHORE="gs://ml4cvd/schoi/annotation/MGB_53K/annotated/semaphore" \
-   --script vep_105_dsub_script.sh
+   --script vep_105_dsub_script.sh \
+   --wait
+  dstat --provider google-cls-v2 --project broad-ml4cvd --location us-central1 --jobs 'vep-105-ds--schoi--220207-221618-52' --users 'schoi' --status '*'
+
+  ddel --provider google-cls-v2 --project broad-ml4cvd --location us-central1 --jobs 'vep-105-ds--schoi--220207-221618-52' --users 'schoi'

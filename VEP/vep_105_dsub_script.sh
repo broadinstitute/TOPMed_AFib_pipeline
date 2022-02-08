@@ -4,8 +4,8 @@ set -o errexit
 # Author: Seung Hoan Choi <schoi@broadinstitute.org>
 # Feb 07 2022
 
-cpanm --verbose --self-upgrade
-cpanm --local-lib=/opt/vep/perl5 --reinstall DBD::SQLite::VirtualTable::PerlData
+#cpanm --verbose --self-upgrade
+#cpanm --local-lib=/opt/vep/perl5 DBD::SQLite::VirtualTable::PerlData
 
 
 
