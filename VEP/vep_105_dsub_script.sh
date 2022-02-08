@@ -4,6 +4,11 @@ set -o errexit
 # Author: Seung Hoan Choi <schoi@broadinstitute.org>
 # Feb 07 2022
 
+cpanm --verbose --self-upgrade
+cpanm --local-lib=/opt/vep/perl5 --reinstall DBD::SQLite::VirtualTable::PerlData
+
+
+
 #mkdir $HOME/vep_data
 #mkdir $HOME/vep_data/Plugins/
 mkdir /opt/vep/.vep/
@@ -18,7 +23,7 @@ tar -zxf ${FASTA_FILE} -C /opt/vep/.vep/
 tar -zxf ${PLUGIN_FILE} -C /opt/vep/.vep/Plugins/
 
 #### instlal packages
-cpanm --local-lib=/opt/vep/perl5 DBD::SQLite::VirtualTable::PerlData
+##### cpanm --local-lib=/opt/vep/perl5 DBD::SQLite::VirtualTable::PerlData
 export PERL5LIB=$PERL5LIB://opt/vep/perl5/lib/perl5:${PERL5LIB}
 
 
