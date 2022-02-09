@@ -24,7 +24,7 @@ tar -zxf ${PLUGIN_FILE} -C /opt/vep/.vep/Plugins/
 
 #### instlal packages
 ##### cpanm --local-lib=/opt/vep/perl5 DBD::SQLite::VirtualTable::PerlData
-#####export PERL5LIB=$PERL5LIB://opt/vep/perl5/lib/perl5:${PERL5LIB}
+export PERL5LIB=$PERL5LIB://opt/vep/perl5/lib/perl5:/opt/vep/.vep/Plugin:${PERL5LIB}
 
 
 # TODO: Consider setting --lowmem if #traits > 10 as per
@@ -35,6 +35,7 @@ tar -zxf ${PLUGIN_FILE} -C /opt/vep/.vep/Plugins/
 /opt/vep/src/ensembl-vep/vep \
 -i ${VCF_FILE} \
 -o ${OUT_FILE} \
+--format vcf \
 --compress_output gzip \
 --assembly GRCh38 --species homo_sapiens \
 --offline --cache \
