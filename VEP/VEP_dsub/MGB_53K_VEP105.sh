@@ -37,7 +37,7 @@ exit
 
 ##### VEP annotation
 docker run -t -i -v $HOME/vep_data:/opt/vep/.vep gcr.io/broad-ml4cvd/vep:105_v5 bash
-for num in {0..23}
+for num in {1..23}
 do
 /opt/vep/src/ensembl-vep/vep -i /opt/vep/.vep/input/IBM_PHB_WES_callset_53K_Jan2022.filtered.${num}.vcf.gz \
 -o /opt/vep/.vep/output/IBM_PHB_WES_callset_53K_Jan2022.filtered.${num}.annotated.vcf.gz \
