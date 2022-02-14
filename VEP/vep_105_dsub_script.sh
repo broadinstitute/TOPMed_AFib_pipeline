@@ -46,6 +46,7 @@ export PERL5LIB=$PERL5LIB://opt/vep/perl5/lib/perl5:/opt/vep/.vep/Plugin:${PERL5
 --show_ref_allele \
 --af_gnomad \
 --canonical --tab \
+--buffer_size 5000 \
 --dir_plugins /opt/vep/.vep/Plugins \
 --force_overwrite \
 --fasta /opt/vep/.vep/Homo_sapiens.GRCh38.dna.toplevel.fa.gz \

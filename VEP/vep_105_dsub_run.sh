@@ -33,6 +33,13 @@ dsub \
    --output SEMAPHORE="gs://ml4cvd/schoi/annotation/MGB_53K/annotated/semaphore" \
    --script vep_105_dsub_script.sh \
    --wait
+
+
+   
+     dstat --provider google-cls-v2 --project broad-ml4cvd --location us-central1 --jobs 'vep-105-ds--schoi--220209-193044-79' --users 'schoi' --status '*'
+
+     ddel --provider google-cls-v2 --project broad-ml4cvd --location us-central1 --jobs 'vep-105-ds--schoi--220209-193044-79' --users 'schoi'
+
   dstat --provider google-cls-v2 --project broad-ml4cvd --location us-central1 --jobs 'vep-105-ds--schoi--220209-163709-21' --users 'schoi' --status '*'
 
   ddel --provider google-cls-v2 --project broad-ml4cvd --location us-central1 --jobs 'vep-105-ds--schoi--220209-163709-21' --users 'schoi'
@@ -48,4 +55,3 @@ dsub \
   dstat --provider google-cls-v2 --project broad-ml4cvd --location us-central1 --jobs 'vep-105-ds--schoi--220209-165028-21' --users 'schoi' --status '*'
 To cancel the job, run:
   ddel --provider google-cls-v2 --project broad-ml4cvd --location us-central1 --jobs 'vep-105-ds--schoi--220209-165028-21' --users 'schoi'
-  
