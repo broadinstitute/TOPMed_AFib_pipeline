@@ -6,9 +6,14 @@ set -o errexit
 #pip install dsub
 
 git clone https://github.com/broadinstitute/TOPMed_AFib_pipeline.git
+cd $HOME/TOPMed_AFib_pipeline/
+git pull https://github.com/broadinstitute/TOPMed_AFib_pipeline.git
+
 # Author: Seung Hoan Choi <schoi@broadinstitute.org>
 # Feb 7 2021
-cd TOPMed_AFib_pipeline/VEP
+cd $HOME/TOPMed_AFib_pipeline/TOPMed_AFib_pipeline/VEP
+gcloud config set project broad-ml4cvd
+
 export PROJECT="$(gcloud config get-value project)"
 #export GOOGLE_APPLICATION_CREDENTIALS="/Users/schoi/ellinor-ruff-bwh-timi-genomics-cb366b2d4166.json"
 
@@ -21,7 +26,7 @@ dsub \
    --disk-type pd-standard \
    --disk-size 1000 \
    --machine-type "n2-standard-8" \
-   --image "gcr.io/broad-ml4cvd/vep:105_v3" \
+   --image "gcr.io/broad-ml4cvd/vep:105_v6" \
    --skip \
    --logging "gs://ml4cvd/schoi/annotation/MGB_53K/log/" \
    --input VCF_FILE="gs://ml4cvd/schoi/annotation/MGB_53K/IBM_PHB_WES_callset_53K_Jan2022.filtered.0.vcf.gz" \
@@ -35,7 +40,11 @@ dsub \
    --wait
 
 
-   
+   To check the status, run:
+     dstat --provider google-cls-v2 --project broad-ml4cvd --location us-central1 --jobs 'vep-105-ds--schoi--220214-221911-31' --users 'schoi' --status '*'
+   To cancel the job, run:
+     ddel --provider google-cls-v2 --project broad-ml4cvd --location us-central1 --jobs 'vep-105-ds--schoi--220214-221911-31' --users 'schoi'
+
      dstat --provider google-cls-v2 --project broad-ml4cvd --location us-central1 --jobs 'vep-105-ds--schoi--220209-193044-79' --users 'schoi' --status '*'
 
      ddel --provider google-cls-v2 --project broad-ml4cvd --location us-central1 --jobs 'vep-105-ds--schoi--220209-193044-79' --users 'schoi'
