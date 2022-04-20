@@ -216,7 +216,7 @@ seqClose(gds)
 
 basename<-gsub(".gds","",basename(gdsfile))
 
-foreach(ii in 1:totalloops) %dopar% {
+foreach(ii = 1:totalloops) %dopar% {
 #foreach(ii = 1:3) %dopar% {
 #
 suppressMessages(library(SeqVarTools))
