@@ -26,8 +26,9 @@ cat('\nReading in packages for analysis...\n')
 #source("/medpop/afib/sjurgens/Rscripts/association_source_v2.R")
 
 source("UKBB_200KWES_CVD/GENESIS_adaptation_source.R")
+source("TOPMed_Afib_pipline/DNANexus/kernell_variance_component_v2.R")
 
-kernell_variance_component(gdsfile=gdsfile,groupfile=groupfile,phenfile=phenfile,ID_col=ID_col,nullfile=nullfile,outfile=outfile, test="ExtractKernelStatistics", vc.test="Score", AF.max=0.001, MAC.max=Inf,use.weights=FALSE)
+kernell_variance_component_v2(gdsfile=gdsfile,groupfile=groupfile,phenfile=phenfile,ID_col=ID_col,nullfile=nullfile,outfile=outfile, test="ExtractKernelStatistics", vc.test="Score", AF.max=0.001, MAC.max=Inf,use.weights=FALSE)
 
 sessionInfo()
 quit("no")
