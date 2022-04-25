@@ -9,9 +9,9 @@ ID_col=as.character(args[4])
 nullfile=as.character(args[5])
 outfile=as.character(args[6])
 
-#########################################################
+##########################################################
 #### RUN hclof_noflag_missense0.9 ExtractKernelStatistics
-#########################################################
+##########################################################
 
 cat('\nReading in packages for analysis...\n')
 ### library(GENESIS)
