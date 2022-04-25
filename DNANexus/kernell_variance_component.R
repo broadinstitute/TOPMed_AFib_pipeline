@@ -5,7 +5,7 @@ args=(commandArgs(TRUE))
 gdsfile=as.character(args[1])
 groupfile=as.character(args[2])
 phenfile=as.character(args[3])
-ID_col=as.numeric(args[4])
+ID_col=as.character(args[4])
 nullfile=as.character(args[5])
 outfile=as.character(args[6])
 
