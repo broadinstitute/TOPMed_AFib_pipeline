@@ -189,8 +189,10 @@ ncpus <- as.numeric(args[3])
 #gdsfile<-"/mnt/project/exome_450k_plink/merged/ukb23156_c10_genotype_variant_QCed_merged.gds"
 #ncpus=1
 #seqSetFilter(gds, variant.id=varlist0, sample.id=phenlist0)
-install.packages(c("doSNOW","doMC"),repos="https://cloud.r-project.org")
-BiocManager::install(c('SeqArray',"GENESIS","SeqVarTools"),ask=FALSE,update=FALSE)
+.libPaths(c("rpackages4_1_3",.libPaths()))
+
+#install.packages(c("doSNOW","doMC"),repos="https://cloud.r-project.org")
+#BiocManager::install(c('SeqArray',"GENESIS","SeqVarTools"),ask=FALSE,update=FALSE)
 ##### setup library
 suppressMessages(library(SeqVarTools))
 suppressMessages(library(parallel))
