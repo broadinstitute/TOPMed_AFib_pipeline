@@ -7,8 +7,9 @@ start_time <- Sys.time()
 #### if (!requireNamespace("BiocManager", quietly = TRUE))
 ####     install.packages("BiocManager",repos="https://cloud.r-project.org")
 ####BiocManager::install(c('SeqArray'), dependencies=TRUE, clean=TRUE, ask=FALSE, INSTALL_opts='--no-docs --no-demo --byte-compile')
-BiocManager::install(c('SeqArray'))
-install.packages("digest",repos="https://cloud.r-project.org")
+#BiocManager::install(c('SeqArray'))
+#install.packages("digest",repos="https://cloud.r-project.org")
+.libPaths(c("rpackages4_1_3",.libPaths()))
 
 library(SeqArray)
 
