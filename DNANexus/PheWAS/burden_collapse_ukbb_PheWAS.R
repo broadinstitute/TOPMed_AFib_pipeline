@@ -9,10 +9,11 @@ ID_col=as.character(args[4])
 nullfile=as.character(args[5])
 outfile=as.character(args[6])
 AF.max=as.numeric(args[7])
-score.method=as.character(args[8])
-key.file=as.character(args[9])
-key.file.phecodecol=as.character(args[10])
-phenum=as.numeric(args[11])
+MAC.max=as.numeric(args[8])
+score.method=as.character(args[9])
+key.file=as.character(args[10])
+key.file.phecodecol=as.character(args[11])
+phenum=as.numeric(args[12])
 
 
 ##########################################################
@@ -42,7 +43,7 @@ outfile <- gsub("PHENUM", phecode, outfile)
 
 perform_burden_collapse(gdsfile=gdsfile,groupfile=groupfile,phenfile=phenfile,ID_col=ID_col,nullfile=nullfile,outfile=outfile, 
 				   burden.test=score.method, collapse=FALSE,
-				   AF.max=AF.max, MAC.max=Inf, use.weights=FALSE
+				   AF.max=AF.max, MAC.max=MAC.max, use.weights=FALSE
 )
 
 sessionInfo()
