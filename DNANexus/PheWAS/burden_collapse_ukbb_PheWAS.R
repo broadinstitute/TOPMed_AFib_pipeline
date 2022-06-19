@@ -28,6 +28,8 @@ cat('\nReading in packages for analysis...\n')
 
 .libPaths(c("rpackages4_1_3",.libPaths()))
 
+install.packages('data.table')
+
 #git clone --branch v1.2 https://github.com/seanjosephjurgens/UKBB_200KWES_CVD.git
 #git pull --branch v1.2 https://github.com/seanjosephjurgens/UKBB_200KWES_CVD.git
 #source("/medpop/afib/sjurgens/Rscripts/association_source_v2.R")
