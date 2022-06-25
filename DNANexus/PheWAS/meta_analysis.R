@@ -37,7 +37,7 @@ for(i in c(1:length(study_file_split))){
     if(length(rm)>0){inter <- inter[-rm, ]; total <- total[-rm]}
     rownames(inter) <- total
     cat('\t', paste0(study_name_split[i]), '\n')
-    head(inter)
+    print.data.frame(head(inter)
     study_list[[paste0(study_name_split[i])]] <- inter
 }
 
