@@ -34,7 +34,7 @@ line <- t(as.data.frame(c("n.site", "n.alt", "n.sample.alt", "Score", "Score.SE"
                           "Phenotype", "category", "gene", "mask", "cases", "controls"
 )
 ))
-write.table(line, file=paste0('summary_results_phewas_all_tests_largechunk', chunk_num, '.tsv') col.names=F, row.names=F, quote=F, sep='\t')
+write.table(line, file=paste0('summary_results_phewas_all_tests_largechunk', chunk_num, '.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
 
 single_cauchy_row <- t(as.data.frame(c("gene",
                                        "phenotype", "cases", "controls",
