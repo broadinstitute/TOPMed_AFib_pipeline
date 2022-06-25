@@ -3,7 +3,7 @@
 #### binary traits
 args=(commandArgs(TRUE))
 study_result_file_string=as.character(args[1])
-study_name_string=as.character(args[2])
+study_result_name_string=as.character(args[2])
 min_carrier_study=as.numeric(args[3])
 min_carrier_meta=as.numeric(args[4])
 chr=as.numeric(args[5])
