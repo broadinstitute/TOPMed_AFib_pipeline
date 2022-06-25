@@ -98,7 +98,7 @@ for(i in c(1:nrow(key))){
     inter$cases <- n.cases
     inter$controls <- n.controls
     
-    write.table(inter, file=paste0('/opt/notebooks/tmp/summary_results_phewas_all_tests_chunk', i, '.tsv'), col.names=F, row.names=F, quote=F, sep='\t', append=F)
+    write.table(inter, file=paste0('tmp/summary_results_phewas_all_tests_chunk', i, '.tsv'), col.names=F, row.names=F, quote=F, sep='\t', append=F)
     inter <- inter[inter$n.sample.alt>=20, ] #Restrict to results >=20 carriers here
     inter1 <- inter[inter$mask=="hclof_noflag_canonical", c("phenotype", "cases", "controls", "gene", "Score", "Score.SE", "Est", "Est.SE", "SPA.pval")]
     colnames(inter1)[c(5:9)] <- paste0(colnames(inter1)[c(5:9)], "__hclof_noflag_canonical")
@@ -113,7 +113,7 @@ for(i in c(1:nrow(key))){
     inter1$P_cauchy  <- apply(inter1[,colz], 1, CCT)
     inter1$cases <- n.cases
     inter1$controls <- n.controls
-    write.table(inter1, file=paste0('/opt/notebooks/tmp/summary_results_phewas_cauchy_chunk', i, '.tsv'), col.names=F, row.names=F, quote=F, sep='\t', append=F)
+    write.table(inter1, file=paste0('tmp/summary_results_phewas_cauchy_chunk', i, '.tsv'), col.names=F, row.names=F, quote=F, sep='\t', append=F)
   }
 }
 
@@ -121,10 +121,10 @@ for(i in c(1:length(key))){
   cat('Busy with ', i, '...\n')
   chunk <- NULL
   library(data.table)
-  file <- paste0('/opt/notebooks/tmp/summary_results_phewas_all_tests_chunk', i, '.tsv')
+  file <- paste0('tmp/summary_results_phewas_all_tests_chunk', i, '.tsv')
   if(file.exists(file)){
     chunk <- fread(file, stringsAsFactors=F, data.table=F, header=F)
-    write.table(chunk, file=paste0('/opt/notebooks/summary_results_phewas_all_tests_largechunk', chunk_num, '.tsv'), col.names=F, row.names=F, quote=F, sep='\t', append=T)
+    write.table(chunk, file=paste0('summary_results_phewas_all_tests_largechunk', chunk_num, '.tsv'), col.names=F, row.names=F, quote=F, sep='\t', append=T)
     system(paste0('rm  ', file))
   }
 }
@@ -133,10 +133,10 @@ for(i in c(1:length(key))){
   cat('Busy with ', i, '...\n')
   chunk <- NULL
   library(data.table)
-  file <- paste0('/opt/notebooks/tmp/summary_results_phewas_cauchy_chunk', i, '.tsv')
+  file <- paste0('tmp/summary_results_phewas_cauchy_chunk', i, '.tsv')
   if(file.exists(file)){
     chunk <- fread(file, stringsAsFactors=F, data.table=F, header=F)
-    write.table(chunk, file=paste0('/opt/notebooks/summary_results_phewas_cauchy_largechunk', chunk_num, '.tsv'), col.names=F, row.names=F, quote=F, sep='\t', append=T)
+    write.table(chunk, file=paste0('summary_results_phewas_cauchy_largechunk', chunk_num, '.tsv'), col.names=F, row.names=F, quote=F, sep='\t', append=T)
     system(paste0('rm  ', file))
   }
 }
