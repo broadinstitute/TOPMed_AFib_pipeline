@@ -34,7 +34,7 @@ line <- t(as.data.frame(c("n.site", "n.alt", "n.sample.alt", "Score", "Score.SE"
                           "Phenotype", "category", "gene", "mask", "cases", "controls"
 )
 ))
-write.table(line, file=paste0('/opt/notebooks/summary_results_phewas_all_tests_largechunk', chunk_num, '.tsv') col.names=F, row.names=F, quote=F, sep='\t')
+write.table(line, file=paste0('summary_results_phewas_all_tests_largechunk', chunk_num, '.tsv') col.names=F, row.names=F, quote=F, sep='\t')
 
 single_cauchy_row <- t(as.data.frame(c("gene",
                                        "phenotype", "cases", "controls",
@@ -57,7 +57,7 @@ single_cauchy_row <- t(as.data.frame(c("gene",
 )))
 colnames(single_cauchy_row) <- single_cauchy_row[1,]
 single_cauchy_row <- as.data.frame(single_cauchy_row)
-write.table(single_cauchy_row, file=paste0('/opt/notebooks/summary_results_phewas_cauchy_largechunk', chunk_num, '.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
+write.table(single_cauchy_row, file=paste0('summary_results_phewas_cauchy_largechunk', chunk_num, '.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
 single_cauchy_row[1,c(3:21)] <- 0
 
 ##### Check outfiles exist #####
