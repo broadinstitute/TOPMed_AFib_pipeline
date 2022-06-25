@@ -64,11 +64,6 @@ single_cauchy_row[1,c(3:21)] <- 0
 #foreach(i=c(1:nrow(key)), .inorder=FALSE) %dopar% {
 for(i in c(1:nrow(key))){
   
-  .libPaths(paths)
-  library(data.table)
-  source("/opt/notebooks/tmp/UKBB_200KWES_CVD/GENESIS_adaptation_source.R")
-  source("/opt/notebooks/tmp/UKBB_200KWES_CVD/Cauchy_test.R")
-  
   inter <- inter2 <- NULL
   num <- key[i, 'Phecode']
   n.cases <- key[i, 'N_cases']
