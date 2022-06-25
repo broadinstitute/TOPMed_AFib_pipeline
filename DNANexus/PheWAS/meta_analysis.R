@@ -28,7 +28,7 @@ study_file_split <- strsplit(study_result_file_string, ";")[[1]]
 study_name_split <- strsplit(study_result_name_string, ";")[[1]]
 
 study_list <- list()
-cat('Working on results for chr', chr, '...\n')
+cat('\nWorking on results for chr', chr, '...\n')
 for(i in c(1:length(study_file_split))){
     inter <- fread(study_file_split[i], stringsAsFactors=F, data.table=F)
     inter <- inter[inter$chr == chr, ]
@@ -36,7 +36,7 @@ for(i in c(1:length(study_file_split))){
     rm <- which(duplicated(total))
     if(length(rm)>0){inter <- inter[-rm, ]; total <- total[-rm]}
     rownames(inter) <- total
-    cat('\t', paste0(study_name_split[i]), '\n')
+    cat('\n\t', paste0(study_name_split[i]), '\n')
     print.data.frame(head(inter))
     study_list[[paste0(study_name_split[i])]] <- inter
 }
@@ -54,8 +54,8 @@ meta_mincarriers_num=min_carrier_meta
 
 study_result_name_string <- gsub(";", "_", study_result_name_string)
 outfile <- paste0(study_result_name_string, "__10CarriersPerStudy_20Overall_all_tests_chr", chr, '.tsv')
-cat('Writing results to ', outfile, '...\n')
-cat('Starting meta-analysis...\n')
+cat('\nWriting results to ', outfile, '...\n')
+cat('\nStarting meta-analysis...\n')
 meta <- score_meta(single_variant=F,
                    study_summary_data_list=study_list,
                    score_col_vec=score_col_vec,
