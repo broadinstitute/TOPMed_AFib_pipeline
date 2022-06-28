@@ -22,7 +22,7 @@ library(data.table)
 load(paste0(lof_annotfile))
 
 #head(group)
-lof <- group[group$group_id==gene, ]
+lof <- group[group$group_id==genename, ]
 #dim(lof)
 lof$varid <- paste0(lof$chr, ":", lof$pos, ":", lof$ref, ":", lof$alt)
 #head(lof)
@@ -30,7 +30,7 @@ lof$varid <- paste0(lof$chr, ":", lof$pos, ":", lof$ref, ":", lof$alt)
 
 load(paste0(missense_annotfile))
 #head(group)
-missense <- group[group$group_id==gene & group$Dtools>=7, ]
+missense <- group[group$group_id==genename & group$Dtools>=7, ]
 #dim(missense)
 missense$varid <- paste0(missense$chr, ":", missense$pos, ":", missense$ref, ":", missense$alt)
 #table(missense$TranscriptID)
