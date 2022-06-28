@@ -16,6 +16,7 @@ library(data.table)
 #source("/medpop/afib/sjurgens/Rscripts/association_source_v2.R")
 
 source("UKBB_200KWES_CVD/GENESIS_adaptation_source.R")
+source("UKBB_200KWES_CVD/Cauchy_test.R")
 
 tot <- NULL
 load(paste0(in1))
