@@ -19,9 +19,9 @@ source("UKBB_200KWES_CVD/Cauchy_test.R")
 
 
 library(data.table)
-load(paste0(lof_annotfile)
+load(paste0(lof_annotfile))
 
-head(group)
+#head(group)
 lof <- group[group$group_id==gene, ]
 #dim(lof)
 lof$varid <- paste0(lof$chr, ":", lof$pos, ":", lof$ref, ":", lof$alt)
