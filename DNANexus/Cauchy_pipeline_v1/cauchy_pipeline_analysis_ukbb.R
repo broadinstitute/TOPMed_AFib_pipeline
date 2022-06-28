@@ -6,6 +6,7 @@ in1=as.character(args[1])
 in2=as.character(args[2])
 phenotype=as.character(args[3])
 genename=as.character(args[4])
+score_method=as.character(args[5])
 
 .libPaths(c("rpackages4_1_3",.libPaths()))
 
@@ -17,6 +18,12 @@ library(data.table)
 
 source("UKBB_200KWES_CVD/GENESIS_adaptation_source.R")
 source("UKBB_200KWES_CVD/Cauchy_test.R")
+
+if(score_method == "Score"){
+  pval.method <- "Score.pval"
+}else if(score_method == "Score.SPA"){
+  pval.method <- "SPA.pval"
+}
 
 tot <- NULL
 load(paste0(in1))
@@ -47,9 +54,9 @@ for(transcript in unique(tot$transcript)){
   # lof results
   lof <- inter[inter$variants == "hclof", ]
   if(nrow(lof)>1){
-    lof_p <- CCT(lof$Score.pval)
+    lof_p <- CCT(lof[,pval.method])
   }else if(nrow(lof)==1){
-    lof_p <- lof$Score.pval
+    lof_p <- lof[,pval.method]
   }else{
     lof_p <- NA    
   }
@@ -59,9 +66,9 @@ for(transcript in unique(tot$transcript)){
   # missense results
   lof <- inter[which(grepl("missense", inter$variants) & !grepl("hclof", inter$variants)), ]
   if(nrow(lof)>1){
-    lof_p <- CCT(lof$Score.pval)
+    lof_p <- CCT(lof[,pval.method])
   }else if(nrow(lof)==1){
-    lof_p <- lof$Score.pval
+    lof_p <- lof[,pval.method]
   }else{
     lof_p <- NA    
   }
@@ -71,9 +78,9 @@ for(transcript in unique(tot$transcript)){
   # lof+missense results
   lof <- inter[which(grepl("hclofmissense", inter$variants)), ]
   if(nrow(lof)>1){
-    lof_p <- CCT(lof$Score.pval)
+    lof_p <- CCT(lof[,pval.method])
   }else if(nrow(lof)==1){
-    lof_p <- lof$Score.pval
+    lof_p <- lof[,pval.method]
   }else{
     lof_p <- NA    
   }
