@@ -77,4 +77,4 @@ for(frequency_cutoff in frequency_cutoffs){
 }
 
 group <- rez_group
-save(group, file=paste0(gene, '_multiple_groupingfile_v1.RData'))
+save(group, file=paste0(genename, '_multiple_groupingfile_v1.RData'))
