@@ -1,3 +1,21 @@
+#!/usr/bin/env Rscript
+
+#### binary traits
+args=(commandArgs(TRUE))
+lof_annotfile=as.character(args[1])
+missense_annotfile=as.character(args[2])
+genename=as.character(args[3])
+
+.libPaths(c("rpackages4_1_3",.libPaths()))
+
+library(data.table)
+
+#git clone --branch v1.2 https://github.com/seanjosephjurgens/UKBB_200KWES_CVD.git
+#git pull --branch v1.2 https://github.com/seanjosephjurgens/UKBB_200KWES_CVD.git
+#source("/medpop/afib/sjurgens/Rscripts/association_source_v2.R")
+
+source("UKBB_200KWES_CVD/GENESIS_adaptation_source.R")
+source("UKBB_200KWES_CVD/Cauchy_test.R")
 
 
 library(data.table)
