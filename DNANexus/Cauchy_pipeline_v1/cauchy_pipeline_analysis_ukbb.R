@@ -7,6 +7,7 @@ in2=as.character(args[2])
 phenotype=as.character(args[3])
 genename=as.character(args[4])
 score_method=as.character(args[5])
+min.mac=as.numeric(args[6])
 
 .libPaths(c("rpackages4_1_3",.libPaths()))
 
@@ -31,7 +32,7 @@ res <- assoc$results
 res <- res[which(grepl("freq0.001", rownames(res))), ]
 res$mask <- rownames(res)
 res$phenotype <- phenotype
-res <- res[res$n.alt >=20, ]
+res <- res[res$n.alt >= min.mac, ]
 tot <- rbind(tot, res)
 load(paste0(in2))
 res <- assoc$results
@@ -39,7 +40,7 @@ res$mask <- rownames(res)
 rownames(res) <- paste0(rownames(res), " ")
 res <- res[which(grepl("freq1e-05", rownames(res))) | which(grepl("freq0 ", rownames(res))), ]
 res$phenotype <- phenotype
-res <- res[res$n.alt >=20, ]
+res <- res[res$n.alt >= min.mac, ]
 tot <- rbind(tot, res)
 
 tot <- tidyr::separate(data=tot, col="mask", into=c("gene", "transcript", "variants", "frequency"), sep="_")
