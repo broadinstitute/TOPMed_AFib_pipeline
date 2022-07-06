@@ -10,6 +10,9 @@ nullfile=as.character(args[5])
 outfile=as.character(args[6])
 AF.max=as.numeric(args[7])
 score.method=as.character(args[8])
+recessive=as.logical(args[9])
+recessive.model=as.character(args[10])
+
 
 ##########################################################
 #### RUN burden collaps
@@ -32,7 +35,8 @@ source("TOPMed_AFib_pipeline/DNANexus/kernell_variance_component_modfied.R")
 
 perform_burden_collapse(gdsfile=gdsfile,groupfile=groupfile,phenfile=phenfile,ID_col=ID_col,nullfile=nullfile,outfile=outfile, 
 				   burden.test=score.method, collapse=FALSE,
-				   AF.max=AF.max, MAC.max=Inf, use.weights=FALSE
+				   AF.max=AF.max, MAC.max=Inf, use.weights=FALSE,
+				   recessive=recessive, recessive.model=recessive.model
 )
 
 sessionInfo()
