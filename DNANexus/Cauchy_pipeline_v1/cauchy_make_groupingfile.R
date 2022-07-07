@@ -35,11 +35,11 @@ missense <- group[group$group_id==genename & group$Dtools>=7, ]
 missense$varid <- paste0(missense$chr, ":", missense$pos, ":", missense$ref, ":", missense$alt)
 #table(missense$TranscriptID)
 
-rez_group <- NULL
 missense_cutoffs <- c(0.8, 0.6, 0.4, 0.2, 0)
-frequency_cutoffs <- c(1e-3, 1e-5, 0)
+frequency_cutoffs <- c(0.001, 1e-5, 0)
 
 for(frequency_cutoff in frequency_cutoffs){
+    rez_group <- NULL
     for(transcripts in c("ALL", "CANONICAL", c(unique(missense$TranscriptID)))){
         if(transcripts=="CANONICAL"){
             inter_missense1 <- missense[missense$CANONICAL=="YES" & missense$gnomad_POPMAX <= frequency_cutoff, ]
@@ -74,7 +74,6 @@ for(frequency_cutoff in frequency_cutoffs){
         if(length(rm)>0){inter_lof <- inter_lof[-rm, ]}
         rez_group <- rbind(rez_group, inter_lof)
     }
+    group <- rez_group
+    save(group, file=paste0(genename, '_multiple_groupingfile_v1_freq', frequency_cutoff, '.RData'))
 }
-
-group <- rez_group
-save(group, file=paste0(genename, '_multiple_groupingfile_v1.RData'))
