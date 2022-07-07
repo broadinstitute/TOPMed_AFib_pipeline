@@ -9,9 +9,10 @@ ID_col=as.character(args[4])
 nullfile=as.character(args[5])
 outfile=as.character(args[6])
 AF.max=as.numeric(args[7])
-score.method=as.character(args[8])
-recessive=as.logical(args[9])
-recessive.model=as.character(args[10])
+MAC.max=as.numeric(args[8])
+score.method=as.character(args[9])
+recessive=as.logical(args[10])
+recessive.model=as.character(args[11])
 
 
 ##########################################################
@@ -35,7 +36,7 @@ source("TOPMed_AFib_pipeline/DNANexus/kernell_variance_component_modfied.R")
 
 perform_burden_collapse(gdsfile=gdsfile,groupfile=groupfile,phenfile=phenfile,ID_col=ID_col,nullfile=nullfile,outfile=outfile, 
 				   burden.test=score.method, collapse=FALSE,
-				   AF.max=AF.max, MAC.max=Inf, use.weights=FALSE,
+				   AF.max=AF.max, MAC.max=MAC.max, use.weights=FALSE,
 				   recessive=recessive, recessive.model=recessive.model
 )
 
