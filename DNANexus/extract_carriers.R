@@ -63,7 +63,7 @@ for(grouping in unique(group$group_id)){
     raw <- raw %>% replace(is.na(.), 0)
     
     if(ncol(raw)==6){
-    raw[,paste0(grouping)] <- 0
+        raw[,paste0(grouping)] <- 0
     }else if(ncol(raw)==7){
         raw[,paste0(grouping)] <- raw[,7]
     }else{
