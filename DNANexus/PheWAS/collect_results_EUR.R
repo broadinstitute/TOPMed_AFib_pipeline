@@ -108,6 +108,6 @@ for(i in c(1:nrow(key))){
     inter1$P_cauchy  <- apply(inter1[,colz], 1, CCT)
     inter1$cases <- n.cases
     inter1$controls <- n.controls
-    write.table(inter1, file=paste0('summary_results_phewas_cauchy_largechunk', chunk_num, '.tsv'), col.names=F, row.names=F, quote=F, sep='\t', append=T)
+    write.table(inter1, file=paste0('summary_results_phewas_cauchy_largechunk', chunk_num, '_EUR.tsv'), col.names=F, row.names=F, quote=F, sep='\t', append=T)
   }
 }
