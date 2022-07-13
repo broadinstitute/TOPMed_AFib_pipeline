@@ -63,7 +63,7 @@ for(frequency_cutoff in frequency_cutoffs){
     cat("Busy with freq cutoff", frequency_cutoff, "...\n")
     #group <- foreach(gene=genes, .inorder=FALSE, .combine='rbind') %dopar% {
     for(gene in genes){
-        cat("\tBusy with", which(genes==gene), "out of", length(genes), "...\n")
+        message("\tBusy with ", which(genes==gene), " out of ", length(genes), "...")
         .libPaths(paths)
         source("UKBB_200KWES_CVD/GENESIS_adaptation_source.R")
         
@@ -104,7 +104,8 @@ for(frequency_cutoff in frequency_cutoffs){
             if(length(rm)>0){inter_lof <- inter_lof[-rm, ]}
             rez_group <- rbind(rez_group, inter_lof)
         }
-        rez_group
+        group <- rbind(group, rez_group)
+        #group
     }
     save(group, file=paste0(genename, '_multiple_groupingfile_v1_freq', frequency_cutoff, '.RData'))
 }
