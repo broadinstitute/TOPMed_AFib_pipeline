@@ -45,6 +45,9 @@ if(genename!="ALL"){
 missense_cutoffs <- c(0.8, 0.6, 0.4, 0.2)
 frequency_cutoffs <- c(0.001, 1e-5)
 
+paths <- .libPaths()
+genes = unique(c(missense_tot$group_id, lof_tot$group_id))
+
 install.packages('foreach')
 install.packages('doParallel')
 library(foreach)
@@ -52,19 +55,20 @@ library(doParallel)
 
 cores=detectCores()
 #cl <- makeCluster(cores[1]-1) #not to overload your computer
-cl <- makeCluster(cores[1]-2)
+cl <- makeCluster(cores[1]-2, outfile='')
 registerDoParallel(cl)
-
-paths <- .libPaths()
-genes = unique(group$group_id)
+clusterEvalQ(cl, .libPaths("rpackages4_1_3"))
 
 for(frequency_cutoff in frequency_cutoffs){    
-    rez_group <- foreach(gene=genes, .inorder=FALSE, .combine='rbind') %dopar% {
+    cat("Busy with freq cutoff", frequency_cutoff, "...\n")
+    group <- foreach(gene=genes, .inorder=FALSE, .combine='rbind') %dopar% {
+        cat("\tBusy with", which(genes==gene), "out of", length(genes), "...\n")
         .libPaths(paths)
-        source("/opt/notebooks/tmp/UKBB_200KWES_CVD/GENESIS_adaptation_source.R")
+        source("UKBB_200KWES_CVD/GENESIS_adaptation_source.R")
         
         lof <- lof_tot[lof_tot$group_id==gene, ]
         missense <- missense_tot[missense_tot$group_id==gene, ]
+        rez_group <- NULL
         for(transcripts in c("ALL", "CANONICAL", c(unique(missense$TranscriptID)))){
             if(transcripts=="CANONICAL"){
                 inter_missense1 <- missense[missense$CANONICAL=="YES" & missense$gnomad_POPMAX <= frequency_cutoff, ]
@@ -99,10 +103,10 @@ for(frequency_cutoff in frequency_cutoffs){
             if(length(rm)>0){inter_lof <- inter_lof[-rm, ]}
             rez_group <- rbind(rez_group, inter_lof)
         }
+        rez_group
     }
-    group <- rez_group
     save(group, file=paste0(genename, '_multiple_groupingfile_v1_freq', frequency_cutoff, '.RData'))
 }
-
+stopCluster(cl)
 
 
