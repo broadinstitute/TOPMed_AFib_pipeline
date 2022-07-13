@@ -5,6 +5,7 @@ args=(commandArgs(TRUE))
 lof_annotfile=as.character(args[1])
 missense_annotfile=as.character(args[2])
 genename=as.character(args[3])
+chr=as.character(args[4])
 
 .libPaths(c("rpackages4_1_3",.libPaths()))
 
@@ -107,8 +108,6 @@ for(frequency_cutoff in frequency_cutoffs){
         group <- rbind(group, rez_group)
         #group
     }
-    save(group, file=paste0(genename, '_multiple_groupingfile_v1_freq', frequency_cutoff, '.RData'))
+    save(group, file=paste0(genename, '_multiple_groupingfile_v1_freq', frequency_cutoff, '_chr', chr, '.RData'))
 }
-stopCluster(cl)
-
-
+#stopCluster(cl)
