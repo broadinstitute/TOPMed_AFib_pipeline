@@ -53,11 +53,11 @@ genes = unique(c(missense_tot$group_id, lof_tot$group_id))
 #library(foreach)
 #library(doParallel)
 
-cores=detectCores()
+#cores=detectCores()
 #cl <- makeCluster(cores[1]-1) #not to overload your computer
-cl <- makeCluster(cores[1]-2, outfile='')
-registerDoParallel(cl)
-clusterEvalQ(cl, .libPaths("rpackages4_1_3"))
+#cl <- makeCluster(cores[1]-2, outfile='')
+#registerDoParallel(cl)
+#clusterEvalQ(cl, .libPaths("rpackages4_1_3"))
 
 for(frequency_cutoff in frequency_cutoffs){    
     cat("Busy with freq cutoff", frequency_cutoff, "...\n")
