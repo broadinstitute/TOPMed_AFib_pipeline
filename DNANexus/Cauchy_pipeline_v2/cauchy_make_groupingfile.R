@@ -48,10 +48,10 @@ frequency_cutoffs <- c(0.001, 1e-5)
 paths <- .libPaths()
 genes = unique(c(missense_tot$group_id, lof_tot$group_id))
 
-install.packages('foreach')
-install.packages('doParallel')
-library(foreach)
-library(doParallel)
+#install.packages('foreach')
+#install.packages('doParallel')
+#library(foreach)
+#library(doParallel)
 
 cores=detectCores()
 #cl <- makeCluster(cores[1]-1) #not to overload your computer
@@ -61,7 +61,8 @@ clusterEvalQ(cl, .libPaths("rpackages4_1_3"))
 
 for(frequency_cutoff in frequency_cutoffs){    
     cat("Busy with freq cutoff", frequency_cutoff, "...\n")
-    group <- foreach(gene=genes, .inorder=FALSE, .combine='rbind') %dopar% {
+    #group <- foreach(gene=genes, .inorder=FALSE, .combine='rbind') %dopar% {
+    for(gene in genes){
         cat("\tBusy with", which(genes==gene), "out of", length(genes), "...\n")
         .libPaths(paths)
         source("UKBB_200KWES_CVD/GENESIS_adaptation_source.R")
