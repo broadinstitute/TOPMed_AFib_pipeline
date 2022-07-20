@@ -82,7 +82,8 @@ for(grouping in unique(group$group_id)){
     }
     system(paste0('rm bfile_', grouping, '_freq', max_maf, '.*'))
     system(paste0('rm text_', grouping, '_freq', max_maf, '.*'))
-    
+    system(paste0('rm varz_', grouping, '_freq', max_maf, '.tsv'))
+    system(paste0('rm export-allele_', grouping, '_freq', max_maf, '.tsv'))
 }
 
 write.table(final, file=outfile, col.names=T, row.names=F, quote=F, sep='\t')
