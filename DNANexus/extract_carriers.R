@@ -28,7 +28,7 @@ cat('\nReading in packages for analysis...\n')
 
 source("UKBB_200KWES_CVD/GENESIS_adaptation_source.R")
 
-load(groupfile)
+group <- get(load(groupfile))
 group$varid <- paste0(group$chr, ":", group$pos, ":", group$ref, ":", group$alt)
 
 if(canonical){
