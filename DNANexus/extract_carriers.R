@@ -46,44 +46,46 @@ for(grouping in unique(group$group_id)){
     num <- num+1
     write.table(group[group$group_id==grouping, 'varid'], file=paste0('varz_', grouping, '_freq', max_maf, '.tsv'), col.names=F, row.names=F, quote=F)
     write.table(group[group$group_id==grouping,c("varid", "alt")], file=paste0('export-allele_', grouping, '_freq', max_maf, '.tsv'), col.names=F, row.names=F, quote=F)
-    system(paste0(plink_path, ' ',
+    try(system(paste0(plink_path, ' ',
                   '--pfile  ', pfile, '  ',
                   '--extract varz_', grouping, '_freq', max_maf, '.tsv  ',
                   '--make-bed --out bfile_', grouping, '_freq', max_maf
-    ))
-    system(paste0(plink_path, ' ',
+    )))
+    try(system(paste0(plink_path, ' ',
                   ' --bfile  bfile_', grouping, '_freq', max_maf,
                   ' --max-maf ', max_maf, ' ',
                   ' --export A --export-allele export-allele_', grouping, "_freq", max_maf, '.tsv',
                   ' --out text_', grouping, '_freq', max_maf
-    ))
-    library(data.table)
-    library(dplyr)
-    raw <- fread(paste0('text_', grouping, '_freq', max_maf, '.raw'), stringsAsFactors=F, data.table=F)
-    raw <- raw %>% replace(is.na(.), 0)
+    )))
+    if(file.exists(paste0('text_', grouping, '_freq', max_maf, '.raw'))){
+        library(data.table)
+        library(dplyr)
+        raw <- fread(paste0('text_', grouping, '_freq', max_maf, '.raw'), stringsAsFactors=F, data.table=F)
+        raw <- raw %>% replace(is.na(.), 0)
     
-    if(ncol(raw)==6){
-        raw[,paste0(grouping)] <- 0
-    }else if(ncol(raw)==7){
-        raw[,paste0(grouping)] <- raw[,7]
-    }else{
-        raw[,paste0(grouping)] <- rowSums(raw[,c(7:(ncol(raw)))])
+        if(ncol(raw)==6){
+            raw[,paste0(grouping)] <- 0
+        }else if(ncol(raw)==7){
+            raw[,paste0(grouping)] <- raw[,7]
+        }else{
+            raw[,paste0(grouping)] <- rowSums(raw[,c(7:(ncol(raw)))])
+        }
+        if(collapse){
+            raw[which(raw[,paste0(grouping)]>1), paste0(grouping)] <-1
+        }
+        colnames(raw)[(ncol(raw))] <- paste0(grouping, "__freq", max_maf) 
+        if(is.null(final)){
+            raw <- raw[,c(1:6, (ncol(raw)))]
+            final <- raw
+        }else{
+            raw <- raw[,c(1, (ncol(raw)))]
+            final <- merge(final, raw, by="FID", all=T)
+        }
     }
-    if(collapse){
-        raw[which(raw[,paste0(grouping)]>1), paste0(grouping)] <-1
-    }
-    colnames(raw)[(ncol(raw))] <- paste0(grouping, "__freq", max_maf) 
-    if(is.null(final)){
-        raw <- raw[,c(1:6, (ncol(raw)))]
-        final <- raw
-    }else{
-        raw <- raw[,c(1, (ncol(raw)))]
-        final <- merge(final, raw, by="FID", all=T)
-    }
-    system(paste0('rm bfile_', grouping, '_freq', max_maf, '.*'))
-    system(paste0('rm text_', grouping, '_freq', max_maf, '.*'))
-    system(paste0('rm varz_', grouping, '_freq', max_maf, '.tsv'))
-    system(paste0('rm export-allele_', grouping, '_freq', max_maf, '.tsv'))
+    try(system(paste0('rm bfile_', grouping, '_freq', max_maf, '.*')))
+    try(system(paste0('rm text_', grouping, '_freq', max_maf, '.*')))
+    try(system(paste0('rm varz_', grouping, '_freq', max_maf, '.tsv')))
+    try(system(paste0('rm export-allele_', grouping, '_freq', max_maf, '.tsv')))
 }
 
 write.table(final, file=outfile, col.names=T, row.names=F, quote=F, sep='\t')
