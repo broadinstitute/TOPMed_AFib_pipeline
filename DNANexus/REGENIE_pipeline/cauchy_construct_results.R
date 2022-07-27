@@ -127,7 +127,6 @@ if(length==0){
     lofmissense$LOFmissense_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("LOG10P", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
 }
 lofmissense <- lofmissense[,-(which(colnames(lofmissense)=="ALLELE1"))]
-rm(lof, missense)
 
 
 ### Merge by transcript ###
@@ -136,6 +135,7 @@ try(lofmissense <- merge(lofmissense, lof[,c(1, 6:ncol(lof))], by="TRANSCRIPT_ID
 lofmissense$transcript_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("_cauchy_LOG10P", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
 lofmissense$transcript_type <- gsub(".*__", "", lofmissense$TRANSCRIPT_ID)
 lofmissense <- lofmissense[,c(2, 1, 3:5, (ncol(lofmissense)), c(6:(ncol(lofmissense)-1)))]
+rm(lof, missense)
 
 ### Merge by gene ###
 uniques <- unique(lofmissense$transcript_type)
