@@ -31,6 +31,8 @@ colnames(ACATO)[c(2:3)] <- paste0("ACATO_", colnames(ACATO)[c(2:3)])
 burden <- merge(burden, ACATV, by="ID", all.x=T, all.y=F)
 burden <- merge(burden, SKAT, by="ID", all.x=T, all.y=F)
 burden <- merge(burden, ACATO, by="ID", all.x=T, all.y=F)
+rm(dat)
+
 
 ### Merge by mask groupings, e.g. LOF, missense and LOF+missense
 cauchy <- function(line){
@@ -66,10 +68,6 @@ if(length==0){
 }
 lof <- lof[,-(which(colnames(lof)=="ALLELE1"))]
 
-### Merge by mask groupings, e.g. missense, missense and missense+missense
-cauchy <- function(line){
-    return(CCT(pvals=line, weights=NULL, log10p=TRUE, ignore0s=FALSE, ignore1s=TRUE))
-}
 missense <- cbind(burden[which(!grepl("LOF", burden$ALLELE1)), 
                     c("ID", "TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N")],
              burden[which(!grepl("LOF", burden$ALLELE1)),                
@@ -100,10 +98,6 @@ if(length==0){
 }
 missense <- missense[,-(which(colnames(missense)=="ALLELE1"))]
 
-### Merge by mask groupings, e.g. lofmissense, lofmissense and lofmissense+lofmissense
-cauchy <- function(line){
-    return(CCT(pvals=line, weights=NULL, log10p=TRUE, ignore0s=FALSE, ignore1s=TRUE))
-}
 lofmissense <- cbind(burden[which(grepl("LOFmissense", burden$ALLELE1)), 
                     c("ID", "TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N")],
              burden[which(grepl("LOFmissense", burden$ALLELE1)),                
@@ -133,15 +127,17 @@ if(length==0){
     lofmissense$LOFmissense_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("LOG10P", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
 }
 lofmissense <- lofmissense[,-(which(colnames(lofmissense)=="ALLELE1"))]
+rm(lof, missense)
 
-### Merge by transcript
+
+### Merge by transcript ###
 try(lofmissense <- merge(lofmissense, missense[,c(1, 6:ncol(missense))], by="TRANSCRIPT_ID", all=T))
 try(lofmissense <- merge(lofmissense, lof[,c(1, 6:ncol(lof))], by="TRANSCRIPT_ID", all=T))
 lofmissense$transcript_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("_cauchy_LOG10P", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
 lofmissense$transcript_type <- gsub(".*__", "", lofmissense$TRANSCRIPT_ID)
 lofmissense <- lofmissense[,c(2, 1, 3:5, (ncol(lofmissense)), c(6:(ncol(lofmissense)-1)))]
 
-### Merge by gene
+### Merge by gene ###
 uniques <- unique(lofmissense$transcript_type)
 length <- length(uniques)
 if(length==0){
