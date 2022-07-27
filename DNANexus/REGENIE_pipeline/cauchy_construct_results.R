@@ -1,8 +1,13 @@
+#!/usr/bin/env Rscript
+
+#### binary traits
+args=(commandArgs(TRUE))
+regenie_outfile=as.character(args[1])
+cauchy_outfile=as.character(args[2])
+
 library(data.table)
 .libPaths(c("rpackages4_1_3",.libPaths()))
 source("UKBB_200KWES_CVD/Cauchy_test.R")
-
-regenie_outfile <- paste0()
 
 dat <- fread(regenie_outfile, stringsAsFactors = F, data.table=F)
 
