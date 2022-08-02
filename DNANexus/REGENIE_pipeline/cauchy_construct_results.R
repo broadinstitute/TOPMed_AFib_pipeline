@@ -132,7 +132,11 @@ lofmissense <- lofmissense[,-(which(colnames(lofmissense)=="ALLELE1"))]
 ### Merge by transcript ###
 try(lofmissense <- merge(lofmissense, missense[,c(1, 6:ncol(missense))], by="TRANSCRIPT_ID", all=T))
 try(lofmissense <- merge(lofmissense, lof[,c(1, 6:ncol(lof))], by="TRANSCRIPT_ID", all=T))
-lofmissense$transcript_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("_cauchy_LOG10P", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
+if(length(which(grepl("_cauchy_LOG10P", colnames(lofmissense))))>1){          
+    lofmissense$transcript_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("_cauchy_LOG10P", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
+}else{
+    lofmissense$transcript_cauchy_LOG10P <- lofmissense[,which(grepl("_cauchy_LOG10P", colnames(lofmissense)))]
+}
 lofmissense$transcript_type <- gsub(".*__", "", lofmissense$TRANSCRIPT_ID)
 lofmissense <- lofmissense[,c(2, 1, 3:5, (ncol(lofmissense)), c(6:(ncol(lofmissense)-1)))]
 rm(lof, missense)
@@ -152,8 +156,13 @@ if(length==0){
         lofmissensenew <- merge(lofmissensenew, inter, by="GENE_ID", all=T)
     }
     lofmissense <- lofmissensenew
+    lofmissense <- lofmissense[,-(which(colnames(lofmissense) %in% c("TRANSCRIPT_ID", "transcript_type")))]
+    lofmissense$gene_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("transcript_cauchy_LOG10P", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
+}else{
+    lofmissense <- lofmissense[lofmissense$transcript_type==uniques[1], c(1, 7:(ncol(lofmissense)))]
+    lofmissense <- lofmissense[,-(which(colnames(lofmissense) %in% c("TRANSCRIPT_ID", "transcript_type")))]
+    colnames(lofmissense)[c(2:(ncol(lofmissense)))] <-  paste0(uniques[1], ":", colnames(lofmissense)[c(2:(ncol(lofmissense)))])
+    lofmissense$gene_cauchy_LOG10P <- lofmissense[,which(grepl("transcript_cauchy_LOG10P", colnames(lofmissense)))]
 }
-lofmissense <- lofmissense[,-(which(colnames(lofmissense) %in% c("TRANSCRIPT_ID", "transcript_type")))]
-lofmissense$gene_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("transcript_cauchy_LOG10P", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
 
 write.table(lofmissense, file=cauchy_outfile, col.names=T, row.names=F, quote=F, sep='\t')
