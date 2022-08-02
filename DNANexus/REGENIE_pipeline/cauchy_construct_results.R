@@ -10,7 +10,7 @@ library(data.table)
 source("UKBB_200KWES_CVD/Cauchy_test.R")
 
 dat <- fread(regenie_outfile, stringsAsFactors = F, data.table=F)
-if(nrow(dat)==0){
+if(nrow(dat)==0 | "V2" %in% colnames(dat)){
     cat("\n\n\nNo tests in REGENIE output!! Perhaps no REGENIE tests passing filters.\n\n\n")
     burden <- NULL
     write.table(burden, file=cauchy_outfile, col.names=T, row.names=F, quote=F, sep='\t')
