@@ -78,7 +78,7 @@ for(i in c(1:nrow(key))){
     inter2 <- summarydata(files=files2, chrs=c(1:22), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
     inter2 <- inter2[inter2$n.sample.alt>=10, ] #Restrict to results with >=10 carriers here, as we might choose a meta-analysis approach of >=10 carriers in a study and >=20 overall
     inter2$category <- category
-    rownames(inter) <- paste0(rownames(inter), "__synonymous_canonical0.00001")
+    rownames(inter2) <- paste0(rownames(inter2), "__synonymous_canonical0.00001")
     inter2$gene <- rownames(inter2)
     inter <- rbind(inter, inter2)
     inter$mask <- gsub(".*__", "", inter$gene)
