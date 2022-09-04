@@ -21,20 +21,20 @@ cat('\nReading in packages for analysis...\n')
 ### library(SeqVarTools)
 
 .libPaths(c("rpackages4_1_3",.libPaths()))
-if(!require(data.table)){
-    install.packages("data.table", repos='http://cran.us.r-project.org')
-    library(data.table)
-}
-if(!require(dplyr)){
-    install.packages("dplyr", repos='http://cran.us.r-project.org')
-    library(dplyr)
-}
+#if(!require(data.table)){
+#    install.packages("data.table", repos='http://cran.us.r-project.org')
+#    library(data.table)
+#}
+#if(!require(dplyr)){
+#    install.packages("dplyr", repos='http://cran.us.r-project.org')
+#    library(dplyr)
+#}
 
 #git clone --branch v1.2 https://github.com/seanjosephjurgens/UKBB_200KWES_CVD.git
 #git pull --branch v1.2 https://github.com/seanjosephjurgens/UKBB_200KWES_CVD.git
 #source("/medpop/afib/sjurgens/Rscripts/association_source_v2.R")
 
-source("UKBB_200KWES_CVD/GENESIS_adaptation_source.R")
+#source("UKBB_200KWES_CVD/GENESIS_adaptation_source.R")
 
 group <- get(load(groupfile))
 group$varid <- paste0(group$chr, ":", group$pos, ":", group$ref, ":", group$alt)
