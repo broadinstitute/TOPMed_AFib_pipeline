@@ -26,7 +26,7 @@ if(!require(data.table)){
     library(data.table)
 }
 if(!require(dplyr)){
-    install.packages("data.table", repos='http://cran.us.r-project.org')
+    install.packages("dplyr", repos='http://cran.us.r-project.org')
     library(dplyr)
 }
 
