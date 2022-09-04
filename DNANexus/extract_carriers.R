@@ -21,6 +21,14 @@ cat('\nReading in packages for analysis...\n')
 ### library(SeqVarTools)
 
 .libPaths(c("rpackages4_1_3",.libPaths()))
+if(!require(data.table)){
+    install.packages("data.table")
+    library(data.table)
+}
+if(!require(dplyr)){
+    install.packages("data.table")
+    library(dplyr)
+}
 
 #git clone --branch v1.2 https://github.com/seanjosephjurgens/UKBB_200KWES_CVD.git
 #git pull --branch v1.2 https://github.com/seanjosephjurgens/UKBB_200KWES_CVD.git
