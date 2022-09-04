@@ -22,11 +22,11 @@ cat('\nReading in packages for analysis...\n')
 
 .libPaths(c("rpackages4_1_3",.libPaths()))
 if(!require(data.table)){
-    install.packages("data.table", repos='http://cran.us.r-project.org'))
+    install.packages("data.table", repos='http://cran.us.r-project.org')
     library(data.table)
 }
 if(!require(dplyr)){
-    install.packages("data.table", repos='http://cran.us.r-project.org'))
+    install.packages("data.table", repos='http://cran.us.r-project.org')
     library(dplyr)
 }
 
