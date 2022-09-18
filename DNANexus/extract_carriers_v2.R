@@ -8,8 +8,8 @@ plink_path=as.character(args[3])
 collapse=as.logical(args[4])
 canonical=as.logical(args[5])
 outfile=as.character(args[6])
-max_maf=as.character(args[7])
-max_mac=as.character(args[8])
+max_mac=as.character(args[7])
+max_maf=as.character(args[8])
 plinkfile_type=as.character(args[9])
 
 
