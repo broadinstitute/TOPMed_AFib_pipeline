@@ -57,7 +57,7 @@ for(grouping in unique(group$group_id)){
     try(system(paste0(plink_path, ' ',
                   '--pfile  ', pfile, '  ',
                   '--extract varz_', grouping, '_maxmac', max_mac, '.tsv  ',
-                  '--make-bed --out bfile_', grouping, '_macmac', max_mac
+                  '--make-bed --out bfile_', grouping, '_maxmac', max_mac
     )))
     try(system(paste0(plink_path, ' ',
                   ' --bfile  bfile_', grouping, '_maxmac', max_mac,
