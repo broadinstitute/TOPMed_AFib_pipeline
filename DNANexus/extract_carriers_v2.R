@@ -8,7 +8,10 @@ plink_path=as.character(args[3])
 collapse=as.logical(args[4])
 canonical=as.logical(args[5])
 outfile=as.character(args[6])
-max_mac=as.character(args[7])
+max_maf=as.character(args[7])
+max_mac=as.character(args[8])
+plinkfile_type=as.character(args[9])
+
 
 ##########################################################
 #### RUN extraction
@@ -52,23 +55,24 @@ length_nums <- length(unique(group$group_id))
 for(grouping in unique(group$group_id)){
     cat('busy with number', num, 'out of', length_nums, '...\n')
     num <- num+1
-    write.table(group[group$group_id==grouping, 'varid'], file=paste0('varz_', grouping, '_maxmac', max_mac, '.tsv'), col.names=F, row.names=F, quote=F)
-    write.table(group[group$group_id==grouping,c("varid", "alt")], file=paste0('export-allele_', grouping, '_maxmac', max_mac, '.tsv'), col.names=F, row.names=F, quote=F)
+    write.table(group[group$group_id==grouping, 'varid'], file=paste0('varz_', grouping, '_freq', max_maf, '_maxmac', max_mac, '.tsv'), col.names=F, row.names=F, quote=F)
+    write.table(group[group$group_id==grouping,c("varid", "alt")], file=paste0('export-allele_', grouping, '_freq', max_maf, '_maxmac', max_mac, '.tsv'), col.names=F, row.names=F, quote=F)
     try(system(paste0(plink_path, ' ',
-                  '--pfile  ', pfile, '  ',
-                  '--extract varz_', grouping, '_maxmac', max_mac, '.tsv  ',
-                  '--make-bed --out bfile_', grouping, '_maxmac', max_mac
-    )))
+          '--', plinkfile_type, '  ', pfile, '  ',
+          '--extract varz_', grouping, '_freq', max_maf, '_maxmac', max_mac, '.tsv  ',
+          '--make-bed --out bfile_', grouping, '_freq', max_maf, '_maxmac', max_mac
+    ), intern=T))
     try(system(paste0(plink_path, ' ',
-                  ' --bfile  bfile_', grouping, '_maxmac', max_mac,
+                  ' --bfile  bfile_', grouping, '_freq', max_maf, '_maxmac', max_mac,
                   ' --max-mac ', max_mac, ' ',
-                  ' --export A --export-allele export-allele_', grouping, "_maxmac", max_mac, '.tsv',
-                  ' --out text_', grouping, '_maxmac', max_mac
+                  ' --max-maf ', max_maf, ' ',
+                  ' --export A --export-allele export-allele_', grouping, '_freq', max_maf, "_maxmac", max_mac, '.tsv',
+                  ' --out text_', grouping, '_freq', max_maf, '_maxmac', max_mac
     )))
-    if(file.exists(paste0('text_', grouping, '_maxmac', max_mac, '.raw'))){
+    if(file.exists(paste0('text_', grouping, '_freq', max_maf, '_maxmac', max_mac, '.raw'))){
         library(data.table)
         library(dplyr)
-        raw <- fread(paste0('text_', grouping, '_maxmac', max_mac, '.raw'), stringsAsFactors=F, data.table=F)
+        raw <- fread(paste0('text_', grouping, '_freq', max_maf, '_maxmac', max_mac, '.raw'), stringsAsFactors=F, data.table=F)
         raw <- raw %>% replace(is.na(.), 0)
     
         if(ncol(raw)==6){
@@ -81,7 +85,7 @@ for(grouping in unique(group$group_id)){
         if(collapse){
             raw[which(raw[,paste0(grouping)]>1), paste0(grouping)] <-1
         }
-        colnames(raw)[(ncol(raw))] <- paste0(grouping, "__maxmac", max_mac) 
+        colnames(raw)[(ncol(raw))] <- paste0(grouping, '__freq', max_maf, "_maxmac", max_mac) 
         if(is.null(final)){
             raw <- raw[,c(1:6, (ncol(raw)))]
             final <- raw
@@ -90,10 +94,10 @@ for(grouping in unique(group$group_id)){
             final <- merge(final, raw, by="FID", all=T)
         }
     }
-    try(system(paste0('rm bfile_', grouping, '_maxmac', max_mac, '.*')))
-    try(system(paste0('rm text_', grouping, '_maxmac', max_mac, '.*')))
-    try(system(paste0('rm varz_', grouping, '_maxmac', max_mac, '.tsv')))
-    try(system(paste0('rm export-allele_', grouping, '_maxmac', max_mac, '.tsv')))
+    try(system(paste0('rm bfile_', grouping, '_freq', max_maf, '_maxmac', max_mac, '.*')))
+    try(system(paste0('rm text_', grouping, '_freq', max_maf, '_maxmac', max_mac, '.*')))
+    try(system(paste0('rm varz_', grouping, '_freq', max_maf, '_maxmac', max_mac, '.tsv')))
+    try(system(paste0('rm export-allele_', grouping, '_freq', max_maf, '_maxmac', max_mac, '.tsv')))
 }
 
 write.table(final, file=outfile, col.names=T, row.names=F, quote=F, sep='\t')
