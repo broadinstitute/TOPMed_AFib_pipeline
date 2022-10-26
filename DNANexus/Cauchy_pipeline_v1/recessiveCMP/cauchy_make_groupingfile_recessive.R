@@ -36,7 +36,7 @@ missense$varid <- paste0(missense$chr, ":", missense$pos, ":", missense$ref, ":"
 #table(missense$TranscriptID)
 
 missense_cutoffs <- c(0.8, 0.6, 0.4, 0.2, 0)
-frequency_cutoffs <- c(0.001, 1e-5)
+frequency_cutoffs <- c(0.05, 0.005)
 
 for(frequency_cutoff in frequency_cutoffs){
     rez_group <- NULL
@@ -75,5 +75,5 @@ for(frequency_cutoff in frequency_cutoffs){
         rez_group <- rbind(rez_group, inter_lof)
     }
     group <- rez_group
-    save(group, file=paste0(genename, '_multiple_groupingfile_v1_freq', frequency_cutoff, '.RData'))
+    save(group, file=paste0(genename, '_multiple_groupingfile_v1_freq', frequency_cutoff, '_recessive.RData'))
 }
