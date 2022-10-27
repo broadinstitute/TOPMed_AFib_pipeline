@@ -44,7 +44,7 @@ res <- res[res$n.alt >= min.mac, ]
 tot <- rbind(tot, res)
 
 tot <- tidyr::separate(data=tot, col="mask", into=c("gene", "transcript", "variants", "frequency"), sep="_")
-write.table(tot, file=paste0(genename, "_", phenotype, '_rawassociation_results_recessive.tsv'), col.names=T, row.names=F, quote=F, sep='\t')
+write.table(tot, file=paste0(genename, "_", phenotype, '_cMAC', min.mac, '_rawassociation_results_recessive.tsv'), col.names=T, row.names=F, quote=F, sep='\t')
 
 options(stringsAsFactors = F)
 totres <- NULL
@@ -100,4 +100,4 @@ line <- c(phenotype, "TRANSCRIPTS_COMBINED", "VARIANTS_COMBINED", gene_p)
 gres <- rbind(gres, line)
 totres <- rbind(totres, gres)
 
-write.table(totres, file=paste0(genename, "_", phenotype, '_cauchy_results_reccesive.tsv'), col.names=T, row.names=F, quote=F, sep='\t')
+write.table(totres, file=paste0(genename, "_", phenotype, '_cMAC', min.mac, '_cauchy_results_reccesive.tsv'), col.names=T, row.names=F, quote=F, sep='\t')
