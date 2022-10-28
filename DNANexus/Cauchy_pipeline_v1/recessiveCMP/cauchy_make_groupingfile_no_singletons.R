@@ -47,7 +47,8 @@ for(frequency_cutoff in frequency_cutoffs){
         }else if(transcripts=="ALL"){
             inter_lof <- lof[lof$gnomad_POPMAX <= frequency_cutoff, ]
             inter_missense1 <- missense[missense$gnomad_POPMAX <= frequency_cutoff, ]
-            inter_missense1 <- inter_missense1[-(which(duplicated(inter_missense1$varid))), ]
+            rm <- which(duplicated(inter_missense1$varid))
+            if(length(rm)>0){inter_missense1 <- inter_missense1[-rm, ]}
         }else{
             inter_missense1 <- missense[missense$CANONICAL!="YES" & missense$TranscriptID==transcripts & missense$gnomad_POPMAX <= frequency_cutoff, ]
             inter_lof <- lof[lof$CANONICAL!="YES" & lof$TranscriptID==transcripts & lof$gnomad_POPMAX <= frequency_cutoff, ]
