@@ -24,7 +24,7 @@ load(paste0(lof_annotfile))
 #head(group)
 lof <- group[group$group_id==genename, ]
 #dim(lof)
-lof$varid <- paste0(lof$chr, ":", lof$pos, ":", lof$ref, ":", lof$alt)
+try(lof$varid <- paste0(lof$chr, ":", lof$pos, ":", lof$ref, ":", lof$alt))
 #head(lof)
 #table(lof$TranscriptID)
 
@@ -32,7 +32,7 @@ load(paste0(missense_annotfile))
 #head(group)
 missense <- group[group$group_id==genename & group$Dtools>=7, ]
 #dim(missense)
-missense$varid <- paste0(missense$chr, ":", missense$pos, ":", missense$ref, ":", missense$alt)
+try(missense$varid <- paste0(missense$chr, ":", missense$pos, ":", missense$ref, ":", missense$alt))
 #table(missense$TranscriptID)
 
 missense_cutoffs <- c(0.8, 0.6, 0.4, 0.2, 0)
