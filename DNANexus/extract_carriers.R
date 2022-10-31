@@ -9,6 +9,7 @@ collapse=as.logical(args[4])
 canonical=as.logical(args[5])
 outfile=as.character(args[6])
 max_maf=as.character(args[7])
+recessive=as.logical(args[8])
 
 ##########################################################
 #### RUN extraction
@@ -45,6 +46,7 @@ if(canonical){
 group <- group[,c("varid", "alt", "group_id")]
 group$varid <- paste0("chr", group$varid)
 
+if(is.na(recessive)){recessive <- F}
 
 final <- NULL
 num <- 1
@@ -74,14 +76,24 @@ for(grouping in unique(group$group_id)){
         if(ncol(raw)==6){
             raw[,paste0(grouping)] <- 0
         }else if(ncol(raw)==7){
+            if(recessive){
+                raw[,7][raw[,7]<1.5] <- 0     
+            }
             raw[,paste0(grouping)] <- raw[,7]
         }else{
+            if(recessive){
+                raw[,c(7:(ncol(raw)))][raw[,c(7:(ncol(raw)))]<1.5] <- 0
+            }
             raw[,paste0(grouping)] <- rowSums(raw[,c(7:(ncol(raw)))])
         }
         if(collapse){
             raw[which(raw[,paste0(grouping)]>1), paste0(grouping)] <-1
         }
-        colnames(raw)[(ncol(raw))] <- paste0(grouping, "__freq", max_maf) 
+        if(recessive){
+            colnames(raw)[(ncol(raw))] <- paste0(grouping, "__freq", max_maf, "_recessive") 
+        }else{
+            colnames(raw)[(ncol(raw))] <- paste0(grouping, "__freq", max_maf) 
+        }
         if(is.null(final)){
             raw <- raw[,c(1:6, (ncol(raw)))]
             final <- raw
