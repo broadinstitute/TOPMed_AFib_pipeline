@@ -25,20 +25,23 @@ lovo_g1 <- g1
 lovo_g2 <- g2
 for(var in varz){
     
-    inter1 <- g1
-    if(var %in% inter1$varid){
-        inter1 <- inter1[-(which(inter1$varid==var)), ]
+    if(nrow(g1)>0){
+        inter1 <- g1
+        if(var %in% inter1$varid){
+            inter1 <- inter1[-(which(inter1$varid==var)), ]
+        }
+        inter1$group_id <- paste0(inter1$group_id, ":LOVO", var)
+        lovo_g1 <- rbind(lovo_g1, inter1)
     }
-    inter1$group_id <- paste0(inter1$group_id, ":LOVO", var)
-    lovo_g1 <- rbind(lovo_g1, inter1)
-
-    inter2 <- g2
-    if(var %in% inter2$varid){
-        inter2 <- inter2[-(which(inter2$varid==var)), ]
+    
+    if(nrow(g2)>0){
+        inter2 <- g2
+        if(var %in% inter2$varid){
+            inter2 <- inter2[-(which(inter2$varid==var)), ]
+        }
+        inter2$group_id <- paste0(inter2$group_id, ":LOVO", var)
+        lovo_g2 <- rbind(lovo_g2, inter2)
     }
-    inter2$group_id <- paste0(inter2$group_id, ":LOVO", var)
-    lovo_g2 <- rbind(lovo_g2, inter2)
-
 }
 
 save(lovo_g1, file='LOVO_group1.RData')
