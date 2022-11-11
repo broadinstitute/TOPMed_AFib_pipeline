@@ -21,8 +21,8 @@ g2 <- g2[which(grepl(gene, g2$group_id)), ]
 varz <- unique(c(g1$varid, g2$varid))
 
 # Make LOVO groupings for the gene
-lovo_g1 <- NULL
-lovo_g2 <- NULL
+lovo_g1 <- g1
+lovo_g2 <- g2
 for(var in varz){
     
     inter1 <- g1
