@@ -7,6 +7,8 @@ group2=as.character(args[2])
 gene=as.character(args[3])
 out1=as.character(args[4])
 out2=as.character(args[5])
+out1="file1.RData"
+out2="file2.RData"
 
 library(data.table)
 # Group file 1 (LOF and LOF+missense)
