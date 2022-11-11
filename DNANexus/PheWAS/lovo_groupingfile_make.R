@@ -43,7 +43,7 @@ for(var in varz){
 
 }
 
-message(out1)
-message(out2)
+message(head(out1))
+message(head(out2))
 save(lovo_g1, file=out1)
 save(lovo_g2, file=out2)
