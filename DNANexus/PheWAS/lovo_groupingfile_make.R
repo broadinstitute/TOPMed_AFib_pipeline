@@ -5,10 +5,6 @@ args=(commandArgs(TRUE))
 group1=as.character(args[1])
 group2=as.character(args[2])
 gene=as.character(args[3])
-out1=as.character(args[4])
-out2=as.character(args[5])
-out1="file1.RData"
-out2="file2.RData"
 
 library(data.table)
 # Group file 1 (LOF and LOF+missense)
@@ -45,7 +41,5 @@ for(var in varz){
 
 }
 
-message(head(out1))
-message(head(out2))
-save(lovo_g1, file=out1)
-save(lovo_g2, file=out2)
+save(lovo_g1, file='LOVO_group1.RData')
+save(lovo_g2, file='LOVO_group2.RData')
