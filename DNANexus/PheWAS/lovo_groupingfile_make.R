@@ -30,8 +30,8 @@ for(var in varz){
         if(var %in% inter1$varid){
             inter1 <- inter1[-(which(inter1$varid==var)), ]
         }
-        inter1$group_id <- paste0(inter1$group_id, ":LOVO", var)
-        lovo_g1 <- rbind(lovo_g1, inter1)
+        try(inter1$group_id <- paste0(inter1$group_id, ":LOVO", var))
+        try(lovo_g1 <- rbind(lovo_g1, inter1))
     }
     
     if(nrow(g2)>0){
@@ -39,8 +39,8 @@ for(var in varz){
         if(var %in% inter2$varid){
             inter2 <- inter2[-(which(inter2$varid==var)), ]
         }
-        inter2$group_id <- paste0(inter2$group_id, ":LOVO", var)
-        lovo_g2 <- rbind(lovo_g2, inter2)
+        try(inter2$group_id <- paste0(inter2$group_id, ":LOVO", var))
+        try(lovo_g2 <- rbind(lovo_g2, inter2))
     }
 }
 
