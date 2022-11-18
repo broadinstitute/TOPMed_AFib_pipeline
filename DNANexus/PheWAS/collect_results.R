@@ -71,8 +71,8 @@ for(i in c(1:nrow(key))){
   phenoname <- key[i, 'Name']
   category <- overv[overv$meaning==phenoname, 'category']
   cat('\n\n\nBusy with phenotype', num, 'which is', phenoname, 'and task', i, 'out of 535 tasks...\n\n')
-  files <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/", num, "_results_chr", c(1:22), "_maf0.001.RData")
-  files2 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/", num, "_results_chr", c(1:22), "_maf0.00001.RData")
+  files <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/downsampled/", num, "_results_chr", c(1:22), "_maf0.001.RData")
+  files2 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/downsampled/", num, "_results_chr", c(1:22), "_maf0.00001.RData")
   if(all(file.exists(files)) & all(file.exists(files2))){
     inter <- summarydata(files=files, chrs=c(1:22), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
     inter <- inter[inter$n.sample.alt>=10, ]
