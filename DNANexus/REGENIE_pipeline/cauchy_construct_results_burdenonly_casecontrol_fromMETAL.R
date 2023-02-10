@@ -6,6 +6,7 @@
 args=(commandArgs(TRUE))
 regenie_outfile=as.character(args[1])
 cauchy_outfile=as.character(args[2])
+cMAC_cutoff=as.numeric(args[3])
 
 library(data.table)
 .libPaths(c("rpackages4_1_3",.libPaths()))
@@ -28,7 +29,7 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
     #### Merge by mask: in this case all are burden ####
     burden <- dat
     rm(dat)
-    burden <- burden[burden$cMAC>=20, ]
+    burden <- burden[burden$cMAC>=cMAC_cutoff, ]
     if(nrow(burden)==0){
         cat("\n\n\nNo tests reaching minor allele count.!!\n\n\n")
         burden <- NULL
