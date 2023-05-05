@@ -2,6 +2,7 @@
 
 #### binary traits
 args=(commandArgs(TRUE))
+print(args)
 gdsfile=as.character(args[1])
 groupfile=as.character(args[2])
 phenfile=as.character(args[3])
