@@ -46,13 +46,13 @@ outfile_saved <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association
 
 if(!file.exists(outfile_saved)){
   outfile_saved2 <- paste0("exome-seq:sjj/projects/phewas/v1/results/association/round2/", outfile)
-  try(system("dx download ", outfile_saved2))
-  if(!file.exists(outfile)){
+  #try(system("dx download ", outfile_saved2))
+  #if(!file.exists(outfile)){
     perform_burden_collapse(gdsfile=gdsfile,groupfile=groupfile,phenfile=phenfile,ID_col=ID_col,nullfile=nullfile,outfile=outfile, 
   	  			   burden.test=score.method, collapse=FALSE,
   		  		   AF.max=AF.max, MAC.max=MAC.max, use.weights=FALSE
     )
-  } 
+  #} 
 }
 
 sessionInfo()
