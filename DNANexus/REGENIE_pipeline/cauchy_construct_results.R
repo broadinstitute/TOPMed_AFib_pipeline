@@ -76,9 +76,9 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
         }
         lof <- lof[,-(which(colnames(lof)=="ALLELE1"))]
         
-        missense <- cbind(burden[which(!grepl("LOF", burden$ALLELE1)), 
+        missense <- cbind(burden[which(!grepl("LOF", burden$ALLELE1) & !grepl("lof", burden$ALLELE1)), 
                             c("ID", "TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N")],
-                     burden[which(!grepl("LOF", burden$ALLELE1)),                
+                     burden[which(!grepl("LOF", burden$ALLELE1) &!grepl("lof", burden$ALLELE1)),                
                             c(which(grepl("BURDEN_", colnames(burden))),
                               which(grepl("ACATV_", colnames(burden))), which(grepl("SKAT_", colnames(burden))))]
         )
@@ -106,9 +106,9 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
         }
         missense <- missense[,-(which(colnames(missense)=="ALLELE1"))]
         
-        lofmissense <- cbind(burden[which(grepl("LOFmissense", burden$ALLELE1)), 
+        lofmissense <- cbind(burden[which(grepl("LOFmissense", burden$ALLELE1) | grepl("lofmissense", burden$ALLELE1)), 
                             c("ID", "TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N")],
-                     burden[which(grepl("LOFmissense", burden$ALLELE1)),                
+                     burden[which(grepl("LOFmissense", burden$ALLELE1) | grepl("lofmissense", burden$ALLELE1)),                
                             c(which(grepl("BURDEN_", colnames(burden))),
                               which(grepl("ACATV_", colnames(burden))), which(grepl("SKAT_", colnames(burden))))]
         )
