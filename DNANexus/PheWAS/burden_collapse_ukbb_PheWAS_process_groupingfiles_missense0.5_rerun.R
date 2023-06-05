@@ -83,43 +83,51 @@ if(!file.exists(outfile_saved)){
   lowmem_vars <- group_tally[which(group_tally[,2]<cutoff1), 1]
   #length(lowmem_vars)
   if(eur){
-      save(new_group[new_group$group_id %in% lowmem_vars, ], 
-      file=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_lowmem_EUR.RData'))
+      save_group <- new_group[new_group$group_id %in% lowmem_vars, ]
+      save_file <- paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_lowmem_EUR.RData')
+      save(save_group, file=save_file)
   }else{
-      save(new_group[new_group$group_id %in% lowmem_vars, ], 
-      save=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_lowmem.RData'))
+      save_group <- new_group[new_group$group_id %in% lowmem_vars, ]
+      save_file <- paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_lowmem.RData')
+      save(save_group, file=save_file)
   }
   ### highmem
   highmem_vars <- group_tally[group_tally[,2]>=cutoff1 & group_tally[,2]<cutoff2, 1]
   #length(highmem_vars)
   if(eur){
-      save(new_group[new_group$group_id %in% highmem_vars, ], 
-      file=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_highmem_EUR.RData'))
+      save_group <- new_group[new_group$group_id %in% highmem_vars, ]
+      save_file <- paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_highmem_EUR.RData')
+      save(save_group, file=save_file)
   }else{
-      save(new_group[new_group$group_id %in% highmem_vars, ], 
-      file=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_highmem.RData'))
+      save_group <- new_group[new_group$group_id %in% highmem_vars, ]
+      save_file <- paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_highmem.RData')
+      save(save_group, file=save_file)
   }
   
   ### highhighmem
   highhighmem_vars <- group_tally[group_tally[,2]>=cutoff2 & group_tally[,2]<cutoff3, 1]
   #length(highhighmem_vars)
   if(eur){
-      save(new_group[new_group$group_id %in% highhighmem_vars, ], 
-      file=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_highhighmem_EUR.RData'))
+      save_group <- new_group[new_group$group_id %in% highhighmem_vars, ]
+      save_file <- paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_highhighmem_EUR.RData')
+      save(save_group, file=save_file)
   }else{
-      save(new_group[new_group$group_id %in% highhighmem_vars, ], 
-      file=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_highhighmem.RData'))
+      save_group <- new_group[new_group$group_id %in% highhighmem_vars, ]
+      save_file <- paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_highhighmem.RData')
+      save(save_group, file=save_file)
   }
   
   ### veryhighmem
   veryhighmem_vars <- group_tally[group_tally[,2]>=cutoff3, 1]
   #length(veryhighmem_vars)
   if(eur){
-      save(new_group[new_group$group_id %in% veryhighmem_vars, ], 
-      file=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_veryhighmem_EUR.RData'))
+      save_group <- new_group[new_group$group_id %in% veryhighmem_vars, ]
+      save_file <- paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_veryhighmem_EUR.RData')
+      save(save_group, file=save_file)
   }else{
-      save(new_group[new_group$group_id %in% veryhighmem_vars, ], 
-      file=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_veryhighmem.RData'))
+      save_group <- new_group[new_group$group_id %in% veryhighmem_vars, ]
+      save_file <- paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_veryhighmem.RData')
+      save(save_group, file=save_file)
   }
   
 }
