@@ -34,7 +34,7 @@ outfile_saved <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association
 
 if(!file.exists(outfile_saved)){
   old_file <- paste0('/mnt/project/sjj/projects/phewas/v1/results/association/', phecode, '_results_chr', chr, '_maf0.00001.RData')
-  new_file <- paste0('/mnt/project/sjj/projects/phewas/v1/data/grouping_files/ukbb_phewas_v1_groupingfile_c', chr, '_hclofnoflagmissense0.5_missense0.2_popmax0.00001.RData')
+  new_file <- groupfile
   
   old_results <- get(load(old_file))
   group <- get(load(new_file))
