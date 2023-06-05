@@ -35,7 +35,7 @@ memlevel <- gsub(".RData", "", gsub(".*_", "", groupfile))
 outfile_saved <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round2/", memlevel, "/chr", chr, "/", outfile)
 
 if(!file.exists(outfile_saved)){
-  new_file <- paste0('/mnt/project/sjj/projects/phewas/v1/data/grouping_files/ukbb_phewas_v1_groupingfile_c', chr, '_hclofnoflagmissense0.8missense0.5_popmax0.01.RData')
+  new_file <- groupfile
   
   group <- get(load(new_file))
   group$varid <- paste0(group$chr, ":", group$pos, ":", group$ref, ":", group$alt)
