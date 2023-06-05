@@ -84,7 +84,7 @@ if(!file.exists(outfile_saved)){
   #length(lowmem_vars)
   if(eur){
       save(new_group[new_group$group_id %in% lowmem_vars, ], 
-      save=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_lowmem_EUR.RData'))
+      file=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_lowmem_EUR.RData'))
   }else{
       save(new_group[new_group$group_id %in% lowmem_vars, ], 
       save=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_lowmem.RData'))
@@ -94,10 +94,10 @@ if(!file.exists(outfile_saved)){
   #length(highmem_vars)
   if(eur){
       save(new_group[new_group$group_id %in% highmem_vars, ], 
-      save=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_highmem_EUR.RData'))
+      file=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_highmem_EUR.RData'))
   }else{
       save(new_group[new_group$group_id %in% highmem_vars, ], 
-      save=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_highmem.RData'))
+      file=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_highmem.RData'))
   }
   
   ### highhighmem
@@ -105,10 +105,10 @@ if(!file.exists(outfile_saved)){
   #length(highhighmem_vars)
   if(eur){
       save(new_group[new_group$group_id %in% highhighmem_vars, ], 
-      save=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_highhighmem_EUR.RData'))
+      file=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_highhighmem_EUR.RData'))
   }else{
       save(new_group[new_group$group_id %in% highhighmem_vars, ], 
-      save=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_highhighmem.RData'))
+      file=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_highhighmem.RData'))
   }
   
   ### veryhighmem
@@ -116,10 +116,10 @@ if(!file.exists(outfile_saved)){
   #length(veryhighmem_vars)
   if(eur){
       save(new_group[new_group$group_id %in% veryhighmem_vars, ], 
-      save=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_veryhighmem_EUR.RData'))
+      file=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_veryhighmem_EUR.RData'))
   }else{
       save(new_group[new_group$group_id %in% veryhighmem_vars, ], 
-      save=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_veryhighmem.RData'))
+      file=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_veryhighmem.RData'))
   }
   
 }
