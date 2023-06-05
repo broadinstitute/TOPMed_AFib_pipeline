@@ -85,11 +85,11 @@ if(!file.exists(outfile_saved)){
   if(eur){
       save_group <- new_group[new_group$group_id %in% lowmem_vars, ]
       save_file <- paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_lowmem_EUR.RData')
-      save(save_group, file=save_file)
+      try(save(save_group, file=save_file))
   }else{
       save_group <- new_group[new_group$group_id %in% lowmem_vars, ]
       save_file <- paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_lowmem.RData')
-      save(save_group, file=save_file)
+      try(save(save_group, file=save_file))
   }
   ### highmem
   highmem_vars <- group_tally[group_tally[,2]>=cutoff1 & group_tally[,2]<cutoff2, 1]
@@ -97,11 +97,11 @@ if(!file.exists(outfile_saved)){
   if(eur){
       save_group <- new_group[new_group$group_id %in% highmem_vars, ]
       save_file <- paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_highmem_EUR.RData')
-      save(save_group, file=save_file)
+      try(save(save_group, file=save_file))
   }else{
       save_group <- new_group[new_group$group_id %in% highmem_vars, ]
       save_file <- paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_highmem.RData')
-      save(save_group, file=save_file)
+      try(save(save_group, file=save_file))
   }
   
   ### highhighmem
@@ -110,11 +110,11 @@ if(!file.exists(outfile_saved)){
   if(eur){
       save_group <- new_group[new_group$group_id %in% highhighmem_vars, ]
       save_file <- paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_highhighmem_EUR.RData')
-      save(save_group, file=save_file)
+      try(save(save_group, file=save_file))
   }else{
       save_group <- new_group[new_group$group_id %in% highhighmem_vars, ]
       save_file <- paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_highhighmem.RData')
-      save(save_group, file=save_file)
+      try(save(save_group, file=save_file))
   }
   
   ### veryhighmem
@@ -123,11 +123,11 @@ if(!file.exists(outfile_saved)){
   if(eur){
       save_group <- new_group[new_group$group_id %in% veryhighmem_vars, ]
       save_file <- paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_veryhighmem_EUR.RData')
-      save(save_group, file=save_file)
+      try(save(save_group, file=save_file))
   }else{
       save_group <- new_group[new_group$group_id %in% veryhighmem_vars, ]
       save_file <- paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_veryhighmem.RData')
-      save(save_group, file=save_file)
+      try(save(save_group, file=save_file))
   }
   
 }
