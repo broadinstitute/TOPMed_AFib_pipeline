@@ -15,7 +15,7 @@ score.method=as.character(args[9])
 key.file=as.character(args[10])
 key.file.phecodecol=as.character(args[11])
 phenum=as.numeric(args[12])
-
+eur=as.logical(args[13])
 
 .libPaths(c("rpackages4_1_3",.libPaths()))
 
@@ -33,7 +33,11 @@ memlevel <- gsub(".RData", "", gsub(".*_", "", groupfile))
 outfile_saved <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round2/", memlevel, "/chr", chr, "/", outfile)
 
 if(!file.exists(outfile_saved)){
-  old_file <- paste0('/mnt/project/sjj/projects/phewas/v1/results/association/', phecode, '_results_chr', chr, '_maf0.00001.RData')
+  if(eur){
+    old_file <- paste0('/mnt/project/sjj/projects/phewas/v1/results/association/', phecode, '_results_chr', chr, '_maf0.00001_EUR.RData')    
+  }else{
+    old_file <- paste0('/mnt/project/sjj/projects/phewas/v1/results/association/', phecode, '_results_chr', chr, '_maf0.00001.RData')
+  }
   new_file <- groupfile
   
   old_results <- get(load(old_file))
@@ -75,26 +79,45 @@ if(!file.exists(outfile_saved)){
   ### lowmem
   lowmem_vars <- group_tally[which(group_tally[,2]<100), 1]
   #length(lowmem_vars)
-  save(new_group[new_group$group_id %in% lowmem_vars, ], 
+  if(eur){
+      save(new_group[new_group$group_id %in% lowmem_vars, ], 
+      save=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_lowmem_EUR.RData'))
+  }else{
+      save(new_group[new_group$group_id %in% lowmem_vars, ], 
       save=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_lowmem.RData'))
-  
+  }
   ### highmem
   highmem_vars <- group_tally[group_tally[,2]>=100 & group_tally[,2]<200, 1]
   #length(highmem_vars)
-  save(new_group[new_group$group_id %in% highmem_vars, ], 
+  if(eur){
+      save(new_group[new_group$group_id %in% highmem_vars, ], 
+      save=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_highmem_EUR.RData'))
+  }else{
+      save(new_group[new_group$group_id %in% highmem_vars, ], 
       save=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_highmem.RData'))
+  }
   
   ### highhighmem
   highhighmem_vars <- group_tally[group_tally[,2]>=200 & group_tally[,2]<300, 1]
   #length(highhighmem_vars)
-  save(new_group[new_group$group_id %in% highhighmem_vars, ], 
+  if(eur){
+      save(new_group[new_group$group_id %in% highhighmem_vars, ], 
+      save=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_highhighmem_EUR.RData'))
+  }else{
+      save(new_group[new_group$group_id %in% highhighmem_vars, ], 
       save=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_highhighmem.RData'))
+  }
   
   ### veryhighmem
   veryhighmem_vars <- group_tally[group_tally[,2]>=300, 1]
   #length(veryhighmem_vars)
-  save(new_group[new_group$group_id %in% veryhighmem_vars, ], 
+  if(eur){
+      save(new_group[new_group$group_id %in% veryhighmem_vars, ], 
+      save=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_veryhighmem_EUR.RData'))
+  }else{
+      save(new_group[new_group$group_id %in% veryhighmem_vars, ], 
       save=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_veryhighmem.RData'))
+  }
   
 }
 
