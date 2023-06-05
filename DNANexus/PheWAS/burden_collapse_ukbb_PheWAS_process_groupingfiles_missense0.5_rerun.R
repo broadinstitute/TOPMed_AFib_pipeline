@@ -16,6 +16,9 @@ key.file=as.character(args[10])
 key.file.phecodecol=as.character(args[11])
 phenum=as.numeric(args[12])
 eur=as.logical(args[13])
+cutoff1=as.numeric(args[14])
+cutoff2=as.numeric(args[15])
+cutoff3=as.numeric(args[16])
 
 .libPaths(c("rpackages4_1_3",.libPaths()))
 
@@ -77,7 +80,7 @@ if(!file.exists(outfile_saved)){
   group_tally[,2] <- as.numeric(group_tally[,2])
   
   ### lowmem
-  lowmem_vars <- group_tally[which(group_tally[,2]<100), 1]
+  lowmem_vars <- group_tally[which(group_tally[,2]<cutoff1), 1]
   #length(lowmem_vars)
   if(eur){
       save(new_group[new_group$group_id %in% lowmem_vars, ], 
@@ -87,7 +90,7 @@ if(!file.exists(outfile_saved)){
       save=paste0('ukbb_phewas_v1_groupingfile_c', chr, '_missense0.5_popmax0.00001_lowmem.RData'))
   }
   ### highmem
-  highmem_vars <- group_tally[group_tally[,2]>=100 & group_tally[,2]<200, 1]
+  highmem_vars <- group_tally[group_tally[,2]>=cutoff1 & group_tally[,2]<cutoff2, 1]
   #length(highmem_vars)
   if(eur){
       save(new_group[new_group$group_id %in% highmem_vars, ], 
@@ -98,7 +101,7 @@ if(!file.exists(outfile_saved)){
   }
   
   ### highhighmem
-  highhighmem_vars <- group_tally[group_tally[,2]>=200 & group_tally[,2]<300, 1]
+  highhighmem_vars <- group_tally[group_tally[,2]>=cutoff2 & group_tally[,2]<cutoff3, 1]
   #length(highhighmem_vars)
   if(eur){
       save(new_group[new_group$group_id %in% highhighmem_vars, ], 
@@ -109,7 +112,7 @@ if(!file.exists(outfile_saved)){
   }
   
   ### veryhighmem
-  veryhighmem_vars <- group_tally[group_tally[,2]>=300, 1]
+  veryhighmem_vars <- group_tally[group_tally[,2]>=cutoff3, 1]
   #length(veryhighmem_vars)
   if(eur){
       save(new_group[new_group$group_id %in% veryhighmem_vars, ], 
