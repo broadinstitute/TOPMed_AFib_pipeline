@@ -33,7 +33,7 @@ outfile <- gsub("PHENUM", phecode, outfile)
 
 chr <- gsub("_genotype_variant_sample_QCed.gds", "", gsub("tmp/ukb23156_c", "", gdsfile))
 memlevel <- gsub(".RData", "", gsub(".*_", "", groupfile))
-outfile_saved <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round2/", memlevel, "/chr", chr, "/", outfile)
+outfile_saved <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round3/", memlevel, "/chr", chr, "/", outfile)
 
 if(!file.exists(outfile_saved)){
   if(eur){
