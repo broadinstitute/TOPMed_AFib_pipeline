@@ -43,18 +43,20 @@ if(!file.exists(outfile_saved)){
   }
   new_file <- groupfile
   
-  old_results <- get(load(old_file))
   group <- get(load(new_file))
   group <- group[which(grepl("missense0.2", group$group_id)), ] 
   group <- group[group$Dprop>=0.5 & group$Dtools>=7, ]
   group$group_id <- gsub("missense0.2", "missense0.5", group$group_id)
   group$varid <- paste0(group$chr, ":", group$pos, ":", group$ref, ":", group$alt)
+
+  if(file.exists(old_file)){
+    old_results <- get(load(old_file))
   
-  new_group <- NULL
-  #new_res1 <- old_results
-  genes <- unique(gsub("_missense0.5.*", "", rownames(old_results$results[old_results$results$n.alt>0, ])))
+    new_group <- NULL
+    #new_res1 <- old_results
+    genes <- unique(gsub("_missense0.5.*", "", rownames(old_results$results[old_results$results$n.alt>0, ])))
   
-  for(gene in genes){
+    for(gene in genes){
       inter_group <- group[which(grepl(gene, group$group_id)), ]
       new_vars <- inter_group$varid
       old_vars <- old_results$variantInfo[[paste0(gene, '_missense0.5_gnomAD_POPMAX0.00001')]]
@@ -65,9 +67,13 @@ if(!file.exists(outfile_saved)){
       if(!all(old_vars %in% new_vars)){
           new_group <- rbind(new_group, inter_group)
       }
+    }
+    cat(length(unique(new_group$group_id)), " out of ", length(genes), " equals ", length(unique(new_group$group_id))/length(genes)*100 , "%.\n")
+    
+  }else{
+    cat("File not found, so need to analyze all variants.\n")
+    new_group <- group
   }
-  
-  cat(length(unique(new_group$group_id)), " out of ", length(genes), " equals ", length(unique(new_group$group_id))/length(genes)*100 , "%.\n")
   
   ### Split by mem
   groups <- unique(new_group$group_id)
