@@ -115,7 +115,7 @@ for(chr in c(1:22)){
     files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/highmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round2_highmem.RData"))
     files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/highhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round2_highhighmem.RData"))
     if(chr %in% c(1:17, 19:20)){
-        files <- c(files, paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/veryhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round2_veryhighmem.RData"))
+        files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/veryhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round2_veryhighmem.RData"))
     }
     files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/lowmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_lowmem.RData"))
     files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/highmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_highmem.RData"))
