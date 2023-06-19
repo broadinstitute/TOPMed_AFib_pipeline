@@ -348,6 +348,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   for(chr in c(1:22)){
         cat("\tbusy with chromosome ", chr, "...\n")
         plink_path <- './plink2'
+        regenie_path <- './regenie_v3.2.2.gz_x86_64_Linux_mkl'
         plinkfile <- paste0('/mnt/project/exome_450k_plink/merged/genotype_variant_sample_QCed/plink/ukb23156_c', chr, '_genotype_variant_sample_QCed')
         plinkfile_type <- "pfile"
         max_maf=0.001
@@ -453,6 +454,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   for(chr in c(1:22)){
         cat("\tbusy with chromosome ", chr, "...\n")
         plink_path <- './plink2'
+        regenie_path <- './regenie_v3.2.2.gz_x86_64_Linux_mkl'
         plinkfile <- paste0('/mnt/project/exome_450k_plink/merged/genotype_variant_sample_QCed/plink/ukb23156_c', chr, '_genotype_variant_sample_QCed')
         plinkfile_type <- "pfile"
         max_maf=0.00001
@@ -558,6 +560,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   for(chr in c(1:22)){
         cat("\tbusy with chromosome ", chr, "...\n")
         plink_path <- './plink2'
+        regenie_path <- './regenie_v3.2.2.gz_x86_64_Linux_mkl'
         plinkfile <- paste0('/mnt/project/exome_450k_plink/merged/genotype_variant_sample_QCed/plink/ukb23156_c', chr, '_genotype_variant_sample_QCed')
         plinkfile_type <- "pfile"
         max_maf=0.01
