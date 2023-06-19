@@ -62,7 +62,7 @@ for(chr in c(1:22)){
     if(chr %in% c(1:8, 10:13, 15:17, 19:20)){
         try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/round2/veryhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.001_round2_veryhighmem.RData")))
     }
-    try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/", num, "_results_chr", c(1:22), "_maf0.001.RData")))
+    try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/", num, "_results_chr", chr, "_maf0.001.RData")))
 }
 #files1_1 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round2/lowmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.001_round2_lowmem.RData")
 #files1_2 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round2/highmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.001_round2_highmem.RData")
@@ -94,7 +94,7 @@ for(chr in c(1:22)){
         try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/round3/veryhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_veryhighmem.RData")))
     }
     # Old MAF<0.001% run with some errors
-    try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/", num, "_results_chr", c(1:22), "_maf0.00001.RData")))
+    try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/", num, "_results_chr", chr, "_maf0.00001.RData")))
 }
 #files2_1 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round2/lowmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.00001_round2_lowmem.RData")
 #files2_2 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round2/highmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.00001_round2_highmem.RData")
