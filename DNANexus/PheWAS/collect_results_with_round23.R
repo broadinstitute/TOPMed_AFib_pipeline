@@ -390,7 +390,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
     # James' IDs are coded for the other application
     phen0[phen0$sample_id %in% raw$sample_id, 'disease'] <- 1
   }
-  gender <- overv[overv$meaning=phenoname, 'Gender']
+  gender <- overv[overv$meaning==phenoname, 'Gender']
   rm <- which(is.na(phen0$app17488))
   if(length(rm)>0){phen0 <- phen0[ -rm,]}
 
