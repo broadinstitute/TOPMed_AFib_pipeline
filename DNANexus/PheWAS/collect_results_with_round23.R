@@ -379,7 +379,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   system('dx download exome-seq:/exome_450k_plink/PCA/ukbb_450k_unrelatedsamples.tsv')
   unrel <- fread('ukbb_450k_unrelatedsamples.tsv', stringsAsFactors = F, data.table=F)
 
-  jd_code <- overv[overv$meaning==outcome_name, 'jd_ukbb_code']
+  jd_code <- overv[overv$meaning==phenoname, 'jd_ukbb_code']
   raw <- raw[raw$jd_code ==jd_code, ]
 
   # Define the disease variable based on the disease files
@@ -390,7 +390,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
     # James' IDs are coded for the other application
     phen0[phen0$sample_id %in% raw$sample_id, 'disease'] <- 1
   }
-  gender <- overv[outcome, 'Gender']
+  gender <- overv[overv$Meaning=phenoname, 'Gender']
   rm <- which(is.na(phen0$app17488))
   if(length(rm)>0){phen0 <- phen0[ -rm,]}
 
@@ -417,11 +417,11 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   # filter to samples used in GENESIS nullmod; this is important for variant filtering in PLINK
   nullmod_samples <- nullmod$sample.id
   phen0 <- phen0[phen0$sample.id %in% nullmod_samples, ]
-  write.table(cbind(phen0$app17488,phen0$app17488), file=paste0(outcome_code, '__sampleIDs.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
+  write.table(cbind(phen0$app17488,phen0$app17488), file=paste0(num, '__sampleIDs.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
   phen0 <- phen0[ ,c(1, 1, c(2:(ncol(phen0))))]
   colnames(phen0)[c(1,2)] <- c("FID", "IID")
-  write.table(phen0, file=paste0(outcome_code, '__regenie_phenofile.tsv'), col.names=T, row.names=F, quote=F, sep='\t')
-  write.table(phen0[phen0$POP_tight=="EUR", c("FID", "IID")], file=paste0(outcome_code, '__sampleIDs_EUR.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
+  write.table(phen0, file=paste0(num, '__regenie_phenofile.tsv'), col.names=T, row.names=F, quote=F, sep='\t')
+  write.table(phen0[phen0$POP_tight=="EUR", c("FID", "IID")], file=paste0(num, '__sampleIDs_EUR.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
 
   # For running Firth's we need to also define unrelated samples for running in REGENIE...
   relat <- fread('/mnt/project/exome_450k_plink/PCA/ukbb_450k_unrelatedsamples.tsv', stringsAsFactors = F, data.table=F)
@@ -430,7 +430,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   phen_unrel <- phen[phen0$IID %in% unrel$sample.id, ]
   unrel_samples <- cbind(phen_unrel$FID,phen_unrel$IID)
   colnames(unrel_samples) <- c("FID", "IID")
-  write.table(unrel_samples, file=paste0(outcome_code, '__sampleIDs_unrel.tsv'), col.names=T, row.names=F, quote=F, sep='\t')
+  write.table(unrel_samples, file=paste0(num, '__sampleIDs_unrel.tsv'), col.names=T, row.names=F, quote=F, sep='\t')
   firth.n.cases <- nrow(phen_unrel[phen_unrel$disease==1, ])
   firth.n.controls <- nrow(phen_unrel[phen_unrel$disease==0, ])
 
@@ -500,50 +500,50 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
         regenie_setfile <- rbind(regenie_setfile, set_inter)
         
         ## Use PLINK2 to filter to a PLINK file that has the needed variants and samples used in the discovery analysis
-        write.table(group$varid, file=paste0(outcome_code, '__varz_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
+        write.table(group$varid, file=paste0(num, '__varz_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
         try(system(paste0(plink_path, ' ',
                 '--', plinkfile_type, '  ', plinkfile, '  ',
                 '--max-maf ', max_maf, '  --max-mac ', max_mac, '  ',
-                '--keep  ', outcome_code, '__sampleIDs.tsv  ',
-                '--extract  ', outcome_code, '__varz_chr', chr, '.tsv  ',
-                '--make-bed --out  ', outcome_code, '__varz_chr', chr
+                '--keep  ', num, '__sampleIDs.tsv  ',
+                '--extract  ', num, '__varz_chr', chr, '.tsv  ',
+                '--make-bed --out  ', num, '__varz_chr', chr
         ), intern=T))
   }
 
   ## Run merge with PLINK
-  merge_list <- cbind(c(paste0(outcome_code, '__varz_chr', c(1:22), '.bed')),
-                    c(paste0(outcome_code, '__varz_chr', c(1:22), '.bim')),
-                    c(paste0(outcome_code, '__varz_chr', c(1:22), '.fam'))
+  merge_list <- cbind(c(paste0(num, '__varz_chr', c(1:22), '.bed')),
+                    c(paste0(num, '__varz_chr', c(1:22), '.bim')),
+                    c(paste0(num, '__varz_chr', c(1:22), '.fam'))
   )
 
-  write.table(merge_list, file=paste0(outcome_code, '__varz_mergelist.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
+  write.table(merge_list, file=paste0(num, '__varz_mergelist.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
   system(paste0('./plink ',
-                '--merge-list  ', outcome_code, '__varz_mergelist.tsv  ',
-                '--make-bed --out  ', outcome_code, '__varz_chrall  '
+                '--merge-list  ', num, '__varz_mergelist.tsv  ',
+                '--make-bed --out  ', num, '__varz_chrall  '
   ))
 
   ### Save annot information for REGENIE
-  write.table(regenie_annotationfile, file=paste0(outcome_code, '__annotationfile_chrall.tsv'), col.names=F, row.names=F, quote=F)
-  write.table(regenie_setfile, file=paste0(outcome_code, '__setfile_chrall.tsv'), col.names=F, row.names=F, quote=F)
-  write.table(c("Mask1 REGENIE"), file=paste0(outcome_code, '__maskdef_chrall.tsv'), col.names=F, row.names=F, quote=F)
+  write.table(regenie_annotationfile, file=paste0(num, '__annotationfile_chrall.tsv'), col.names=F, row.names=F, quote=F)
+  write.table(regenie_setfile, file=paste0(num, '__setfile_chrall.tsv'), col.names=F, row.names=F, quote=F)
+  write.table(c("Mask1 REGENIE"), file=paste0(num, '__maskdef_chrall.tsv'), col.names=F, row.names=F, quote=F)
 
   ## Run REGENIE for the MAF<0.1% thresholds; keep only the unrel samples
-  try(system(paste0('rm  ', outcome_code, '__chrall_disease.regenie')))
+  try(system(paste0('rm  ', num, '__chrall_disease.regenie')))
   try(system(paste0(regenie_path, ' ',
-                '--step 2  --bt  --ignore-pred  --bed  ', outcome_code, '__varz_chrall  ',
+                '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chrall  ',
                 '--firth --approx --firth-se --aaf-bins 0.5  --minMAC  1  ',
-                '--covarFile  ', outcome_code, '__regenie_phenofile.tsv   ',
+                '--covarFile  ', num, '__regenie_phenofile.tsv   ',
                 '--covarCol ', paste(fixef, collapse=","), '  --catCovarList  ', paste(catCovarList, collapse=","), '  ',
-                '--phenoFile  ', outcome_code, '__regenie_phenofile.tsv  --phenoCol disease  ',
-                '--keep  ', outcome_code, '__sampleIDs_unrel.tsv  ',
-                '--anno-file  ', outcome_code, '__annotationfile_chrall.tsv ',
-                '--set-list  ', outcome_code, '__setfile_chrall.tsv ',
-                '--mask-def  ', outcome_code, '__maskdef_chrall.tsv ',
-                '--pThresh  0.99  --out ', outcome_code, '__chrall'
+                '--phenoFile  ', num, '__regenie_phenofile.tsv  --phenoCol disease  ',
+                '--keep  ', num, '__sampleIDs_unrel.tsv  ',
+                '--anno-file  ', num, '__annotationfile_chrall.tsv ',
+                '--set-list  ', num, '__setfile_chrall.tsv ',
+                '--mask-def  ', num, '__maskdef_chrall.tsv ',
+                '--pThresh  0.99  --out ', num, '__chrall'
   ), intern=T))
 
   ## Process the REGENIE results
-  regenie <- fread(paste0(outcome_code, '__chrall_disease.regenie'), stringsAsFactors=F, data.table=F)
+  regenie <- fread(paste0(num, '__chrall_disease.regenie'), stringsAsFactors=F, data.table=F)
   regenie <- regenie[which(!grepl("singleton", regenie$ID)), ]
   regenie$ID <- gsub(".Mask1.0.5", "", regenie$ID)
   regenie$firth.n.sample.alt <- round(regenie$A1FREQ * 2 * regenie$N)
@@ -606,50 +606,50 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
         regenie_setfile <- rbind(regenie_setfile, set_inter)
         
         ## Use PLINK2 to filter to a PLINK file that has the needed variants and samples used in the discovery analysis
-        write.table(group$varid, file=paste0(outcome_code, '__varz_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
+        write.table(group$varid, file=paste0(num, '__varz_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
         try(system(paste0(plink_path, ' ',
                 '--', plinkfile_type, '  ', plinkfile, '  ',
                 '--max-maf ', max_maf, '  --max-mac ', max_mac, '  ',
-                '--keep  ', outcome_code, '__sampleIDs.tsv  ',
-                '--extract  ', outcome_code, '__varz_chr', chr, '.tsv  ',
-                '--make-bed --out  ', outcome_code, '__varz_chr', chr
+                '--keep  ', num, '__sampleIDs.tsv  ',
+                '--extract  ', num, '__varz_chr', chr, '.tsv  ',
+                '--make-bed --out  ', num, '__varz_chr', chr
         ), intern=T))
   }
 
   ## Run merge with PLINK
-  merge_list <- cbind(c(paste0(outcome_code, '__varz_chr', c(1:22), '.bed')),
-                    c(paste0(outcome_code, '__varz_chr', c(1:22), '.bim')),
-                    c(paste0(outcome_code, '__varz_chr', c(1:22), '.fam'))
+  merge_list <- cbind(c(paste0(num, '__varz_chr', c(1:22), '.bed')),
+                    c(paste0(num, '__varz_chr', c(1:22), '.bim')),
+                    c(paste0(num, '__varz_chr', c(1:22), '.fam'))
   )
 
-  write.table(merge_list, file=paste0(outcome_code, '__varz_mergelist.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
+  write.table(merge_list, file=paste0(num, '__varz_mergelist.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
   system(paste0('./plink ',
-                '--merge-list  ', outcome_code, '__varz_mergelist.tsv  ',
-                '--make-bed --out  ', outcome_code, '__varz_chrall  '
+                '--merge-list  ', num, '__varz_mergelist.tsv  ',
+                '--make-bed --out  ', num, '__varz_chrall  '
   ))
 
   ### Save annot information for REGENIE
-  write.table(regenie_annotationfile, file=paste0(outcome_code, '__annotationfile_chrall.tsv'), col.names=F, row.names=F, quote=F)
-  write.table(regenie_setfile, file=paste0(outcome_code, '__setfile_chrall.tsv'), col.names=F, row.names=F, quote=F)
-  write.table(c("Mask1 REGENIE"), file=paste0(outcome_code, '__maskdef_chrall.tsv'), col.names=F, row.names=F, quote=F)
+  write.table(regenie_annotationfile, file=paste0(num, '__annotationfile_chrall.tsv'), col.names=F, row.names=F, quote=F)
+  write.table(regenie_setfile, file=paste0(num, '__setfile_chrall.tsv'), col.names=F, row.names=F, quote=F)
+  write.table(c("Mask1 REGENIE"), file=paste0(num, '__maskdef_chrall.tsv'), col.names=F, row.names=F, quote=F)
 
   ## Run REGENIE for the MAF<0.001% thresholds; keep only the unrel samples
-  try(system(paste0('rm  ', outcome_code, '__chrall_disease.regenie')))
+  try(system(paste0('rm  ', num, '__chrall_disease.regenie')))
   try(system(paste0(regenie_path, ' ',
-                '--step 2  --bt  --ignore-pred  --bed  ', outcome_code, '__varz_chrall  ',
+                '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chrall  ',
                 '--firth --approx --firth-se --aaf-bins 0.5  --minMAC  1  ',
-                '--covarFile  ', outcome_code, '__regenie_phenofile.tsv   ',
+                '--covarFile  ', num, '__regenie_phenofile.tsv   ',
                 '--covarCol ', paste(fixef, collapse=","), '  --catCovarList  ', paste(catCovarList, collapse=","), '  ',
-                '--phenoFile  ', outcome_code, '__regenie_phenofile.tsv  --phenoCol disease  ',
-                '--keep  ', outcome_code, '__sampleIDs_unrel.tsv  ',
-                '--anno-file  ', outcome_code, '__annotationfile_chrall.tsv ',
-                '--set-list  ', outcome_code, '__setfile_chrall.tsv ',
-                '--mask-def  ', outcome_code, '__maskdef_chrall.tsv ',
-                '--pThresh  0.99  --out ', outcome_code, '__chrall'
+                '--phenoFile  ', num, '__regenie_phenofile.tsv  --phenoCol disease  ',
+                '--keep  ', num, '__sampleIDs_unrel.tsv  ',
+                '--anno-file  ', num, '__annotationfile_chrall.tsv ',
+                '--set-list  ', num, '__setfile_chrall.tsv ',
+                '--mask-def  ', num, '__maskdef_chrall.tsv ',
+                '--pThresh  0.99  --out ', num, '__chrall'
   ), intern=T))
 
   ## Process the REGENIE results
-  regenie <- fread(paste0(outcome_code, '__chrall_disease.regenie'), stringsAsFactors=F, data.table=F)
+  regenie <- fread(paste0(num, '__chrall_disease.regenie'), stringsAsFactors=F, data.table=F)
   regenie <- regenie[which(!grepl("singleton", regenie$ID)), ]
   regenie$ID <- gsub(".Mask1.0.5", "", regenie$ID)
   regenie$firth.n.sample.alt <- round(regenie$A1FREQ * 2 * regenie$N)
@@ -710,50 +710,50 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
         regenie_setfile <- rbind(regenie_setfile, set_inter)
         
         ## Use PLINK2 to filter to a PLINK file that has the needed variants and samples used in the discovery analysis
-        write.table(group$varid, file=paste0(outcome_code, '__varz_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
+        write.table(group$varid, file=paste0(num, '__varz_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
         try(system(paste0(plink_path, ' ',
                 '--', plinkfile_type, '  ', plinkfile, '  ',
                 '--max-maf ', max_maf, '  --max-mac ', max_mac, '  ',
-                '--keep  ', outcome_code, '__sampleIDs.tsv  ',
-                '--extract  ', outcome_code, '__varz_chr', chr, '.tsv  ',
-                '--make-bed --out  ', outcome_code, '__varz_chr', chr
+                '--keep  ', num, '__sampleIDs.tsv  ',
+                '--extract  ', num, '__varz_chr', chr, '.tsv  ',
+                '--make-bed --out  ', num, '__varz_chr', chr
         ), intern=T))
   }
 
   ## Run merge with PLINK
-  merge_list <- cbind(c(paste0(outcome_code, '__varz_chr', c(1:22), '.bed')),
-                    c(paste0(outcome_code, '__varz_chr', c(1:22), '.bim')),
-                    c(paste0(outcome_code, '__varz_chr', c(1:22), '.fam'))
+  merge_list <- cbind(c(paste0(num, '__varz_chr', c(1:22), '.bed')),
+                    c(paste0(num, '__varz_chr', c(1:22), '.bim')),
+                    c(paste0(num, '__varz_chr', c(1:22), '.fam'))
   )
 
-  write.table(merge_list, file=paste0(outcome_code, '__varz_mergelist.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
+  write.table(merge_list, file=paste0(num, '__varz_mergelist.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
   system(paste0('./plink ',
-                '--merge-list  ', outcome_code, '__varz_mergelist.tsv  ',
-                '--make-bed --out  ', outcome_code, '__varz_chrall  '
+                '--merge-list  ', num, '__varz_mergelist.tsv  ',
+                '--make-bed --out  ', num, '__varz_chrall  '
   ))
 
   ### Save annot information for REGENIE
-  write.table(regenie_annotationfile, file=paste0(outcome_code, '__annotationfile_chrall.tsv'), col.names=F, row.names=F, quote=F)
-  write.table(regenie_setfile, file=paste0(outcome_code, '__setfile_chrall.tsv'), col.names=F, row.names=F, quote=F)
-  write.table(c("Mask1 REGENIE"), file=paste0(outcome_code, '__maskdef_chrall.tsv'), col.names=F, row.names=F, quote=F)
+  write.table(regenie_annotationfile, file=paste0(num, '__annotationfile_chrall.tsv'), col.names=F, row.names=F, quote=F)
+  write.table(regenie_setfile, file=paste0(num, '__setfile_chrall.tsv'), col.names=F, row.names=F, quote=F)
+  write.table(c("Mask1 REGENIE"), file=paste0(num, '__maskdef_chrall.tsv'), col.names=F, row.names=F, quote=F)
 
   ## Run REGENIE for the MAF<1% thresholds; keep only the unrel samples
-  try(system(paste0('rm  ', outcome_code, '__chrall_disease.regenie')))
+  try(system(paste0('rm  ', num, '__chrall_disease.regenie')))
   try(system(paste0(regenie_path, ' ',
-                '--step 2  --bt  --ignore-pred  --bed  ', outcome_code, '__varz_chrall  ',
+                '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chrall  ',
                 '--firth --approx --firth-se --aaf-bins 0.5  --minMAC  1  ',
-                '--covarFile  ', outcome_code, '__regenie_phenofile.tsv   ',
+                '--covarFile  ', num, '__regenie_phenofile.tsv   ',
                 '--covarCol ', paste(fixef, collapse=","), '  --catCovarList  ', paste(catCovarList, collapse=","), '  ',
-                '--phenoFile  ', outcome_code, '__regenie_phenofile.tsv  --phenoCol disease  ',
-                '--keep  ', outcome_code, '__sampleIDs_unrel.tsv  ',
-                '--anno-file  ', outcome_code, '__annotationfile_chrall.tsv ',
-                '--set-list  ', outcome_code, '__setfile_chrall.tsv ',
-                '--mask-def  ', outcome_code, '__maskdef_chrall.tsv ',
-                '--pThresh  0.99  --out ', outcome_code, '__chrall'
+                '--phenoFile  ', num, '__regenie_phenofile.tsv  --phenoCol disease  ',
+                '--keep  ', num, '__sampleIDs_unrel.tsv  ',
+                '--anno-file  ', num, '__annotationfile_chrall.tsv ',
+                '--set-list  ', num, '__setfile_chrall.tsv ',
+                '--mask-def  ', num, '__maskdef_chrall.tsv ',
+                '--pThresh  0.99  --out ', num, '__chrall'
   ), intern=T))
 
   ## Process the REGENIE results
-  regenie <- fread(paste0(outcome_code, '__chrall_disease.regenie'), stringsAsFactors=F, data.table=F)
+  regenie <- fread(paste0(num, '__chrall_disease.regenie'), stringsAsFactors=F, data.table=F)
   regenie <- regenie[which(!grepl("singleton", regenie$ID)), ]
   regenie$ID <- gsub(".Mask1.0.5", "", regenie$ID)
   regenie$firth.n.sample.alt <- round(regenie$A1FREQ * 2 * regenie$N)
