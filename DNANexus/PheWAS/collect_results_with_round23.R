@@ -85,10 +85,10 @@ files3_4 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/roun
 maf0.01_files <- c(files3_1, files3_2, files3_3, files3_4)
 maf0.01_nfilesets <- 4
 
-if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all(file.exists(maf0.01_files)))){
-    cat("\n\n\n\n\nWARNING: not all required files found!!! Stopping.\n\n\n\n")
-}else{
-    cat('\tall results files found. Reading in and merging...\n\n')
+#if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all(file.exists(maf0.01_files)))){
+#    cat("\n\n\n\n\nWARNING: not all required files found!!! Stopping.\n\n\n\n")
+#}else{
+#    cat('\tall results files found. Reading in and merging...\n\n')
     cat('\t\tMAF<0.1%...\n\n')
     #MAF<0.1%
     inter <- summarydata(files=maf0.001_files, chrs=rep(c(1:22),maf0.001_nfilesets), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
@@ -675,5 +675,5 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   write.table(rawassoc_res, file=paste0('../summary_results_phewas_all_tests_phecode', num, '_with_firths_results.tsv'),
                         col.names=T, row.names=F, quote=F, sep='\t', append=F)
 
-}
+#}
 #}
