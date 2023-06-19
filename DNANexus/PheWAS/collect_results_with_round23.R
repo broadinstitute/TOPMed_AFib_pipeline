@@ -33,7 +33,7 @@ overv <- overv[overv$included_in_mgb_phewas=="yes", ]
 ## Find chunk to run
 #splitz <- split(c(1:nrow(key)), ceiling(seq_along(c(1:nrow(key)))/chunk_size))
 #key <- key[splitz[[chunk_num]], ]
-key <- key[chunk_num, ]
+#key <- key[chunk_num, ]
 i <- chunk_num
 
 ##### Check outfiles exist #####
