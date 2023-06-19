@@ -184,6 +184,7 @@ maf0.01_files <- c(files3_1, files3_2, files3_3, files3_4)
 maf0.01_nfilesets <- 4
 
 if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all(file.exists(maf0.01_files)))){
+    cat(paste0(which(!file.exists(c(maf0.001_files, maf0.00001_files, maf0.01_files))), "\n")
     cat("\n\n\n\n\nWARNING: not all required files found!!! Stopping.\n\n\n\n")
 }else{
     cat('\tall results files found. Reading in and merging...\n\n')
