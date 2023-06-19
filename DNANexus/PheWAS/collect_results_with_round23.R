@@ -125,16 +125,18 @@ for(chr in c(1:22)){
     try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/round3/lowmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.01_round3_lowmem.RData")))
     try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/round3/highmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.01_round3_highmem.RData")))
     try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/round3/highhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.01_round3_highhighmem.RData")))
-    try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/round3/veryhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.01_round3_veryhighmem.RData")))
+    if(chr %in% c(1:20, 22)){
+        try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/round3/veryhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.01_round3_veryhighmem.RData")))
+    }
 }
 #files3_1 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round3/lowmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.01_round3_lowmem.RData")
 #files3_2 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round3/highmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.01_round3_highmem.RData")
 #files3_3 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round3/highhighmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.01_round3_highhighmem.RData")
-#files3_4 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round3/veryhighmem/chr", c(1:22), '/', num, "_results_chr", c(1:20, 22), "_maf0.01_round3_veryhighmem.RData")
+#files3_4 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round3/veryhighmem/chr", c(1:20, 22), '/', num, "_results_chr", c(1:20, 22), "_maf0.01_round3_veryhighmem.RData")
 files3_1 <- paste0(num, "_results_chr", c(1:22), "_maf0.01_round3_lowmem.RData")
 files3_2 <- paste0(num, "_results_chr", c(1:22), "_maf0.01_round3_highmem.RData")
 files3_3 <- paste0(num, "_results_chr", c(1:22), "_maf0.01_round3_highhighmem.RData")
-files3_4 <- paste0(num, "_results_chr", c(1:22), "_maf0.01_round3_veryhighmem.RData")
+files3_4 <- paste0(num, "_results_chr", c(1:20, 22), "_maf0.01_round3_veryhighmem.RData")
 maf0.01_files <- c(files3_1, files3_2, files3_3, files3_4)
 maf0.01_nfilesets <- 4
 
@@ -175,7 +177,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
     
     cat('\t\tMAF<1%...\n\n')
     #MAF<1%
-    inter3 <- summarydata(files=maf0.01_files, chrs=c(c(1:22), c(1:22), c(1:22), c(1:22)), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
+    inter3 <- summarydata(files=maf0.01_files, chrs=c(c(1:22), c(1:22), c(1:22), c(1:20, 22)), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
     inter3 <- inter3[inter3$n.sample.alt>=10, ]
     inter3$category <- category
     inter3$gene <- rownames(inter3)
