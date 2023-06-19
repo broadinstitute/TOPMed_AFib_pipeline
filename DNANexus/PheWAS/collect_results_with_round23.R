@@ -51,6 +51,7 @@ cat('\n\n\nBusy with phenotype', num, 'which is', phenoname, 'and task', i, 'out
 # Result files
 ######################
 
+cat('\tchecking if results files are present...\n\n')
 #MAF<0.1% files
 files1_1 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round2/lowmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.001_round2_lowmem.RData")
 files1_2 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round2/highmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.001_round2_highmem.RData")
@@ -87,6 +88,8 @@ maf0.01_nfilesets <- 4
 if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all(file.exists(maf0.01_files)))){
     cat("\n\n\n\n\nWARNING: not all required files found!!! Stopping.\n\n\n\n")
 }else{
+    cat('\tall results files found. Reading in and merging...\n\n')
+    cat('\t\tMAF<0.1%...\n\n')
     #MAF<0.1%
     inter <- summarydata(files=maf0.001_files, chrs=rep(c(1:22),maf0.001_nfilesets), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
     inter <- inter[inter$n.sample.alt>=10, ]
@@ -95,6 +98,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
     inter$gene <- sub("_", "__", inter$gene)
     inter$gene <- sub("_gnomAD_POPMAX0.001", "_POPMAX0.001", inter$gene)
     
+    cat('\t\tMAF<0.001%...\n\n')
     #MAF<0.001%
     inter2 <- summarydata(files=maf0.00001_files, chrs=rep(c(1:22),maf0.00001_nfilesets), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
     inter2 <- inter2[inter2$n.sample.alt>=10, ]
@@ -115,6 +119,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
       if(length(rm)>0){inter2 <- inter2[-rm, ]}
     }
     
+    cat('\t\tMAF<1%...\n\n')
     #MAF<1%
     inter3 <- summarydata(files=maf0.01_files, chrs=rep(c(1:22),maf0.01_nfilesets), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
     inter3 <- inter3[inter3$n.sample.alt>=10, ]
@@ -134,6 +139,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
     write.table(rawassoc_res, file=paste0('../summary_results_phewas_all_tests_phecode', num, '.tsv'), col.names=F, row.names=F, quote=F, sep='\t', append=T)
 
     # Create Cauchy file; run first only for truly rare variant masks
+    cat('\trunning Cauchy combinations for MAF<0.1% and 0.001% masks...\n\n')
     inter <- inter[inter$n.sample.alt>=20, ]
     inter1 <- inter[inter$mask=="hclof_noflag_POPMAX0.001", c("phenotype", "cases", "controls", "gene", "Score", "Score.SE", "Est", "Est.SE", "SPA.pval")]
     colnames(inter1)[c(5:9)] <- paste0(colnames(inter1)[c(5:9)], "__hclof_noflag_POPMAX0.001")
@@ -157,6 +163,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
     inter1$P_cauchy  <- apply(inter1[,colz], 1, CCT)
 
     # Including MAF<1%
+    cat('\trunning Cauchy combinations including also the MAF<1% masks...\n\n')
     inter2 <- inter[inter$mask=="hclof_noflag_POPMAX0.01", c("gene", "Score", "Score.SE", "Est", "Est.SE", "SPA.pval")]
     colnames(inter2)[c(2:6)] <- paste0(colnames(inter2)[c(2:6)], "__hclof_noflag_POPMAX0.01")
     inter3 <- inter[inter$mask=="hclof_noflag_missense0.8_POPMAX0.01", c("gene", "Score", "Score.SE", "Est", "Est.SE", "SPA.pval")]
@@ -179,6 +186,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   # Build phenotype files 
   #############################
 
+  cat('\tcreating phenotype and helper files for analysis...\n\n')
   # Example phenotype file from the same phenotype freeze
   exdat0 <- fread("/mnt/project/sjj/projects/phewas/v1/data/pheno/Hypertrophic_cardiomyopathy.tab.tsv.gz",header=T,data.table=F)
   linker <- fread("/mnt/project/sjj/projects/phewas/v1/data/pheno/ukb_app17488_app7089_link.csv",header=T,data.table=F,sep=",")
@@ -332,6 +340,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   ##########################################
 
   ###### Identify tests to rerun
+  cat('\tRunning PLINK extracting and REGENIE effect size estimation...\n\n')
   ### identify based on whetehr SPA was applied (if SPA was applied, then the nominal P<0.05); also rerun P<0.1 with beta>0
   assocs <- rawassoc_res[(rawassoc_res$SPA.converged & !is.na(rawassoc_res$SPA.converged)) | (rawassoc_res$SPA.pval<0.1 & rawassoc_res$Est>0), ]
   gene_masks <- paste0(assocs$gene, "__", assocs$mask)
@@ -343,7 +352,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   #Create set files for regenie; filter PLINK files to needed variants only!
   regenie_setfile <- NULL
   regenie_annotationfile <- NULL
-  cat("\n\n\nExtracting variant data from PLINK files for MAF<0.1% threshold ...\n")
+  cat("\t\textracting variant data from PLINK files for MAF<0.1% threshold ...\n")
 
   for(chr in c(1:22)){
         cat("\tbusy with chromosome ", chr, "...\n")
@@ -450,7 +459,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   #Create set files for regenie; filter PLINK files to needed variants only!
   regenie_setfile <- NULL
   regenie_annotationfile <- NULL
-  cat("Extracting variant data from PLINK files for MAF<0.001% threshold ...\n")
+  cat("\t\textracting variant data from PLINK files for MAF<0.001% threshold ...\n")
   for(chr in c(1:22)){
         cat("\tbusy with chromosome ", chr, "...\n")
         plink_path <- './plink2'
@@ -556,7 +565,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   #Create set files for regenie; filter PLINK files to needed variants only!
   regenie_setfile <- NULL
   regenie_annotationfile <- NULL
-  cat("Extracting variant data from PLINK files for MAF<1% threshold ...\n")
+  cat("\t\textracting variant data from PLINK files for MAF<1% threshold ...\n")
   for(chr in c(1:22)){
         cat("\tbusy with chromosome ", chr, "...\n")
         plink_path <- './plink2'
@@ -659,6 +668,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   #########################
   # Merge and save results
   ##########################
+  cat('\tSaving final results...\n\n')
   rawassoc_res$ID  <- paste0(rawassoc_res$gene, "__", rawassoc_res$mask)
   rawassoc_res  <- merge(rawassoc_res, regenie_res_tot, by="ID", all=T)
 
