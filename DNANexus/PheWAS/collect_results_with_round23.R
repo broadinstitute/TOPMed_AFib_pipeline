@@ -266,7 +266,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   #length(which(exdat1$sample_id %in% raw$sample_id))
 
   # Some additional phenotypes were manually curated by me; will add if necessary
-  if(chunk_num %in% c(550:560)){
+  if(chunk_num %in% c((550-14):(560-14))){
     extra_phens <- fread('/mnt/project/sjj/projects/phewas/v1/data/pheno/ukbb_missing_phecodes_additionally_curated.tsv', stringsAsFactors=F, data.table=F)  
     phen0 <- merge(phen0, extra_phens, by.x="app17488", by.y="ID", all.x=T)
   }
@@ -285,7 +285,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
 
   # Define the disease variable based on the disease files
   phen0$disease <- 0
-  if(chunk_num %in% c(550:560)){
+  if(chunk_num %in% c((550-14):(560-14))){
     phen0$disease <- phen0[,paste0('phecode_', jd_code)]
   }else{
     # James' IDs are coded for the other application
