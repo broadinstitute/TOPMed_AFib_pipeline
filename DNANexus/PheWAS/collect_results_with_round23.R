@@ -406,11 +406,14 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   #nullmodel file to extract covariates; categorial variables need to be converted 
   nullmod <- get(load(paste0('/mnt/project/sjj/projects/phewas/v1/nullmodels/', jd_code, '_nullmodel.RData')))
   fixef <- colnames(nullmod$betaCov)[c(2:ncol(nullmod$betaCov))]
+  catCovarList <- NULL
   if(any(grepl("Gender", fixef))){
       fixef[which(grepl("Gender", fixef))] <- "Gender"
+      catCovarList <- c(catCovarList, "Inferred_Gender")
   }
   if(any(grepl("batch", fixef))){
       fixef[which(grepl("batch", fixef))] <- "batch"
+      catCovarList <- c(catCovarList, "batch")
   }
   fixef <- unique(fixef)
   cat("\t\tcovariates of interest:\n")
