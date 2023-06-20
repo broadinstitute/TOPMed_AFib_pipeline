@@ -419,7 +419,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
     
   # filter to samples used in GENESIS nullmod; this is important for variant filtering in PLINK
   nullmod_samples <- nullmod$sample.id
-  phen0 <- phen0[phen0$sample.id %in% nullmod_samples, ]
+  phen0 <- phen0[phen0$app17488 %in% nullmod_samples, ]
   write.table(cbind(phen0$app17488,phen0$app17488), file=paste0(num, '__sampleIDs.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
   phen0 <- phen0[ ,c(1, 1, c(2:(ncol(phen0))))]
   colnames(phen0)[c(1,2)] <- c("FID", "IID")
