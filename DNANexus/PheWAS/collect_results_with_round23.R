@@ -413,7 +413,10 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
       fixef[which(grepl("batch", fixef))] <- "batch"
   }
   fixef <- unique(fixef)
-
+  cat("\t\tcovariates of interest:\n")
+  print(fixef)
+  cat("\n\n")
+    
   # filter to samples used in GENESIS nullmod; this is important for variant filtering in PLINK
   nullmod_samples <- nullmod$sample.id
   phen0 <- phen0[phen0$sample.id %in% nullmod_samples, ]
@@ -422,6 +425,9 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   colnames(phen0)[c(1,2)] <- c("FID", "IID")
   write.table(phen0, file=paste0(num, '__regenie_phenofile.tsv'), col.names=T, row.names=F, quote=F, sep='\t')
   write.table(phen0[phen0$POP_tight=="EUR", c("FID", "IID")], file=paste0(num, '__sampleIDs_EUR.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
+  cat(paste0("\t\ttotal sample size is: ", nrow(phen0), "\n"))
+  cat(paste0("\t\tn cases is: ", nrow(phen0[phen0$disease==1, ]), "\n"))
+  cat(paste0("\t\tn controls is: ", nrow(phen0[phen0$disease==0, ]), "\n\n\n"))
 
   # For running Firth's we need to also define unrelated samples for running in REGENIE...
   system('dx download exome-seq:/exome_450k_plink/PCA/ukbb_450k_unrelatedsamples.tsv')
@@ -433,6 +439,9 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   write.table(unrel_samples, file=paste0(num, '__sampleIDs_unrel.tsv'), col.names=T, row.names=F, quote=F, sep='\t')
   firth.n.cases <- nrow(phen_unrel[phen_unrel$disease==1, ])
   firth.n.controls <- nrow(phen_unrel[phen_unrel$disease==0, ])
+  cat(paste0("\t\tunrelated sample size is: ", nrow(phen_unrel), "\n"))
+  cat(paste0("\t\tn cases is: ", firth.n.cases, "\n"))
+  cat(paste0("\t\tn controls is: ", firth.n.controls, "\n\n\n"))
 
   ##########################################
   ## Run PLINK -> REGENIE Firth pipeline
