@@ -470,13 +470,16 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
         files1_3 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_highhighmem.RData")
         files1_4 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_veryhighmem.RData")
         files1_5 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_popmax0.001.RData")
-    
-        group <- bind_rows(get(load(files1_1)), 
-                           get(load(files1_2)),
-                           get(load(files1_3)),
-                           get(load(files1_4)),
-                           get(load(files1_5))
-                          )
+
+        f1 <- get(load(files1_1))
+        f2 <- get(load(files1_2)) 
+        f3 <- get(load(files1_3)) 
+        f4 <- get(load(files1_4)) 
+        f5 <- get(load(files1_5))
+        class(f1$pos) <- class(f2$pos) <- class(f3$pos) <- class(f4$pos) <- class(f5$pos) <- "numeric"
+        class(f1$chr) <- class(f2$chr) <- class(f3$chr) <- class(f4$chr) <- class(f5$chr) <- "numeric"
+        group <- bind_rows(f1, f2, f3, f4, f5)
+
         group$varid <- paste0(group$chr, ":", group$pos, ":", group$ref, ":", group$alt)
         group$group_id <- sub("_", "__", group$group_id)
         group$group_id <- sub("_gnomAD_POPMAX0.001", "_POPMAX0.001", group$group_id)
@@ -577,12 +580,15 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
         files2_4 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_veryhighmem.RData")
         files2_5 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/ukbb_phewas_v1_groupingfile_c", chr, "_missense0.5_popmax0.00001_correct.RData")
 
-        group <- bind_rows(get(load(files2_1)), 
-                           get(load(files2_2)),
-                           get(load(files2_3)),
-                           get(load(files2_4)),
-                           get(load(files2_5))
-                          )
+        f1 <- get(load(files2_1))
+        f2 <- get(load(files2_2)) 
+        f3 <- get(load(files2_3)) 
+        f4 <- get(load(files2_4)) 
+        f5 <- get(load(files2_5))
+        class(f1$pos) <- class(f2$pos) <- class(f3$pos) <- class(f4$pos) <- class(f5$pos) <- "numeric"
+        class(f1$chr) <- class(f2$chr) <- class(f3$chr) <- class(f4$chr) <- class(f5$chr) <- "numeric"
+        group <- bind_rows(f1, f2, f3, f4, f5)
+
         group$varid <- paste0(group$chr, ":", group$pos, ":", group$ref, ":", group$alt)
         group$group_id <- sub("_", "__", group$group_id)
         group$group_id <- sub("_gnomAD_POPMAX0.00001", "_POPMAX0.00001", group$group_id)
@@ -682,11 +688,14 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
         files3_3 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_highhighmem.RData")
         files3_4 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_veryhighmem.RData")
 
-        group <- bind_rows(get(load(files3_1)), 
-                           get(load(files3_2)),
-                           get(load(files3_3)),
-                           get(load(files3_4))
-                          )
+        f1 <- get(load(files3_1))
+        f2 <- get(load(files3_2)) 
+        f3 <- get(load(files3_3)) 
+        f4 <- get(load(files3_4)) 
+        class(f1$pos) <- class(f2$pos) <- class(f3$pos) <- class(f4$pos) <- "numeric"
+        class(f1$chr) <- class(f2$chr) <- class(f3$chr) <- class(f4$chr) <- "numeric"
+        group <- bind_rows(f1, f2, f3, f4)
+
         group$varid <- paste0(group$chr, ":", group$pos, ":", group$ref, ":", group$alt)
         group$group_id <- sub("_", "__", group$group_id)
         group$group_id <- sub("_gnomAD_POPMAX0.01", "_POPMAX0.01", group$group_id)
