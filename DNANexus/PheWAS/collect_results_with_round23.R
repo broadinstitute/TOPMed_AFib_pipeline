@@ -544,6 +544,12 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
 
   ## Run REGENIE for the MAF<0.1% thresholds; keep only the unrel samples
   try(system(paste0('rm  ', num, '__chrall_disease.regenie')))
+  try(system(paste0("head ", num, '__regenie_phenofile.tsv')))
+  try(system(paste0("head ", num, '__sampleIDs_unrel.tsv')))
+  try(system(paste0("head ", num, '__annotationfile_chrall.tsv')))
+  try(system(paste0("head ", num, '__annotationfile_chrall.tsv')))
+  try(system(paste0("head ", num, '__setfile_chrall.tsv')))
+  try(system(paste0("head ", num, '__maskdef_chrall.tsv')))
   try(system(paste0(regenie_path, ' ',
                 '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chrall  ',
                 '--firth --approx --firth-se --aaf-bins 0.5  --minMAC  1  ',
@@ -555,7 +561,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
                 '--set-list  ', num, '__setfile_chrall.tsv ',
                 '--mask-def  ', num, '__maskdef_chrall.tsv ',
                 '--pThresh  0.99  --out ', num, '__chrall'
-  ), intern=T))
+  ), intern=FALSE))
 
   ## Process the REGENIE results
   regenie <- fread(paste0(num, '__chrall_disease.regenie'), stringsAsFactors=F, data.table=F)
