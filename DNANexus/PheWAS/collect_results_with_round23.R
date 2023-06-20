@@ -371,14 +371,12 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
     phen0 <- merge(phen0, extra_phens, by.x="app17488", by.y="ID", all.x=T)
   }
   
-  system('dx download exome-seq:/exome_450k_plink/PCA/ukb23156_KING_GRM_sparseto3rddegree_scaledby2.RData')
-  mat <- get(load('ukb23156_KING_GRM_sparseto3rddegree_scaledby2.RData'))
-  colnames(mat) <- gsub("_.*", "", colnames(mat))
-  rownames(mat) <- gsub("_.*", "", rownames(mat))
-  mat[1:10,1:10]
-  save(mat, file='ukb23156_KING_GRM_sparseto3rddegree_scaledby2.RData')
-  system('dx download exome-seq:/exome_450k_plink/PCA/ukbb_450k_unrelatedsamples.tsv')
-  unrel <- fread('ukbb_450k_unrelatedsamples.tsv', stringsAsFactors = F, data.table=F)
+  #system('dx download exome-seq:/exome_450k_plink/PCA/ukb23156_KING_GRM_sparseto3rddegree_scaledby2.RData')
+  #mat <- get(load('ukb23156_KING_GRM_sparseto3rddegree_scaledby2.RData'))
+  #colnames(mat) <- gsub("_.*", "", colnames(mat))
+  #rownames(mat) <- gsub("_.*", "", rownames(mat))
+  #mat[1:10,1:10]
+  #save(mat, file='ukb23156_KING_GRM_sparseto3rddegree_scaledby2.RData')
 
   jd_code <- overv[overv$meaning==phenoname, 'jd_ukbb_code']
   raw <- raw[raw$jd_code ==jd_code, ]
@@ -425,8 +423,8 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   write.table(phen0[phen0$POP_tight=="EUR", c("FID", "IID")], file=paste0(num, '__sampleIDs_EUR.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
 
   # For running Firth's we need to also define unrelated samples for running in REGENIE...
-  relat <- fread('/mnt/project/exome_450k_plink/PCA/ukbb_450k_unrelatedsamples.tsv', stringsAsFactors = F, data.table=F)
-  unrel <- fread(relat, stringsAsFactors=F, data.table=F)
+  system('dx download exome-seq:/exome_450k_plink/PCA/ukbb_450k_unrelatedsamples.tsv')
+  unrel <- fread('ukbb_450k_unrelatedsamples.tsv', stringsAsFactors = F, data.table=F)
   colnames(unrel) <- "sample.id"
   phen_unrel <- phen[phen0$IID %in% unrel$sample.id, ]
   unrel_samples <- cbind(phen_unrel$FID,phen_unrel$IID)
