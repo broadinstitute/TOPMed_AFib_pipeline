@@ -458,8 +458,8 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
         plinkfile_type <- "pfile"
         max_maf=0.001
         max_mac='100000000'
-        carz <- NULL
-        phen1 <- phen
+        #carz <- NULL
+        #phen1 <- phen0
 
         ##Use the grouping files used for the analyses
         files1_1 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_lowmem.RData")
@@ -564,8 +564,8 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
         plinkfile_type <- "pfile"
         max_maf=0.00001
         max_mac=9
-        carz <- NULL
-        phen1 <- phen
+        #carz <- NULL
+        #phen1 <- phen0
 
         ## Use the grouping files
         files2_1 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_lowmem.RData")
@@ -670,8 +670,8 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
         plinkfile_type <- "pfile"
         max_maf=0.01
         max_mac=Inf
-        carz <- NULL
-        phen1 <- phen
+        #carz <- NULL
+        #phen1 <- phen0
 
         ## Use the grouping files
         files3_1 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_lowmem.RData")
