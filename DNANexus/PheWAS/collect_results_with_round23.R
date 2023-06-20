@@ -17,7 +17,7 @@ source("UKBB_200KWES_CVD/GENESIS_adaptation_source.R")
 source("UKBB_200KWES_CVD/Cauchy_test.R")
 install.packages("R.utils")
 library(data.table)
-libary(dplyr)
+library(dplyr)
 library(tidyr)
 
 #############################
