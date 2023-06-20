@@ -424,7 +424,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   system('dx download exome-seq:/exome_450k_plink/PCA/ukbb_450k_unrelatedsamples.tsv')
   unrel <- fread('ukbb_450k_unrelatedsamples.tsv', stringsAsFactors = F, data.table=F)
   colnames(unrel) <- "sample.id"
-  phen_unrel <- phen[phen0$IID %in% unrel$sample.id, ]
+  phen_unrel <- phen0[phen0$IID %in% unrel$sample.id, ]
   unrel_samples <- cbind(phen_unrel$FID,phen_unrel$IID)
   colnames(unrel_samples) <- c("FID", "IID")
   write.table(unrel_samples, file=paste0(num, '__sampleIDs_unrel.tsv'), col.names=T, row.names=F, quote=F, sep='\t')
