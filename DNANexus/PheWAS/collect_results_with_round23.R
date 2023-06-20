@@ -409,7 +409,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   catCovarList <- NULL
   if(any(grepl("Gender", fixef))){
       fixef[which(grepl("Gender", fixef))] <- "Gender"
-      catCovarList <- c(catCovarList, "Inferred_Gender")
+      catCovarList <- c(catCovarList, "Gender")
   }
   if(any(grepl("batch", fixef))){
       fixef[which(grepl("batch", fixef))] <- "batch"
