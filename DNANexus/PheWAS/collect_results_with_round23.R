@@ -462,7 +462,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   ######### MAF<0.1% masks
   #Create set files for regenie; filter PLINK files to needed variants only!
   cat("\t\textracting variant data from PLINK files for MAF<0.1% threshold ...\n")
-
+  regenie <- NULL
   for(chr in c(1:22)){
         regenie_setfile <- NULL
         regenie_annotationfile <- NULL
@@ -498,48 +498,49 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
 
         ## Filter to the masks we want to test
         group <- group[group$group_id %in% gene_masks, ]
-        #group <- group[,c("varid", "alt", "group_id")]
-        group$varid <- paste0("chr", group$varid)
+        if(nrow(group)>0){
+            #group <- group[,c("varid", "alt", "group_id")]
+            group$varid <- paste0("chr", group$varid)
 
-        ## Make part of REGENIE grouping files; collect groupings; will use later on
-        group$pseudo_annot <- "REGENIE"
-        #regenie_annotationfile <- rbind(regenie_annotationfile, group[,c("varid", "group_id", "pseudo_annot")])
-        regenie_annotationfile <- group[,c("varid", "group_id", "pseudo_annot")]
-        set_inter <- NULL
-        for(gr in unique(group$group_id)){
-                gr_inter <- group[group$group_id==gr, ]
+            ## Make part of REGENIE grouping files; collect groupings; will use later on
+            group$pseudo_annot <- "REGENIE"
+            #regenie_annotationfile <- rbind(regenie_annotationfile, group[,c("varid", "group_id", "pseudo_annot")])
+            regenie_annotationfile <- group[,c("varid", "group_id", "pseudo_annot")]
+            set_inter <- NULL
+            for(gr in unique(group$group_id)){
+                 gr_inter <- group[group$group_id==gr, ]
                 chromosome <- gr_inter[1,'chr']
                 position <- gr_inter[1,'pos']
                 collapse <- paste(gr_inter$varid, collapse=",")
                 set_inter <- rbind(set_inter, c(gr, chromosome, position, collapse))
-        }
-        #regenie_setfile <- rbind(regenie_setfile, set_inter)
-        regenie_setfile <- set_inter
+            }
+            #regenie_setfile <- rbind(regenie_setfile, set_inter)
+            regenie_setfile <- set_inter
       
-        ## Use PLINK2 to filter to a PLINK file that has the needed variants and samples used in the discovery analysis, so also correct MAF filters can be applied!
-        write.table(group$varid, file=paste0(num, '__varz_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
-        try(system(paste0(plink_path, ' ',
+            ## Use PLINK2 to filter to a PLINK file that has the needed variants and samples used in the discovery analysis, so also correct MAF filters can be applied!
+            write.table(group$varid, file=paste0(num, '__varz_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
+            try(system(paste0(plink_path, ' ',
                 '--', plinkfile_type, '  ', plinkfile, '  ',
                 '--max-maf ', max_maf, '  --max-mac ', max_mac, '  ',
                 '--keep  ', num, '__sampleIDs.tsv  ',
                 '--extract  ', num, '__varz_chr', chr, '.tsv  ',
                 '--make-bed --out  ', num, '__varz_chr', chr
-        ), intern=T))
+            ), intern=T))
   
-        ### Save annot information for REGENIE
-        write.table(regenie_annotationfile, file=paste0(num, '__annotationfile_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
-        write.table(regenie_setfile, file=paste0(num, '__setfile_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
-        write.table(c("Mask1 REGENIE"), file=paste0(num, '__maskdef_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
+            ### Save annot information for REGENIE
+            write.table(regenie_annotationfile, file=paste0(num, '__annotationfile_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
+            write.table(regenie_setfile, file=paste0(num, '__setfile_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
+            write.table(c("Mask1 REGENIE"), file=paste0(num, '__maskdef_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
 
-        ## Run REGENIE for the MAF<0.1% thresholds; keep only the unrel samples
-        try(system(paste0('rm  ', num, '__chr', chr, '_disease.regenie')))
-        try(system(paste0("head ", num, '__regenie_phenofile.tsv')))
-        try(system(paste0("head ", num, '__sampleIDs_unrel.tsv')))
-        try(system(paste0("head ", num, '__annotationfile_chr', chr, '.tsv')))
-        try(system(paste0("head ", num, '__annotationfile_chr', chr, '.tsv')))
-        try(system(paste0("head ", num, '__setfile_chr', chr, '.tsv')))
-        try(system(paste0("head ", num, '__maskdef_chr', chr, '.tsv')))
-        try(system(paste0(regenie_path, ' ',
+            ## Run REGENIE for the MAF<0.1% thresholds; keep only the unrel samples
+            try(system(paste0('rm  ', num, '__chr', chr, '_disease.regenie')))
+            try(system(paste0("head ", num, '__regenie_phenofile.tsv')))
+            try(system(paste0("head ", num, '__sampleIDs_unrel.tsv')))
+            try(system(paste0("head ", num, '__annotationfile_chr', chr, '.tsv')))
+            try(system(paste0("head ", num, '__annotationfile_chr', chr, '.tsv')))
+            try(system(paste0("head ", num, '__setfile_chr', chr, '.tsv')))
+            try(system(paste0("head ", num, '__maskdef_chr', chr, '.tsv')))
+            try(system(paste0(regenie_path, ' ',
                 '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chr', chr, ' ',
                 '--firth --approx --firth-se --aaf-bins 0.5  --minMAC  1  ',
                 '--covarFile  ', num, '__regenie_phenofile.tsv   ',
@@ -550,18 +551,16 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
                 '--set-list  ', num, '__setfile_chr', chr, '.tsv ',
                 '--mask-def  ', num, '__maskdef_chr', chr, '.tsv ',
                 '--pThresh  0.99  --out ', num, '__chr', chr, ' '
-      ), intern=FALSE))
-      try(system(paste0("rm  ", num, '__annotationfile_chr', chr, '.tsv ')))
-      try(system(paste0("rm  ", num, '__setfile_chr', chr, '.tsv')))
-      try(system(paste0("rm  ", num, '__maskdef_chr', chr, '.tsv')))
-      try(system(paste0("rm  ", num, '__varz_chr', chr, '.*')))
+          ), intern=FALSE))
+          try(system(paste0("rm  ", num, '__annotationfile_chr', chr, '.tsv ')))
+          try(system(paste0("rm  ", num, '__setfile_chr', chr, '.tsv')))
+          try(system(paste0("rm  ", num, '__maskdef_chr', chr, '.tsv')))
+          try(system(paste0("rm  ", num, '__varz_chr', chr, '.*')))
+
+          regenie <- bind_rows(regenie, fread(paste0(num, '__chr', chr, '_disease.regenie'), stringsAsFactors=F, data.table=F))
+        }
   }
-  
-  ## Process the REGENIE results
-  regenie <- NULL
-  for(chr in c(1:22)){
-    regenie <- bind_rows(regenie, fread(paste0(num, '__chr', chr, '_disease.regenie'), stringsAsFactors=F, data.table=F))
-  }
+
   regenie <- regenie[which(!grepl("singleton", regenie$ID)), ]
   regenie$ID <- gsub(".Mask1.0.5", "", regenie$ID)
   regenie$firth.n.sample.alt <- round(regenie$A1FREQ * 2 * regenie$N)
@@ -575,6 +574,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   ######### MAF<0.0001% masks
   #Create set files for regenie; filter PLINK files to needed variants only!
   cat("\t\textracting variant data from PLINK files for MAF<0.001% threshold ...\n")
+  regenie <- NULL
   for(chr in c(1:22)){
         regenie_setfile <- NULL
         regenie_annotationfile <- NULL
@@ -610,40 +610,41 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
 
         ## Filter to the masks we want to test
         group <- group[group$group_id %in% gene_masks, ]
-        #group <- group[,c("varid", "alt", "group_id")]
-        group$varid <- paste0("chr", group$varid)
+        if(nrow(group)>0){
+            #group <- group[,c("varid", "alt", "group_id")]
+            group$varid <- paste0("chr", group$varid)
 
-        ## Make part of REGENIE grouping files; collect groupings; will use later on
-        group$pseudo_annot <- "REGENIE"
-        regenie_annotationfile <- group[,c("varid", "group_id", "pseudo_annot")]
-        set_inter <- NULL
-        for(gr in unique(group$group_id)){
+            ## Make part of REGENIE grouping files; collect groupings; will use later on
+            group$pseudo_annot <- "REGENIE"
+            regenie_annotationfile <- group[,c("varid", "group_id", "pseudo_annot")]
+            set_inter <- NULL
+            for(gr in unique(group$group_id)){
                 gr_inter <- group[group$group_id==gr, ]
                 chromosome <- gr_inter[1,'chr']
                 position <- gr_inter[1,'pos']
                 collapse <- paste(gr_inter$varid, collapse=",")
                 set_inter <- rbind(set_inter, c(gr, chromosome, position, collapse))
-        }
-        regenie_setfile <- set_inter
+            }
+            regenie_setfile <- set_inter
         
-        ## Use PLINK2 to filter to a PLINK file that has the needed variants and samples used in the discovery analysis; also needed to apply correct filters!
-        write.table(group$varid, file=paste0(num, '__varz_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
-        try(system(paste0(plink_path, ' ',
+            ## Use PLINK2 to filter to a PLINK file that has the needed variants and samples used in the discovery analysis; also needed to apply correct filters!
+            write.table(group$varid, file=paste0(num, '__varz_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
+            try(system(paste0(plink_path, ' ',
                 '--', plinkfile_type, '  ', plinkfile, '  ',
                 '--max-maf ', max_maf, '  --max-mac ', max_mac, '  ',
                 '--keep  ', num, '__sampleIDs.tsv  ',
                 '--extract  ', num, '__varz_chr', chr, '.tsv  ',
                 '--make-bed --out  ', num, '__varz_chr', chr
-        ), intern=T))
+            ), intern=T))
     
-        ### Save annot information for REGENIE
-        write.table(regenie_annotationfile, file=paste0(num, '__annotationfile_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
-        write.table(regenie_setfile, file=paste0(num, '__setfile_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
-        write.table(c("Mask1 REGENIE"), file=paste0(num, '__maskdef_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
+            ### Save annot information for REGENIE
+            write.table(regenie_annotationfile, file=paste0(num, '__annotationfile_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
+            write.table(regenie_setfile, file=paste0(num, '__setfile_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
+            write.table(c("Mask1 REGENIE"), file=paste0(num, '__maskdef_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
 
-        ## Run REGENIE for the MAF<0.001% thresholds; keep only the unrel samples
-        try(system(paste0('rm  ', num, '__chr', chr, '_disease.regenie')))
-        try(system(paste0(regenie_path, ' ',
+            ## Run REGENIE for the MAF<0.001% thresholds; keep only the unrel samples
+            try(system(paste0('rm  ', num, '__chr', chr, '_disease.regenie')))
+            try(system(paste0(regenie_path, ' ',
                 '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chr', chr, '  ',
                 '--firth --approx --firth-se --aaf-bins 0.5  --minMAC  1  ',
                 '--covarFile  ', num, '__regenie_phenofile.tsv   ',
@@ -654,18 +655,16 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
                 '--set-list  ', num, '__setfile_chr', chr, '.tsv ',
                 '--mask-def  ', num, '__maskdef_chr', chr, '.tsv ',
                 '--pThresh  0.99  --out ', num, '__chr'
-        ), intern=FALSE))
-        try(system(paste0("rm  ", num, '__annotationfile_chr', chr, '.tsv ')))
-        try(system(paste0("rm  ", num, '__setfile_chr', chr, '.tsv')))
-        try(system(paste0("rm  ", num, '__maskdef_chr', chr, '.tsv')))
-        try(system(paste0("rm  ", num, '__varz_chr', chr, '.*')))
+            ), intern=FALSE))
+            try(system(paste0("rm  ", num, '__annotationfile_chr', chr, '.tsv ')))
+            try(system(paste0("rm  ", num, '__setfile_chr', chr, '.tsv')))
+            try(system(paste0("rm  ", num, '__maskdef_chr', chr, '.tsv')))
+            try(system(paste0("rm  ", num, '__varz_chr', chr, '.*')))
+
+            regenie <- bind_rows(regenie, fread(paste0(num, '__chr', chr, '_disease.regenie'), stringsAsFactors=F, data.table=F))
+        }
   }
-  
-  ## Process the REGENIE results
-  regenie <- NULL
-  for(chr in c(1:22)){
-    regenie <- bind_rows(regenie, fread(paste0(num, '__chr', chr, '_disease.regenie'), stringsAsFactors=F, data.table=F))
-  }
+
   regenie <- regenie[which(!grepl("singleton", regenie$ID)), ]
   regenie$ID <- gsub(".Mask1.0.5", "", regenie$ID)
   regenie$firth.n.sample.alt <- round(regenie$A1FREQ * 2 * regenie$N)
@@ -679,6 +678,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   ######### MAF<1% masks
   #Create set files for regenie; filter PLINK files to needed variants only!
   cat("\t\textracting variant data from PLINK files for MAF<1% threshold ...\n")
+  regenie <- NULL
   for(chr in c(1:22)){
         regenie_setfile <- NULL
         regenie_annotationfile <- NULL
@@ -712,40 +712,41 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
 
         ## Filter to the masks we want to test
         group <- group[group$group_id %in% gene_masks, ]
-        #group <- group[,c("varid", "alt", "group_id")]
-        group$varid <- paste0("chr", group$varid)
+        if(nrow(group)>0){
+            #group <- group[,c("varid", "alt", "group_id")]
+            group$varid <- paste0("chr", group$varid)
 
-        ## Make part of REGENIE grouping files; collect groupings; will use later on
-        group$pseudo_annot <- "REGENIE"
-        regenie_annotationfile <- group[,c("varid", "group_id", "pseudo_annot")]
-        set_inter <- NULL
-        for(gr in unique(group$group_id)){
+            ## Make part of REGENIE grouping files; collect groupings; will use later on
+            group$pseudo_annot <- "REGENIE"
+            regenie_annotationfile <- group[,c("varid", "group_id", "pseudo_annot")]
+            set_inter <- NULL
+            for(gr in unique(group$group_id)){
                 gr_inter <- group[group$group_id==gr, ]
                 chromosome <- gr_inter[1,'chr']
                 position <- gr_inter[1,'pos']
                 collapse <- paste(gr_inter$varid, collapse=",")
                 set_inter <- rbind(set_inter, c(gr, chromosome, position, collapse))
-        }
-        regenie_setfile <- set_inter
+            }
+            regenie_setfile <- set_inter
         
-        ## Use PLINK2 to filter to a PLINK file that has the needed variants and samples used in the discovery analysis
-        write.table(group$varid, file=paste0(num, '__varz_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
-        try(system(paste0(plink_path, ' ',
+            ## Use PLINK2 to filter to a PLINK file that has the needed variants and samples used in the discovery analysis
+            write.table(group$varid, file=paste0(num, '__varz_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
+            try(system(paste0(plink_path, ' ',
                 '--', plinkfile_type, '  ', plinkfile, '  ',
                 '--max-maf ', max_maf, '  --max-mac ', max_mac, '  ',
                 '--keep  ', num, '__sampleIDs.tsv  ',
                 '--extract  ', num, '__varz_chr', chr, '.tsv  ',
                 '--make-bed --out  ', num, '__varz_chr', chr
-        ), intern=T))
+            ), intern=T))
     
-        ### Save annot information for REGENIE
-        write.table(regenie_annotationfile, file=paste0(num, '__annotationfile_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
-        write.table(regenie_setfile, file=paste0(num, '__setfile_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
-        write.table(c("Mask1 REGENIE"), file=paste0(num, '__maskdef_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
+            ### Save annot information for REGENIE
+            write.table(regenie_annotationfile, file=paste0(num, '__annotationfile_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
+            write.table(regenie_setfile, file=paste0(num, '__setfile_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
+            write.table(c("Mask1 REGENIE"), file=paste0(num, '__maskdef_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
 
-        ## Run REGENIE for the MAF<1% thresholds; keep only the unrel samples
-        try(system(paste0('rm  ', num, '__chrall_disease.regenie')))
-        try(system(paste0(regenie_path, ' ',
+            ## Run REGENIE for the MAF<1% thresholds; keep only the unrel samples
+            try(system(paste0('rm  ', num, '__chrall_disease.regenie')))
+            try(system(paste0(regenie_path, ' ',
                 '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chrall  ',
                 '--firth --approx --firth-se --aaf-bins 0.5  --minMAC  1  ',
                 '--covarFile  ', num, '__regenie_phenofile.tsv   ',
@@ -756,18 +757,16 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
                 '--set-list  ', num, '__setfile_chr', chr, '.tsv ',
                 '--mask-def  ', num, '__maskdef_chr', chr, '.tsv ',
                 '--pThresh  0.99  --out ', num, '__chr'
-        ), intern=FALSE))
-        try(system(paste0("rm  ", num, '__annotationfile_chr', chr, '.tsv ')))
-        try(system(paste0("rm  ", num, '__setfile_chr', chr, '.tsv')))
-        try(system(paste0("rm  ", num, '__maskdef_chr', chr, '.tsv')))
-        try(system(paste0("rm  ", num, '__varz_chr', chr, '.*')))
+            ), intern=FALSE))
+            try(system(paste0("rm  ", num, '__annotationfile_chr', chr, '.tsv ')))
+            try(system(paste0("rm  ", num, '__setfile_chr', chr, '.tsv')))
+            try(system(paste0("rm  ", num, '__maskdef_chr', chr, '.tsv')))
+            try(system(paste0("rm  ", num, '__varz_chr', chr, '.*')))
+            
+            regenie <- bind_rows(regenie, fread(paste0(num, '__chr', chr, '_disease.regenie'), stringsAsFactors=F, data.table=F))
+        }
   }
   
-  ## Process the REGENIE results
-  regenie <- NULL
-  for(chr in c(1:22)){
-    regenie <- bind_rows(regenie, fread(paste0(num, '__chr', chr, '_disease.regenie'), stringsAsFactors=F, data.table=F))
-  }
   regenie <- regenie[which(!grepl("singleton", regenie$ID)), ]
   regenie$ID <- gsub(".Mask1.0.5", "", regenie$ID)
   regenie$firth.n.sample.alt <- round(regenie$A1FREQ * 2 * regenie$N)
