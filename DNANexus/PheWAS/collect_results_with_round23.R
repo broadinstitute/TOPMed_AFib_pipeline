@@ -654,7 +654,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
                 '--anno-file  ', num, '__annotationfile_chr', chr, '.tsv ',
                 '--set-list  ', num, '__setfile_chr', chr, '.tsv ',
                 '--mask-def  ', num, '__maskdef_chr', chr, '.tsv ',
-                '--pThresh  0.99  --out ', num, '__chr'
+                '--pThresh  0.99  --out ', num, '__chr', chr
             ), intern=FALSE))
             try(system(paste0("rm  ", num, '__annotationfile_chr', chr, '.tsv ')))
             try(system(paste0("rm  ", num, '__setfile_chr', chr, '.tsv')))
@@ -756,7 +756,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
                 '--anno-file  ', num, '__annotationfile_chr', chr, '.tsv ',
                 '--set-list  ', num, '__setfile_chr', chr, '.tsv ',
                 '--mask-def  ', num, '__maskdef_chr', chr, '.tsv ',
-                '--pThresh  0.99  --out ', num, '__chr'
+                '--pThresh  0.99  --out ', num, '__chr', chr
             ), intern=FALSE))
             try(system(paste0("rm  ", num, '__annotationfile_chr', chr, '.tsv ')))
             try(system(paste0("rm  ", num, '__setfile_chr', chr, '.tsv')))
