@@ -745,9 +745,9 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
             write.table(c("Mask1 REGENIE"), file=paste0(num, '__maskdef_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
 
             ## Run REGENIE for the MAF<1% thresholds; keep only the unrel samples
-            try(system(paste0('rm  ', num, '__chrall_disease.regenie')))
+            try(system(paste0('rm  ', num, '__chr', chr, '_disease.regenie')))
             try(system(paste0(regenie_path, ' ',
-                '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chrall  ',
+                '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chr', chr, '  ',
                 '--firth --approx --firth-se --aaf-bins 0.5  --minMAC  1  ',
                 '--covarFile  ', num, '__regenie_phenofile.tsv   ',
                 '--covarCol ', paste(fixef, collapse=","), '  --catCovarList  ', paste(catCovarList, collapse=","), '  ',
