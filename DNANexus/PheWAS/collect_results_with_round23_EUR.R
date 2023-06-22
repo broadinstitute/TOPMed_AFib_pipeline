@@ -494,7 +494,9 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
         group$varid <- paste0(group$chr, ":", group$pos, ":", group$ref, ":", group$alt)
         group$group_id <- sub("_", "__", group$group_id)
         group$group_id <- sub("_gnomAD_POPMAX0.001", "_POPMAX0.001", group$group_id)
-
+        rm <- which(duplicated(paste0(group$group_id, "__", group$varid)))
+        if(length(rm)>0){group <- group[-rm, ]}
+      
         ## Filter to the masks we want to test
         group <- group[group$group_id %in% gene_masks, ]
         if(nrow(group)>0){
@@ -609,7 +611,9 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
         group$varid <- paste0(group$chr, ":", group$pos, ":", group$ref, ":", group$alt)
         group$group_id <- sub("_", "__", group$group_id)
         group$group_id <- sub("_gnomAD_POPMAX0.00001", "_POPMAX0.00001", group$group_id)
-
+        rm <- which(duplicated(paste0(group$group_id, "__", group$varid)))
+        if(length(rm)>0){group <- group[-rm, ]}
+      
         ## Filter to the masks we want to test
         group <- group[group$group_id %in% gene_masks, ]
         if(nrow(group)>0){
@@ -711,7 +715,9 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
         group$varid <- paste0(group$chr, ":", group$pos, ":", group$ref, ":", group$alt)
         group$group_id <- sub("_", "__", group$group_id)
         group$group_id <- sub("_gnomAD_POPMAX0.01", "_POPMAX0.01", group$group_id)
-
+        rm <- which(duplicated(paste0(group$group_id, "__", group$varid)))
+        if(length(rm)>0){group <- group[-rm, ]}
+      
         ## Filter to the masks we want to test
         group <- group[group$group_id %in% gene_masks, ]
         if(nrow(group)>0){
