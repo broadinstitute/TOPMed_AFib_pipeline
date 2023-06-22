@@ -67,7 +67,7 @@ cat('\tchecking if results files are present...\n\n')
 #    }
 #    try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/", num, "_results_chr", chr, "_maf0.001_EUR.RData")))
 #}
-files <- paste0("dx download")
+files <- paste0("dx download -a -f ")
 for(chr in c(1:22)){
     files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/lowmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.001_round2_lowmem_EUR.RData"))
     files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/highmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.001_round2_highmem_EUR.RData"))
