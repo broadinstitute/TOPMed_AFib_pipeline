@@ -26,7 +26,7 @@ library(tidyr)
 
 ## Read in key file to find the phenotype
 key <- fread(keyfile, stringsAsFactors=F, data.table=F)
-key <- key[key$Ancestry=="ALL", ]
+key <- key[key$Ancestry=="EUR", ]
 key <- key[key$N_cases >= 50 & key$N_controls >=50, ]
 dim(key)
 
