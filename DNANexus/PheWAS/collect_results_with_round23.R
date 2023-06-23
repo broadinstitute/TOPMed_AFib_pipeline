@@ -127,7 +127,7 @@ for(chr in c(1:22)){
         files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/veryhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_veryhighmem.RData"))
     }
     # Old MAF<0.001% run with some errors
-    if(num %in% c(1:535)){files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/", num, "_results_chr", chr, "_maf0.00001.RData"))}
+    if(chunk_num %in% c(1:535)){files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/", num, "_results_chr", chr, "_maf0.00001.RData"))}
 }
 #files2_1 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round2/lowmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.00001_round2_lowmem.RData")
 #files2_2 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round2/highmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.00001_round2_highmem.RData")
@@ -148,7 +148,7 @@ files2_8 <- paste0(num, "_results_chr", c(1:6, 8, 12:13, 15:16, 19), "_maf0.0000
 maf0.00001_files <- c(files2_1, files2_2, files2_3, files2_4, files2_5, files2_6, files2_7, files2_8)
 maf0.00001_nfilesets <- 8
 # Old MAF<0.001% run with some errors
-if(num %in% c(1:535)){
+if(chunk_num %in% c(1:535)){
     #files2_9 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/", num, "_results_chr", c(1:22), "_maf0.00001.RData")
     files2_9 <- paste0(num, "_results_chr", c(1:22), "_maf0.00001.RData")
     maf0.00001_old_files <- c(files2_9)
