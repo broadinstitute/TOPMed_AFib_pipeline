@@ -236,7 +236,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
     inter$controls <- n.controls
                            
     rawassoc_res <- inter
-    write.table(rawassoc_res, file=paste0('../summary_results_phewas_all_tests_phecode', num, '.tsv'), col.names=F, row.names=F, quote=F, sep='\t', append=T)
+    write.table(rawassoc_res, file=paste0('../summary_results_phewas_all_tests_phecode', num, '.tsv'), col.names=T, row.names=F, quote=F, sep='\t', append=T)
 
     # Create Cauchy file; run first only for truly rare variant masks
     cat('\trunning Cauchy combinations for MAF<0.1% and 0.001% masks...\n\n')
@@ -280,7 +280,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
     inter1$phenotype <- phenoname
     inter1$cases <- n.cases
     inter1$controls <- n.controls
-    write.table(inter1, file=paste0('../summary_results_phewas_cauchy_phecode', num, '.tsv'), col.names=F, row.names=F, quote=F, sep='\t', append=T)
+    write.table(inter1, file=paste0('../summary_results_phewas_cauchy_phecode', num, '.tsv'), col.names=T, row.names=F, quote=F, sep='\t', append=T)
 
   #############################
   # Build phenotype files 
