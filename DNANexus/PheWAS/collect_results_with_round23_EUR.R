@@ -530,9 +530,6 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   
             ### Save annot information for REGENIE
             write.table(regenie_annotationfile, file=paste0(num, '__annotationfile_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
-            if(chr==19){
-                write.table(regenie_annotationfile, file=paste0('../', num, '__annotationfile_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
-            }
             write.table(regenie_setfile, file=paste0(num, '__setfile_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
             write.table(c("Mask1 REGENIE"), file=paste0(num, '__maskdef_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
 
