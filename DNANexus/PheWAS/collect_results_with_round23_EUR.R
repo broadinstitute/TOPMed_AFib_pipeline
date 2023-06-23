@@ -127,7 +127,7 @@ for(chr in c(1:22)){
         files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/veryhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_veryhighmem_EUR.RData"))
     }
     # Old MAF<0.001% run with some errors
-    files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/", num, "_results_chr", chr, "_maf0.00001_EUR.RData"))
+    if(chunk_num %in% c(1:535)){files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/", num, "_results_chr", chr, "_maf0.00001_EUR.RData"))}
 }
 #files2_1 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round2/lowmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.00001_round2_lowmem_EUR.RData")
 #files2_2 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round2/highmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.00001_round2_highmem_EUR.RData")
