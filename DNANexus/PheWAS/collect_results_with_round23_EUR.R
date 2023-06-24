@@ -519,6 +519,8 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
             regenie_setfile <- set_inter
       
             ## Use PLINK2 to filter to a PLINK file that has the needed variants and samples used in the discovery analysis, so also correct MAF filters can be applied!
+            rm <- which(group$varid == "chr9:109080945:T:C") # error variant
+            if(length(rm)>0){group <- group[-rm, ]}
             write.table(group$varid, file=paste0(num, '__varz_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
             try(system(paste0(plink_path, ' ',
                 '--', plinkfile_type, '  ', plinkfile, '  ',
