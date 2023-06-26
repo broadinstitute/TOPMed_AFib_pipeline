@@ -96,10 +96,12 @@ for(grouping in unique(group$group_id)){
         }
         if(is.null(final)){
             #raw <- raw[,c(1:6, (ncol(raw)))]
+            colnames(raw)[c(7:(ncol(raw)-1))] <- paste0(grouping, "__", colnames(raw)[c(7:(ncol(raw)-1))])
             final <- raw
         }else{
             #raw <- raw[,c(1, (ncol(raw)))]
             raw <- raw[,c(1, 7:(ncol(raw)))]
+            colnames(raw)[c(2:(ncol(raw)-1))] <- paste0(grouping, "__", colnames(raw)[c(2:(ncol(raw)-1))])
             final <- merge(final, raw, by="FID", all=T)
         }
     }
