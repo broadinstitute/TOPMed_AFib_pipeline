@@ -36,7 +36,7 @@ missense$varid <- paste0(missense$chr, ":", missense$pos, ":", missense$ref, ":"
 #table(missense$TranscriptID)
 
 missense_cutoffs <- c(0.8, 0.6, 0.4, 0.2, 0)
-frequency_cutoffs <- c(0.001, 1e-5)
+frequency_cutoffs <- c(0.01, 0.001, 1e-5)
 
 for(frequency_cutoff in frequency_cutoffs){
     rez_group <- NULL
