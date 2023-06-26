@@ -91,7 +91,7 @@ for(grouping in unique(group$group_id)){
         }
         raw1 <- raw[,c(1:6)]
         raw2 <- as.data.frame(raw[,which(colSums(raw[,c(7:(ncol(raw)-1))])>0)])
-        try(colnames(raw2) <- colnames(raw[,which(colSums(raw[,c(7:(ncol(raw)-1))])>0)]))
+        try(colnames(raw2) <- colnames(raw)[which(colSums(raw[,c(7:(ncol(raw)-1))])>0)]
         raw3 <- raw[,c(ncol(raw))]
         raw <- cbind(raw1, raw2, raw3)
         colnames(raw)[c(7:(ncol(raw)-1))] <- paste0(grouping, "__", colnames(raw)[c(7:(ncol(raw)-1))])
