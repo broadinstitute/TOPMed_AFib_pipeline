@@ -4,10 +4,11 @@
 args=(commandArgs(TRUE))
 in1=as.character(args[1])
 in2=as.character(args[2])
-phenotype=as.character(args[3])
-genename=as.character(args[4])
-score_method=as.character(args[5])
-min.mac=as.numeric(args[6])
+in3=as.character(args[3])
+phenotype=as.character(args[4])
+genename=as.character(args[5])
+score_method=as.character(args[6])
+min.mac=as.numeric(args[7])
 
 .libPaths(c("rpackages4_1_3",.libPaths()))
 
@@ -29,13 +30,21 @@ if(score_method == "Score"){
 tot <- NULL
 load(paste0(in1))
 res <- assoc$results
-res <- res[which(grepl("freq0.001", rownames(res))), ]
+res <- res[which(grepl("freq0.01", rownames(res))), ]
 res$mask <- rownames(res)
 res$phenotype <- phenotype
 res <- res[res$n.alt >= min.mac, ]
 tot <- rbind(tot, res)
 
 load(paste0(in2))
+res <- assoc$results
+res <- res[which(grepl("freq0.001", rownames(res))), ]
+res$mask <- rownames(res)
+res$phenotype <- phenotype
+res <- res[res$n.alt >= min.mac, ]
+tot <- rbind(tot, res)
+
+load(paste0(in3))
 res <- assoc$results
 res$mask <- rownames(res)
 res <- res[which(grepl("freq1e-05", rownames(res))), ]
