@@ -89,6 +89,11 @@ for(grouping in unique(group$group_id)){
         if(collapse){
             raw[which(raw[,paste0(grouping)]>1), paste0(grouping)] <-1
         }
+        raw1 <- raw[,c(1:6)]
+        raw2 <- raw[,which(colSums(raw[,c(7:(ncol(raw)-1))])>0)]
+        raw3 <- raw[,c(ncol(raw))]
+        raw <- cbind(raw1, raw2, raw3)
+        colnames(raw)[c(7:(ncol(raw)-1))] <- paste0(grouping, "__", colnames(raw)[c(7:(ncol(raw)-1))])
         if(recessive){
             colnames(raw)[(ncol(raw))] <- paste0(grouping, "__freq", max_maf, "_recessive") 
         }else{
@@ -96,17 +101,9 @@ for(grouping in unique(group$group_id)){
         }
         if(is.null(final)){
             #raw <- raw[,c(1:6, (ncol(raw)))]
-            raw1 <- raw[,c(1:6)]
-            raw2 <- raw[,which(colSums(raw[,c(7:ncol(raw))])>0)]
-            raw <- cbind(raw1, raw2)
-            colnames(raw)[c(7:(ncol(raw)-1))] <- paste0(grouping, "__", colnames(raw)[c(7:(ncol(raw)-1))])
             final <- raw
         }else{
             #raw <- raw[,c(1, (ncol(raw)))]
-            raw1 <- raw[,c(1:6)]
-            raw2 <- raw[,which(colSums(raw[,c(7:ncol(raw))])>0)]
-            raw <- cbind(raw1, raw2)
-            colnames(raw)[c(7:(ncol(raw)-1))] <- paste0(grouping, "__", colnames(raw)[c(7:(ncol(raw)-1))])
             raw <- raw[,c(1, 7:(ncol(raw)))]
             final <- merge(final, raw, by="FID", all=T)
         }
