@@ -127,7 +127,7 @@ for(chr in c(1:22)){
         files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/veryhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_veryhighmem_EUR.RData"))
     }
     # Old MAF<0.001% run with some errors
-    if(chunk_num %in% c(1:535)){files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/", num, "_results_chr", chr, "_maf0.00001_EUR.RData"))}
+    if(chunk_num %in% c(1:534)){files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/", num, "_results_chr", chr, "_maf0.00001_EUR.RData"))}
 }
 #files2_1 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round2/lowmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.00001_round2_lowmem_EUR.RData")
 #files2_2 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round2/highmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.00001_round2_highmem_EUR.RData")
@@ -367,7 +367,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   #length(which(exdat1$sample_id %in% raw$sample_id))
 
   # Some additional phenotypes were manually curated by me; will add if necessary
-  if(chunk_num %in% c((550-14):(560-14))){
+  if(chunk_num %in% c((550-15):(560-15))){
     extra_phens <- fread('/mnt/project/sjj/projects/phewas/v1/data/pheno/ukbb_missing_phecodes_additionally_curated.tsv', stringsAsFactors=F, data.table=F)  
     phen0 <- merge(phen0, extra_phens, by.x="app17488", by.y="ID", all.x=T)
   }
@@ -384,7 +384,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
 
   # Define the disease variable based on the disease files
   phen0$disease <- 0
-  if(chunk_num %in% c((550-14):(560-14))){
+  if(chunk_num %in% c((550-15):(560-15))){
     phen0$disease <- phen0[,paste0('phecode_', jd_code)]
   }else{
     # James' IDs are coded for the other application
