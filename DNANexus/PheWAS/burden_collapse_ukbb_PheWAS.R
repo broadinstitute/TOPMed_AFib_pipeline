@@ -42,6 +42,10 @@ phecode <- phecodes[phenum]
 nullfile <- gsub("PHENUM", phecode, nullfile)
 outfile <- gsub("PHENUM", phecode, outfile)
 
+cat(paste0("Busy with phecode ", phecode, " ...\n"))
+cat(paste0("\tnullfile:  ", nullfile, "\n"))
+cat(paste0("\toutfile:  ", outfile, "\n"))
+
 perform_burden_collapse(gdsfile=gdsfile,groupfile=groupfile,phenfile=phenfile,ID_col=ID_col,nullfile=nullfile,outfile=outfile, 
 				   burden.test=score.method, collapse=FALSE,
 				   AF.max=AF.max, MAC.max=MAC.max, use.weights=FALSE
