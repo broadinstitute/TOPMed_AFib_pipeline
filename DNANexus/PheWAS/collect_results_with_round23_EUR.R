@@ -468,20 +468,28 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
         cat("\t\t\tbusy with chromosome ", chr, "...\n")
         plink_path <- './plink2'
         regenie_path <- './regenie_v3.2.2.gz_x86_64_Linux_mkl'
-        plinkfile <- paste0('/mnt/project/exome_450k_plink/merged/genotype_variant_sample_QCed/plink/ukb23156_c', chr, '_genotype_variant_sample_QCed')
-        plinkfile_type <- "pfile"
+        #plinkfile <- paste0('/mnt/project/exome_450k_plink/merged/genotype_variant_sample_QCed/plink/ukb23156_c', chr, '_genotype_variant_sample_QCed')
+        system(paste0("dx download exome-seq:/exome_450k_plink/merged/genotype_variant_sample_QCed/plink/ukb23156_c", chr, "_genotype_variant_sample_QCed.*"))
+        plinkfile <- paste0('ukb23156_c', chr, '_genotype_variant_sample_QCed')
+      
         max_maf=0.001
         max_mac='100000000'
         #carz <- NULL
         #phen1 <- phen0
 
         ##Use the grouping files used for the analyses
-        files1_1 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_lowmem.RData")
-        files1_2 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_highmem.RData")
-        files1_3 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_highhighmem.RData")
-        files1_4 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_veryhighmem.RData")
-        files1_5 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_popmax0.001.RData")
-
+        #files1_1 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_lowmem.RData")
+        #files1_2 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_highmem.RData")
+        #files1_3 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_highhighmem.RData")
+        #files1_4 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_veryhighmem.RData")
+        #files1_5 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_popmax0.001.RData")
+        system(paste0("dx download -a -f exome-seq:/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_lowmem.RData exome-seq:/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_highmem.RData exome-seq:/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_highhighmem.RData exome-seq:/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_veryhighmem.RData exome-seq:/sjj/projects/phewas/v1/data/grouping_files/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_popmax0.001.RData")) 
+        files1_1 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_lowmem.RData")
+        files1_2 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_highmem.RData")
+        files1_3 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_highhighmem.RData")
+        files1_4 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_veryhighmem.RData")
+        files1_5 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_popmax0.001.RData")
+     
         f1 <- get(load(files1_1))
         f2 <- get(load(files1_2)) 
         f3 <- get(load(files1_3)) 
@@ -584,7 +592,8 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
         cat("\t\t\tbusy with chromosome ", chr, "...\n")
         plink_path <- './plink2'
         regenie_path <- './regenie_v3.2.2.gz_x86_64_Linux_mkl'
-        plinkfile <- paste0('/mnt/project/exome_450k_plink/merged/genotype_variant_sample_QCed/plink/ukb23156_c', chr, '_genotype_variant_sample_QCed')
+        #plinkfile <- paste0('/mnt/project/exome_450k_plink/merged/genotype_variant_sample_QCed/plink/ukb23156_c', chr, '_genotype_variant_sample_QCed')
+        plinkfile <- paste0('ukb23156_c', chr, '_genotype_variant_sample_QCed')
         plinkfile_type <- "pfile"
         max_maf=0.00001
         max_mac=9
@@ -592,11 +601,17 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
         #phen1 <- phen0
 
         ## Use the grouping files
-        files2_1 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_lowmem.RData")
-        files2_2 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_highmem.RData")
-        files2_3 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_highhighmem.RData")
-        files2_4 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_veryhighmem.RData")
-        files2_5 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/ukbb_phewas_v1_groupingfile_c", chr, "_missense0.5_popmax0.00001_correct.RData")
+        #files2_1 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_lowmem.RData")
+        #files2_2 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_highmem.RData")
+        #files2_3 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_highhighmem.RData")
+        #files2_4 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_veryhighmem.RData")
+        #files2_5 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/ukbb_phewas_v1_groupingfile_c", chr, "_missense0.5_popmax0.00001_correct.RData")
+        system(paste0("dx download -a -f exome-seq:/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_lowmem.RData exome-seq:/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_highmem.RData exome-seq:/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_highhighmem.RData exome-seq:/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_veryhighmem.RData exome-seq:/sjj/projects/phewas/v1/data/grouping_files/ukbb_phewas_v1_groupingfile_c", chr, "_missense0.5_popmax0.00001_correct.RData"))
+        files2_1 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_lowmem.RData")
+        files2_2 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_highmem.RData")
+        files2_3 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_highhighmem.RData")
+        files2_4 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_veryhighmem.RData")
+        files2_5 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_missense0.5_popmax0.00001_correct.RData")
 
         f1 <- get(load(files2_1))
         f2 <- get(load(files2_2)) 
@@ -692,7 +707,8 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
         cat("\t\t\tbusy with chromosome ", chr, "...\n")
         plink_path <- './plink2'
         regenie_path <- './regenie_v3.2.2.gz_x86_64_Linux_mkl'
-        plinkfile <- paste0('/mnt/project/exome_450k_plink/merged/genotype_variant_sample_QCed/plink/ukb23156_c', chr, '_genotype_variant_sample_QCed')
+        #plinkfile <- paste0('/mnt/project/exome_450k_plink/merged/genotype_variant_sample_QCed/plink/ukb23156_c', chr, '_genotype_variant_sample_QCed')
+        plinkfile <- paste0('ukb23156_c', chr, '_genotype_variant_sample_QCed')
         plinkfile_type <- "pfile"
         max_maf=0.01
         max_mac='100000000'
@@ -700,10 +716,15 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
         #phen1 <- phen0
 
         ## Use the grouping files
-        files3_1 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_lowmem.RData")
-        files3_2 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_highmem.RData")
-        files3_3 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_highhighmem.RData")
-        files3_4 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_veryhighmem.RData")
+        #files3_1 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_lowmem.RData")
+        #files3_2 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_highmem.RData")
+        #files3_3 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_highhighmem.RData")
+        #files3_4 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_veryhighmem.RData")
+        system(paste0("dx download -a -f exome-seq:/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_lowmem.RData exome-seq:/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_highmem.RData exome-seq:/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_highhighmem.RData exome-seq:/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_veryhighmem.RData"))
+        files3_1 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_lowmem.RData")
+        files3_2 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_highmem.RData")
+        files3_3 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_highhighmem.RData")
+        files3_4 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_veryhighmem.RData")
 
         f1 <- get(load(files3_1))
         f2 <- get(load(files3_2)) 
