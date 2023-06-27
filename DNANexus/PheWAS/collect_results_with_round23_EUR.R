@@ -471,7 +471,8 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
         #plinkfile <- paste0('/mnt/project/exome_450k_plink/merged/genotype_variant_sample_QCed/plink/ukb23156_c', chr, '_genotype_variant_sample_QCed')
         system(paste0("dx download exome-seq:/exome_450k_plink/merged/genotype_variant_sample_QCed/plink/ukb23156_c", chr, "_genotype_variant_sample_QCed.*"))
         plinkfile <- paste0('ukb23156_c', chr, '_genotype_variant_sample_QCed')
-      
+        plinkfile_type <- "pfile"
+        
         max_maf=0.001
         max_mac='100000000'
         #carz <- NULL
