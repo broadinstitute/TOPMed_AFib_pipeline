@@ -468,7 +468,10 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
         cat("\t\t\tbusy with chromosome ", chr, "...\n")
         plink_path <- './plink2'
         regenie_path <- './regenie_v3.2.2.gz_x86_64_Linux_mkl'
-        plinkfile <- paste0('/mnt/project/exome_450k_plink/merged/genotype_variant_sample_QCed/plink/ukb23156_c', chr, '_genotype_variant_sample_QCed')
+        #plinkfile <- paste0('/mnt/project/exome_450k_plink/merged/genotype_variant_sample_QCed/plink/ukb23156_c', chr, '_genotype_variant_sample_QCed')
+        system(paste0("dx download exome-seq:/exome_450k_plink/merged/genotype_variant_sample_QCed/plink/ukb23156_c", chr, "_genotype_variant_sample_QCed.*"))
+        plinkfile <- paste0('ukb23156_c', chr, '_genotype_variant_sample_QCed')
+      
         plinkfile_type <- "pfile"
         max_maf=0.001
         max_mac='100000000'
@@ -584,7 +587,9 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
         cat("\t\t\tbusy with chromosome ", chr, "...\n")
         plink_path <- './plink2'
         regenie_path <- './regenie_v3.2.2.gz_x86_64_Linux_mkl'
-        plinkfile <- paste0('/mnt/project/exome_450k_plink/merged/genotype_variant_sample_QCed/plink/ukb23156_c', chr, '_genotype_variant_sample_QCed')
+        #plinkfile <- paste0('/mnt/project/exome_450k_plink/merged/genotype_variant_sample_QCed/plink/ukb23156_c', chr, '_genotype_variant_sample_QCed')
+        plinkfile <- paste0('ukb23156_c', chr, '_genotype_variant_sample_QCed')
+
         plinkfile_type <- "pfile"
         max_maf=0.00001
         max_mac=9
@@ -692,7 +697,8 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
         cat("\t\t\tbusy with chromosome ", chr, "...\n")
         plink_path <- './plink2'
         regenie_path <- './regenie_v3.2.2.gz_x86_64_Linux_mkl'
-        plinkfile <- paste0('/mnt/project/exome_450k_plink/merged/genotype_variant_sample_QCed/plink/ukb23156_c', chr, '_genotype_variant_sample_QCed')
+        #plinkfile <- paste0('/mnt/project/exome_450k_plink/merged/genotype_variant_sample_QCed/plink/ukb23156_c', chr, '_genotype_variant_sample_QCed')
+        plinkfile <- paste0('ukb23156_c', chr, '_genotype_variant_sample_QCed')
         plinkfile_type <- "pfile"
         max_maf=0.01
         max_mac='100000000'
