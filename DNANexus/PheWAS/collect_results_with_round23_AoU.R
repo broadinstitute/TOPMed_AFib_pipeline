@@ -180,6 +180,20 @@ files3_4 <- paste0(num, "_results_chr", c(1:20, 22), "_maf0.01_round3_veryhighme
 maf0.01_files <- c(files3_1, files3_2, files3_3, files3_4)
 maf0.01_nfilesets <- 4
 
+#################
+##### You will need to apply a different script for the above!!!
+#################
+mask1_files <- #  mask1 file paths
+mask2_files <- #  mask2 file paths
+mask3_files <- #  mask3 file paths
+mask4_files <- #  mask4 file paths
+mask5_files <- #  mask5 file paths
+mask6_files <- #  mask6 file paths
+mask7_files <- #  mask7 file paths
+mask8_files <- #  mask8 file paths
+mask9_files <- #  mask9 file paths
+
+
 # Dx downloading the list of files...
 try(system(paste0(files)))
 
