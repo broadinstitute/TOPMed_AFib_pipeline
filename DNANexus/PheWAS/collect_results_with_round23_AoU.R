@@ -4,8 +4,7 @@
 args=(commandArgs(TRUE))
 keyfile=as.character(args[1])
 overvfile=as.character(args[2])
-chunk_size=as.numeric(args[3])
-chunk_num=as.numeric(args[4])
+chunk_num=as.numeric(args[3]) # is a phenotype number ranging from 1 to the number of total phenotypes
 
 .libPaths(c("rpackages4_1_3",.libPaths()))
 
@@ -34,171 +33,140 @@ overv <- fread(overvfile, stringsAsFactors = F, data.table=F)
 overv <- overv[overv$included_in_mgb_phewas=="yes", ]
 
 ## Find chunk to run
-#splitz <- split(c(1:nrow(key)), ceiling(seq_along(c(1:nrow(key)))/chunk_size))
-#key <- key[splitz[[chunk_num]], ]
-#key <- key[chunk_num, ]
 i <- chunk_num
 
 ##### Check outfiles exist #####
-#foreach(i=c(1:nrow(key)), .inorder=FALSE) %dopar% {
-#for(i in c(1:nrow(key))){ 
 inter <- inter2 <- NULL
 num <- key[i, 'Phecode']
 n.cases <- key[i, 'N_cases']
 n.controls <- key[i, 'N_controls']
 phenoname <- key[i, 'Name']
 category <- overv[overv$meaning==phenoname, 'category']
-cat('\n\n\nBusy with phenotype', num, 'which is', phenoname, 'and task', i, 'out of 535 tasks...\n\n')
+cat('\n\n\nBusy with phenotype', num, 'which is', phenoname, 'and task', i, 'out of 601 tasks...\n\n')
 
 ######################
 # Result files
 ######################
 
 cat('\tchecking if results files are present...\n\n')
-#MAF<0.1% files
-#for(chr in c(1:22)){
-#    try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/round2/lowmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.001_round2_lowmem.RData")))
-#    try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/round2/highmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.001_round2_highmem.RData")))
-#    if(chr %in% c(1:20, 22)){
-#        try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/round2/highhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.001_round2_highhighmem.RData")))
-#    }
-#    if(chr %in% c(1:8, 10:13, 15:17, 19:20)){
-#        try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/round2/veryhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.001_round2_veryhighmem.RData")))
-#    }
-#    try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/", num, "_results_chr", chr, "_maf0.001.RData")))
-#}
-files <- paste0("dx download -a -f ")
-for(chr in c(1:22)){
-    files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/lowmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.001_round2_lowmem.RData"))
-    files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/highmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.001_round2_highmem.RData"))
-    if(chr %in% c(1:20, 22)){
-        files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/highhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.001_round2_highhighmem.RData"))
-    }
-    if(chr %in% c(1:8, 10:13, 15:17, 19:20)){
-        files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/veryhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.001_round2_veryhighmem.RData"))
-    }
-    files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/", num, "_results_chr", chr, "_maf0.001.RData"))
-}
-#files1_1 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round2/lowmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.001_round2_lowmem.RData")
-#files1_2 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round2/highmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.001_round2_highmem.RData")
-#files1_3 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round2/highhighmem/chr", c(1:20, 22), '/', num, "_results_chr", c(1:20, 22), "_maf0.001_round2_highhighmem.RData")
-#files1_4 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round2/veryhighmem/chr", c(1:8, 10:13, 15:17, 19:20), '/', num, "_results_chr", c(1:8, 10:13, 15:17, 19:20), "_maf0.001_round2_veryhighmem.RData")
-#files1_5 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/", num, "_results_chr", c(1:22), "_maf0.001.RData")
-files1_1 <- paste0(num, "_results_chr", c(1:22), "_maf0.001_round2_lowmem.RData")
-files1_2 <- paste0(num, "_results_chr", c(1:22), "_maf0.001_round2_highmem.RData")
-files1_3 <- paste0(num, "_results_chr", c(1:20, 22), "_maf0.001_round2_highhighmem.RData")
-files1_4 <- paste0(num, "_results_chr", c(1:8, 10:13, 15:17, 19:20), "_maf0.001_round2_veryhighmem.RData")
-files1_5 <- paste0(num, "_results_chr", c(1:22), "_maf0.001.RData")
-maf0.001_files <- c(files1_1, files1_2, files1_3, files1_4, files1_5)
-maf0.001_nfilesets <- 5
 
-#MAF<0.001% files
-#for(chr in c(1:22)){
-#    try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/round2/lowmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round2_lowmem.RData")))
-#    try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/round2/highmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round2_highmem.RData")))
-#    try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/round2/highhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round2_highhighmem.RData")))
-#    if(chr %in% c(1:17, 19:20)){
-#        try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/round2/veryhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round2_veryhighmem.RData")))
-#    }
-#    try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/round3/lowmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_lowmem.RData")))
-#    try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/round3/highmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_highmem.RData")))
-#    if(chr %in% c(1:20, 22)){
-#        try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/round3/highhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_highhighmem.RData")))
-#    }
-#    if(chr %in% c(1:6, 8, 12:13, 15:16, 19)){
-#        try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/round3/veryhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_veryhighmem.RData")))
-#    }
-#    # Old MAF<0.001% run with some errors
-#    try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/", num, "_results_chr", chr, "_maf0.00001.RData")))
-#}
-for(chr in c(1:22)){
-    files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/lowmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round2_lowmem.RData"))
-    files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/highmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round2_highmem.RData"))
-    files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/highhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round2_highhighmem.RData"))
-    if(chr %in% c(1:17, 19:20)){
-        files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/veryhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round2_veryhighmem.RData"))
-    }
-    files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/lowmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_lowmem.RData"))
-    files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/highmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_highmem.RData"))
-    if(chr %in% c(1:20, 22)){
-        files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/highhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_highhighmem.RData"))
-    }
-    if(chr %in% c(1:6, 8, 12:13, 15:16, 19)){
-        files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/veryhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_veryhighmem.RData"))
-    }
-    # Old MAF<0.001% run with some errors
-    if(chunk_num %in% c(1:535)){files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/", num, "_results_chr", chr, "_maf0.00001.RData"))}
-}
-#files2_1 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round2/lowmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.00001_round2_lowmem.RData")
-#files2_2 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round2/highmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.00001_round2_highmem.RData")
-#files2_3 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round2/highhighmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.00001_round2_highhighmem.RData")
-#files2_4 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round2/veryhighmem/chr", c(1:17, 19:20), '/', num, "_results_chr", c(1:17, 19:20), "_maf0.00001_round2_veryhighmem.RData")
-#files2_5 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round3/lowmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.00001_round3_lowmem.RData")
-#files2_6 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round3/highmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.00001_round3_highmem.RData")
-#files2_7 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round3/highhighmem/chr", c(1:20, 22), '/', num, "_results_chr", c(1:20, 22), "_maf0.00001_round3_highhighmem.RData")
-#files2_8 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round3/veryhighmem/chr", c(1:6, 8, 12:13, 15:16, 19), '/', num, "_results_chr", c(1:6, 8, 12:13, 15:16, 19), "_maf0.00001_round3_veryhighmem.RData")
-files2_1 <- paste0(num, "_results_chr", c(1:22), "_maf0.00001_round2_lowmem.RData")
-files2_2 <- paste0(num, "_results_chr", c(1:22), "_maf0.00001_round2_highmem.RData")
-files2_3 <- paste0(num, "_results_chr", c(1:22), "_maf0.00001_round2_highhighmem.RData")
-files2_4 <- paste0(num, "_results_chr", c(1:17, 19:20), "_maf0.00001_round2_veryhighmem.RData")
-files2_5 <- paste0(num, "_results_chr", c(1:22), "_maf0.00001_round3_lowmem.RData")
-files2_6 <- paste0(num, "_results_chr", c(1:22), "_maf0.00001_round3_highmem.RData")
-files2_7 <- paste0(num, "_results_chr", c(1:20, 22), "_maf0.00001_round3_highhighmem.RData")
-files2_8 <- paste0(num, "_results_chr", c(1:6, 8, 12:13, 15:16, 19), "_maf0.00001_round3_veryhighmem.RData")
-maf0.00001_files <- c(files2_1, files2_2, files2_3, files2_4, files2_5, files2_6, files2_7, files2_8)
-maf0.00001_nfilesets <- 8
-# Old MAF<0.001% run with some errors
-#files2_9 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/", num, "_results_chr", c(1:22), "_maf0.00001.RData")
-files2_9 <- paste0(num, "_results_chr", c(1:22), "_maf0.00001.RData")
-maf0.00001_old_files <- c(files2_9)
-maf0.00001_old_nfilesets <- 1
-#MAF<1% files
-#for(chr in c(1:22)){
-#    try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/round3/lowmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.01_round3_lowmem.RData")))
-#    try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/round3/highmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.01_round3_highmem.RData")))
-#    try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/round3/highhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.01_round3_highhighmem.RData")))
-#    if(chr %in% c(1:20, 22)){
-#        try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/round3/veryhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.01_round3_veryhighmem.RData")))
-#    }
-#}
-for(chr in c(1:22)){
-    files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/lowmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.01_round3_lowmem.RData"))
-    files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/highmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.01_round3_highmem.RData"))
-    files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/highhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.01_round3_highhighmem.RData"))
-    if(chr %in% c(1:20, 22)){
-        files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/veryhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.01_round3_veryhighmem.RData"))
-    }
-}
-#files3_1 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round3/lowmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.01_round3_lowmem.RData")
-#files3_2 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round3/highmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.01_round3_highmem.RData")
-#files3_3 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round3/highhighmem/chr", c(1:22), '/', num, "_results_chr", c(1:22), "_maf0.01_round3_highhighmem.RData")
-#files3_4 <- paste0("/mnt/project/sjj/projects/phewas/v1/results/association/round3/veryhighmem/chr", c(1:20, 22), '/', num, "_results_chr", c(1:20, 22), "_maf0.01_round3_veryhighmem.RData")
-files3_1 <- paste0(num, "_results_chr", c(1:22), "_maf0.01_round3_lowmem.RData")
-files3_2 <- paste0(num, "_results_chr", c(1:22), "_maf0.01_round3_highmem.RData")
-files3_3 <- paste0(num, "_results_chr", c(1:22), "_maf0.01_round3_highhighmem.RData")
-files3_4 <- paste0(num, "_results_chr", c(1:20, 22), "_maf0.01_round3_veryhighmem.RData")
-maf0.01_files <- c(files3_1, files3_2, files3_3, files3_4)
-maf0.01_nfilesets <- 4
+#MAF<0.1%, mask1 files
+system("mkdir mask1")
+system("mkdir mask1/lowmem")
+system("mkdir mask1/midmem")
+system("mkdir mask1/highmem")
+### Assumes that chrom 1-22 exist for all mem-levels...
+### Might consider using /mnt/ equivalent 
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask1/lowmem/* mask1/lowmem/"))
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask1/midmem/* mask1/midmem/"))
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask1/highmem/* mask1/highmem/"))
+mask1files_1 <- paste0("mask1/lowmem/", c(1:22), "_resultsfile.RData")
+mask1files_2 <- paste0("mask1/midmem/", c(1:22), "_resultsfile.RData")
+mask1files_3 <- paste0("mask1/highmem/", c(1:22), "_resultsfile.RData")
 
-#################
-##### You will need to apply a different script for the above!!!
-#################
-mask1_files <- #  mask1 file paths
-mask2_files <- #  mask2 file paths
-mask3_files <- #  mask3 file paths
-mask4_files <- #  mask4 file paths
-mask5_files <- #  mask5 file paths
-mask6_files <- #  mask6 file paths
-mask7_files <- #  mask7 file paths
-mask8_files <- #  mask8 file paths
-mask9_files <- #  mask9 file paths
+system("mkdir mask2")
+system("mkdir mask2/lowmem")
+system("mkdir mask2/midmem")
+system("mkdir mask2/highmem")
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask2/lowmem/* mask2/lowmem/"))
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask2/midmem/* mask2/midmem/"))
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask2/highmem/* mask2/highmem/"))
+mask2files_1 <- paste0("mask2/lowmem/", c(1:22), "_resultsfile.RData")
+mask2files_2 <- paste0("mask2/midmem/", c(1:22), "_resultsfile.RData")
+mask2files_3 <- paste0("mask2/highmem/", c(1:22), "_resultsfile.RData")
+
+system("mkdir mask3")
+system("mkdir mask3/lowmem")
+system("mkdir mask3/midmem")
+system("mkdir mask3/highmem")
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask3/lowmem/* mask3/lowmem/"))
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask3/midmem/* mask3/midmem/"))
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask3/highmem/* mask3/highmem/"))
+mask3files_1 <- paste0("mask3/lowmem/", c(1:22), "_resultsfile.RData")
+mask3files_2 <- paste0("mask3/midmem/", c(1:22), "_resultsfile.RData")
+mask3files_3 <- paste0("mask3/highmem/", c(1:22), "_resultsfile.RData")
+
+system("mkdir mask4")
+system("mkdir mask4/lowmem")
+system("mkdir mask4/midmem")
+system("mkdir mask4/highmem")
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask4/lowmem/* mask4/lowmem/"))
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask4/midmem/* mask4/midmem/"))
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask4/highmem/* mask4/highmem/"))
+mask4files_1 <- paste0("mask4/lowmem/", c(1:22), "_resultsfile.RData")
+mask4files_2 <- paste0("mask4/midmem/", c(1:22), "_resultsfile.RData")
+mask4files_3 <- paste0("mask4/highmem/", c(1:22), "_resultsfile.RData")
+
+system("mkdir mask5")
+system("mkdir mask5/lowmem")
+system("mkdir mask5/midmem")
+system("mkdir mask5/highmem")
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask5/lowmem/* mask5/lowmem/"))
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask5/midmem/* mask5/midmem/"))
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask5/highmem/* mask5/highmem/"))
+mask5files_1 <- paste0("mask5/lowmem/", c(1:22), "_resultsfile.RData")
+mask5files_2 <- paste0("mask5/midmem/", c(1:22), "_resultsfile.RData")
+mask5files_3 <- paste0("mask5/highmem/", c(1:22), "_resultsfile.RData")
+
+system("mkdir mask6")
+system("mkdir mask6/lowmem")
+system("mkdir mask6/midmem")
+system("mkdir mask6/highmem")
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask6/lowmem/* mask6/lowmem/"))
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask6/midmem/* mask6/midmem/"))
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask6/highmem/* mask6/highmem/"))
+mask6files_1 <- paste0("mask6/lowmem/", c(1:22), "_resultsfile.RData")
+mask6files_2 <- paste0("mask6/midmem/", c(1:22), "_resultsfile.RData")
+mask6files_3 <- paste0("mask6/highmem/", c(1:22), "_resultsfile.RData")
+
+system("mkdir mask7")
+system("mkdir mask7/lowmem")
+system("mkdir mask7/midmem")
+system("mkdir mask7/highmem")
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask7/lowmem/* mask7/lowmem/"))
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask7/midmem/* mask7/midmem/"))
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask7/highmem/* mask7/highmem/"))
+mask7files_1 <- paste0("mask7/lowmem/", c(1:22), "_resultsfile.RData")
+mask7files_2 <- paste0("mask7/midmem/", c(1:22), "_resultsfile.RData")
+mask7files_3 <- paste0("mask7/highmem/", c(1:22), "_resultsfile.RData")
+
+system("mkdir mask8")
+system("mkdir mask8/lowmem")
+system("mkdir mask8/midmem")
+system("mkdir mask8/highmem")
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask8/lowmem/* mask8/lowmem/"))
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask8/midmem/* mask8/midmem/"))
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask8/highmem/* mask8/highmem/"))
+mask8files_1 <- paste0("mask8/lowmem/", c(1:22), "_resultsfile.RData")
+mask8files_2 <- paste0("mask8/midmem/", c(1:22), "_resultsfile.RData")
+mask8files_3 <- paste0("mask8/highmem/", c(1:22), "_resultsfile.RData")
+
+system("mkdir mask9")
+system("mkdir mask9/lowmem")
+system("mkdir mask9/midmem")
+system("mkdir mask9/highmem")
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask9/lowmem/* mask9/lowmem/"))
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask9/midmem/* mask9/midmem/"))
+system(paste0("gsutil -m cp gs://path/to/file/", num, "/mask9/highmem/* mask9/highmem/"))
+mask9files_1 <- paste0("mask9/lowmem/", c(1:22), "_resultsfile.RData")
+mask9files_2 <- paste0("mask9/midmem/", c(1:22), "_resultsfile.RData")
+mask9files_3 <- paste0("mask9/highmem/", c(1:22), "_resultsfile.RData")
+
+total_files <- c(mask1files_1, mask1files_2, mask1files_3,
+                 mask2files_1, mask2files_2, mask2files_3,
+                 mask3files_1, mask3files_2, mask3files_3,
+                 mask4files_1, mask4files_2, mask4files_3,
+                 mask5files_1, mask5files_2, mask5files_3, 
+                 mask6files_1, mask6files_2, mask6files_3, 
+                 mask7files_1, mask7files_2, mask7files_3,
+                 mask8files_1, mask8files_2, mask8files_3, 
+                 mask9files_1, mask9files_2, mask9files_3
+                 )
 
 
-# Dx downloading the list of files...
-try(system(paste0(files)))
-
-if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all(file.exists(maf0.01_files)))){
-    cat(paste0(which(!file.exists(c(maf0.001_files, maf0.00001_files, maf0.01_files))), "\n"))
+if(!all(file.exists(total_files))){
+    print(total_files[which(file.exists(total_files))])
+    cat(paste0(" was/were not found.\n"))
     cat("\n\n\n\n\nWARNING: not all required files found!!! Stopping.\n\n\n\n")
 }else{
     cat('\tall results files found. Reading in and merging...\n\n')
@@ -206,93 +174,75 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
 
     rawassoc_res <- NULL
     
-    #MAF<0.1% LOF; low + med + high
-    inter <- summarydata(files=mask1_files, chrs=c(c(1:22), c(1:22), c(1:22)), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
+    #Mask1 MAF<0.1% LOF; low + med + high
+    inter <- summarydata(files=c(mask1files_1, mask1files_2, mask1files_3), chrs=c(c(1:22), c(1:22), c(1:22)), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
     inter <- inter[inter$n.sample.alt>=10, ]
     inter$category <- category
-    inter$gene <- rownames(inter)
-    #inter$gene <- sub("_", "__", inter$gene)
-    #inter$gene <- sub("_gnomAD_POPMAX0.001", "_POPMAX0.001", inter$gene)
+    inter$gene <- paste0(rownames(inter), "__hclof_noflag_POPMAX0.001")
     inter$mask <- "hclof_noflag_POPMAX0.001"
     rawassoc_res <- rbind(total, inter)
     
     #MAF<0.1% LOF+missense0.8; low + med + high
-    inter <- summarydata(files=mask2_files, chrs=c(c(1:22), c(1:22), c(1:22)), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
+    inter <- summarydata(files=c(mask2files_1, mask2files_2, mask2files_3), chrs=c(c(1:22), c(1:22), c(1:22)), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
     inter <- inter[inter$n.sample.alt>=10, ]
     inter$category <- category
-    inter$gene <- rownames(inter)
-    #inter$gene <- sub("_", "__", inter$gene)
-    #inter$gene <- sub("_gnomAD_POPMAX0.001", "_POPMAX0.001", inter$gene)
+    inter$gene <- paste0(rownames(inter), "__hclof_noflag_missense0.8_POPMAX0.001")
     inter$mask <- "hclof_noflag_missense0.8_POPMAX0.001"
     rawassoc_res <- rbind(total, inter)
 
     #MAF<0.1% LOF+missense0.5; low + med + high
-    inter <- summarydata(files=mask3_files, chrs=c(c(1:22), c(1:22), c(1:22)), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
+    inter <- summarydata(files=c(mask3files_1, mask3files_2, mask3files_3), chrs=c(c(1:22), c(1:22), c(1:22)), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
     inter <- inter[inter$n.sample.alt>=10, ]
     inter$category <- category
-    inter$gene <- rownames(inter)
-    #inter$gene <- sub("_", "__", inter$gene)
-    #inter$gene <- sub("_gnomAD_POPMAX0.001", "_POPMAX0.001", inter$gene)
+    inter$gene <- paste0(rownames(inter), "__hclof_noflag_missense0.5_POPMAX0.001")
     inter$mask <- "hclof_noflag_missense0.5_POPMAX0.001"
     rawassoc_res <- rbind(total, inter)
 
     #MAF<0.001% LOF+missense0.5; low + med + high
-    inter <- summarydata(files=mask4_files, chrs=c(c(1:22), c(1:22), c(1:22)), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
+    inter <- summarydata(files=c(mask4files_1, mask4files_2, mask4files_3), chrs=c(c(1:22), c(1:22), c(1:22)), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
     inter <- inter[inter$n.sample.alt>=10, ]
     inter$category <- category
-    inter$gene <- rownames(inter)
-    #inter$gene <- sub("_", "__", inter$gene)
-    #inter$gene <- sub("_gnomAD_POPMAX0.001", "_POPMAX0.001", inter$gene)
+    inter$gene <- paste0(rownames(inter), "__hclof_noflag_missense0.5_POPMAX0.00001")
     inter$mask <- "hclof_noflag_missense0.5_POPMAX0.00001"
     rawassoc_res <- rbind(total, inter)
 
     #MAF<0.001% missense0.5; low + med + high
-    inter <- summarydata(files=mask5_files, chrs=c(c(1:22), c(1:22), c(1:22)), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
+    inter <- summarydata(files=c(mask5files_1, mask5files_2, mask5files_3), chrs=c(c(1:22), c(1:22), c(1:22)), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
     inter <- inter[inter$n.sample.alt>=10, ]
     inter$category <- category
-    inter$gene <- rownames(inter)
-    #inter$gene <- sub("_", "__", inter$gene)
-    #inter$gene <- sub("_gnomAD_POPMAX0.001", "_POPMAX0.001", inter$gene)
+    inter$gene <- paste0(rownames(inter), "__missense0.5_POPMAX0.00001")
     inter$mask <- "missense0.5_POPMAX0.00001"
     rawassoc_res <- rbind(total, inter)
 
     #MAF<0.001% missense0.2; low + med + high
-    inter <- summarydata(files=mask6_files, chrs=c(c(1:22), c(1:22), c(1:22)), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
+    inter <- summarydata(files=c(mask6files_1, mask6files_2, mask6files_3), chrs=c(c(1:22), c(1:22), c(1:22)), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
     inter <- inter[inter$n.sample.alt>=10, ]
     inter$category <- category
-    inter$gene <- rownames(inter)
-    #inter$gene <- sub("_", "__", inter$gene)
-    #inter$gene <- sub("_gnomAD_POPMAX0.001", "_POPMAX0.001", inter$gene)
-    inter$mask <- "hclof_noflag_missense0.2_POPMAX0.00001"
+    inter$gene <- paste0(rownames(inter), "__missense0.2_POPMAX0.00001")
+    inter$mask <- "missense0.2_POPMAX0.00001"
     rawassoc_res <- rbind(total, inter)
-
-    #MAF<1% LOF; low + med + high
-    inter <- summarydata(files=mask7_files, chrs=c(c(1:22), c(1:22), c(1:22)), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
+    
+    #Mask1 MAF<1% LOF; low + med + high
+    inter <- summarydata(files=c(mask7files_1, mask7files_2, mask7files_3), chrs=c(c(1:22), c(1:22), c(1:22)), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
     inter <- inter[inter$n.sample.alt>=10, ]
     inter$category <- category
-    inter$gene <- rownames(inter)
-    #inter$gene <- sub("_", "__", inter$gene)
-    #inter$gene <- sub("_gnomAD_POPMAX0.001", "_POPMAX0.001", inter$gene)
+    inter$gene <- paste0(rownames(inter), "__hclof_noflag_POPMAX0.01")
     inter$mask <- "hclof_noflag_POPMAX0.01"
     rawassoc_res <- rbind(total, inter)
     
     #MAF<1% LOF+missense0.8; low + med + high
-    inter <- summarydata(files=mask8_files, chrs=c(c(1:22), c(1:22), c(1:22)), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
+    inter <- summarydata(files=c(mask8files_1, mask8files_2, mask8files_3), chrs=c(c(1:22), c(1:22), c(1:22)), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
     inter <- inter[inter$n.sample.alt>=10, ]
     inter$category <- category
-    inter$gene <- rownames(inter)
-    #inter$gene <- sub("_", "__", inter$gene)
-    #inter$gene <- sub("_gnomAD_POPMAX0.001", "_POPMAX0.001", inter$gene)
+    inter$gene <- paste0(rownames(inter), "__hclof_noflag_missense0.8_POPMAX0.01")
     inter$mask <- "hclof_noflag_missense0.8_POPMAX0.01"
     rawassoc_res <- rbind(total, inter)
 
     #MAF<1% LOF+missense0.5; low + med + high
-    inter <- summarydata(files=mask9_files, chrs=c(c(1:22), c(1:22), c(1:22)), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
+    inter <- summarydata(files=c(mask9files_1, mask9files_2, mask9files_3), chrs=c(c(1:22), c(1:22), c(1:22)), thre_cMAC=1, add_col=TRUE, add_col_name="phenotype", add_col_value=phenoname)
     inter <- inter[inter$n.sample.alt>=10, ]
     inter$category <- category
-    inter$gene <- rownames(inter)
-    #inter$gene <- sub("_", "__", inter$gene)
-    #inter$gene <- sub("_gnomAD_POPMAX0.001", "_POPMAX0.001", inter$gene)
+    inter$gene <- paste0(rownames(inter), "__hclof_noflag_missense0.5_POPMAX0.01")
     inter$mask <- "hclof_noflag_missense0.5_POPMAX0.01"
     rawassoc_res <- rbind(total, inter)
 
@@ -543,31 +493,41 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
         #carz <- NULL
         #phen1 <- phen0
 
-        ##Use the grouping files used for the analyses
-        #files1_1 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_lowmem.RData")
-        #files1_2 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_highmem.RData")
-        #files1_3 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_highhighmem.RData")
-        #files1_4 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_veryhighmem.RData")
-        #files1_5 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_popmax0.001.RData")
-        system(paste0("dx download -a -f exome-seq:/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_lowmem.RData exome-seq:/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_highmem.RData exome-seq:/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_highhighmem.RData exome-seq:/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_veryhighmem.RData exome-seq:/sjj/projects/phewas/v1/data/grouping_files/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_popmax0.001.RData")) 
-        files1_1 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_lowmem.RData")
-        files1_2 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_highmem.RData")
-        files1_3 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_highhighmem.RData")
-        files1_4 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_popmax0.001_veryhighmem.RData")
-        files1_5 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_popmax0.001.RData")
-     
-        f1 <- get(load(files1_1))
-        f2 <- get(load(files1_2)) 
-        f3 <- get(load(files1_3)) 
-        f4 <- get(load(files1_4)) 
-        f5 <- get(load(files1_5))
-        class(f1$pos) <- class(f2$pos) <- class(f3$pos) <- class(f4$pos) <- class(f5$pos) <- "numeric"
-        class(f1$chr) <- class(f2$chr) <- class(f3$chr) <- class(f4$chr) <- class(f5$chr) <- "numeric"
-        group <- bind_rows(f1, f2, f3, f4, f5)
+        ##Use the grouping files used for the analyses; MAF<0.1% groupings
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask1/lowmem/* mask1/lowmem/"))
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask1/midmem/* mask1/midmem/"))
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask1/highmem/* mask1/highmem/"))
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask2/lowmem/* mask2/lowmem/"))
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask2/midmem/* mask2/midmem/"))
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask2/highmem/* mask2/highmem/"))
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask3/lowmem/* mask3/lowmem/"))
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask3/midmem/* mask3/midmem/"))
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask3/highmem/* mask3/highmem/"))
+         
+        files1_1 <- paste0("mask1/lowmem/groupingfile_chr", chr, ".RData")
+        files1_2 <- paste0("mask1/lowmem/groupingfile_chr", chr, ".RData")
+        files1_3 <- paste0("mask1/lowmem/groupingfile_chr", chr, ".RData")
+        files2_1 <- paste0("mask1/lowmem/groupingfile_chr", chr, ".RData")
+        files2_2 <- paste0("mask1/lowmem/groupingfile_chr", chr, ".RData")
+        files2_3 <- paste0("mask1/lowmem/groupingfile_chr", chr, ".RData")
+        files3_1 <- paste0("mask1/lowmem/groupingfile_chr", chr, ".RData")
+        files3_2 <- paste0("mask1/lowmem/groupingfile_chr", chr, ".RData")
+        files3_3 <- paste0("mask1/lowmem/groupingfile_chr", chr, ".RData")
+    
+        f1 <- bind_rows(get(load(files1_1)), get(load(files1_2)) , get(load(files1_3))) 
+        f1$group_id <- paste0(f1$group_id, "__hclof_noflag_POPMAX0.001")
+
+        f2 <- bind_rows(get(load(files2_1)), get(load(files2_2)) , get(load(files2_3))) 
+        f1$group_id <- paste0(f1$group_id, "__hclof_noflag_missense0.8_POPMAX0.001")
+
+        f3 <- bind_rows(get(load(files3_1)), get(load(files3_2)) , get(load(files3_3))) 
+        f1$group_id <- paste0(f1$group_id, "__hclof_noflag_missense0.5_POPMAX0.001")
+   
+        class(f1$pos) <- class(f2$pos) <- class(f3$pos) <- "numeric"
+        class(f1$chr) <- class(f2$chr) <- class(f3$chr) <- "numeric"
+        group <- bind_rows(f1, f2, f3)
 
         group$varid <- paste0(group$chr, ":", group$pos, ":", group$ref, ":", group$alt)
-        group$group_id <- sub("_", "__", group$group_id)
-        group$group_id <- sub("_gnomAD_POPMAX0.001", "_POPMAX0.001", group$group_id)
         rm <- which(duplicated(paste0(group$group_id, "__", group$varid)))
         if(length(rm)>0){group <- group[-rm, ]}
       
@@ -667,31 +627,41 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
         #carz <- NULL
         #phen1 <- phen0
 
-        ## Use the grouping files
-        #files2_1 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_lowmem.RData")
-        #files2_2 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_highmem.RData")
-        #files2_3 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_highhighmem.RData")
-        #files2_4 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_veryhighmem.RData")
-        #files2_5 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/ukbb_phewas_v1_groupingfile_c", chr, "_missense0.5_popmax0.00001_correct.RData")
-        system(paste0("dx download -a -f exome-seq:/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_lowmem.RData exome-seq:/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_highmem.RData exome-seq:/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_highhighmem.RData exome-seq:/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_veryhighmem.RData exome-seq:/sjj/projects/phewas/v1/data/grouping_files/ukbb_phewas_v1_groupingfile_c", chr, "_missense0.5_popmax0.00001_correct.RData"))
-        files2_1 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_lowmem.RData")
-        files2_2 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_highmem.RData")
-        files2_3 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_highhighmem.RData")
-        files2_4 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflagmissense0.5_missense0.2_popmax0.00001_veryhighmem.RData")
-        files2_5 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_missense0.5_popmax0.00001_correct.RData")
+        ## Use the grouping files; MAF<0.0001% files
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask4/lowmem/* mask4/lowmem/"))
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask4/midmem/* mask4/midmem/"))
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask4/highmem/* mask4/highmem/"))
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask5/lowmem/* mask5/lowmem/"))
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask5/midmem/* mask5/midmem/"))
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask5/highmem/* mask5/highmem/"))
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask6/lowmem/* mask6/lowmem/"))
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask6/midmem/* mask6/midmem/"))
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask6/highmem/* mask6/highmem/"))
+         
+        files1_1 <- paste0("mask4/lowmem/groupingfile_chr", chr, ".RData")
+        files1_2 <- paste0("mask4/lowmem/groupingfile_chr", chr, ".RData")
+        files1_3 <- paste0("mask4/lowmem/groupingfile_chr", chr, ".RData")
+        files2_1 <- paste0("mask5/lowmem/groupingfile_chr", chr, ".RData")
+        files2_2 <- paste0("mask5/lowmem/groupingfile_chr", chr, ".RData")
+        files2_3 <- paste0("mask5/lowmem/groupingfile_chr", chr, ".RData")
+        files3_1 <- paste0("mask6/lowmem/groupingfile_chr", chr, ".RData")
+        files3_2 <- paste0("mask6/lowmem/groupingfile_chr", chr, ".RData")
+        files3_3 <- paste0("mask6/lowmem/groupingfile_chr", chr, ".RData")
+    
+        f1 <- bind_rows(get(load(files1_1)), get(load(files1_2)) , get(load(files1_3))) 
+        f1$group_id <- paste0(f1$group_id, "__hclof_noflag_missense0.5_POPMAX0.00001")
 
-        f1 <- get(load(files2_1))
-        f2 <- get(load(files2_2)) 
-        f3 <- get(load(files2_3)) 
-        f4 <- get(load(files2_4)) 
-        f5 <- get(load(files2_5))
-        class(f1$pos) <- class(f2$pos) <- class(f3$pos) <- class(f4$pos) <- class(f5$pos) <- "numeric"
-        class(f1$chr) <- class(f2$chr) <- class(f3$chr) <- class(f4$chr) <- class(f5$chr) <- "numeric"
-        group <- bind_rows(f1, f2, f3, f4, f5)
+        f2 <- bind_rows(get(load(files2_1)), get(load(files2_2)) , get(load(files2_3))) 
+        f1$group_id <- paste0(f1$group_id, "__missense0.5_POPMAX0.00001")
 
+        f3 <- bind_rows(get(load(files3_1)), get(load(files3_2)) , get(load(files3_3))) 
+        f1$group_id <- paste0(f1$group_id, "__missense0.2_POPMAX0.00001")
+   
+        class(f1$pos) <- class(f2$pos) <- class(f3$pos) <- "numeric"
+        class(f1$chr) <- class(f2$chr) <- class(f3$chr) <- "numeric"
+        group <- bind_rows(f1, f2, f3)
+        
         group$varid <- paste0(group$chr, ":", group$pos, ":", group$ref, ":", group$alt)
-        group$group_id <- sub("_", "__", group$group_id)
-        group$group_id <- sub("_gnomAD_POPMAX0.00001", "_POPMAX0.00001", group$group_id) ### ENS00001111111__hclof_noflag_POPMAX0.001
         rm <- which(duplicated(paste0(group$group_id, "__", group$varid)))
         if(length(rm)>0){group <- group[-rm, ]}
       
@@ -782,28 +752,41 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
         #carz <- NULL
         #phen1 <- phen0
 
-        ## Use the grouping files
-        #files3_1 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_lowmem.RData")
-        #files3_2 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_highmem.RData")
-        #files3_3 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_highhighmem.RData")
-        #files3_4 <- paste0("/mnt/project/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_veryhighmem.RData")
-        system(paste0("dx download -a -f exome-seq:/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_lowmem.RData exome-seq:/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_highmem.RData exome-seq:/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_highhighmem.RData exome-seq:/sjj/projects/phewas/v1/data/grouping_files/mem_split/ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_veryhighmem.RData"))
-        files3_1 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_lowmem.RData")
-        files3_2 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_highmem.RData")
-        files3_3 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_highhighmem.RData")
-        files3_4 <- paste0("ukbb_phewas_v1_groupingfile_c", chr, "_hclofnoflag_hclofnoflagmissense0.8_hclofnoflagmissense0.5_popmax0.01_veryhighmem.RData")
+        ## Use the grouping files; MAF<1% files
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask7/lowmem/* mask7/lowmem/"))
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask7/midmem/* mask7/midmem/"))
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask7/highmem/* mask7/highmem/"))
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask8/lowmem/* mask8/lowmem/"))
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask8/midmem/* mask8/midmem/"))
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask8/highmem/* mask8/highmem/"))
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask9/lowmem/* mask9/lowmem/"))
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask9/midmem/* mask9/midmem/"))
+        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask9/highmem/* mask9/highmem/"))
+         
+        files1_1 <- paste0("mask7/lowmem/groupingfile_chr", chr, ".RData")
+        files1_2 <- paste0("mask7/lowmem/groupingfile_chr", chr, ".RData")
+        files1_3 <- paste0("mask7/lowmem/groupingfile_chr", chr, ".RData")
+        files2_1 <- paste0("mask8/lowmem/groupingfile_chr", chr, ".RData")
+        files2_2 <- paste0("mask8/lowmem/groupingfile_chr", chr, ".RData")
+        files2_3 <- paste0("mask8/lowmem/groupingfile_chr", chr, ".RData")
+        files3_1 <- paste0("mask9/lowmem/groupingfile_chr", chr, ".RData")
+        files3_2 <- paste0("mask9/lowmem/groupingfile_chr", chr, ".RData")
+        files3_3 <- paste0("mask9/lowmem/groupingfile_chr", chr, ".RData")
+    
+        f1 <- bind_rows(get(load(files1_1)), get(load(files1_2)) , get(load(files1_3))) 
+        f1$group_id <- paste0(f1$group_id, "__hclof_noflag_POPMAX0.01")
 
-        f1 <- get(load(files3_1))
-        f2 <- get(load(files3_2)) 
-        f3 <- get(load(files3_3)) 
-        f4 <- get(load(files3_4)) 
-        class(f1$pos) <- class(f2$pos) <- class(f3$pos) <- class(f4$pos) <- "numeric"
-        class(f1$chr) <- class(f2$chr) <- class(f3$chr) <- class(f4$chr) <- "numeric"
-        group <- bind_rows(f1, f2, f3, f4)
+        f2 <- bind_rows(get(load(files2_1)), get(load(files2_2)) , get(load(files2_3))) 
+        f1$group_id <- paste0(f1$group_id, "__hclof_noflag_missense0.8_POPMAX0.01")
 
+        f3 <- bind_rows(get(load(files3_1)), get(load(files3_2)) , get(load(files3_3))) 
+        f1$group_id <- paste0(f1$group_id, "__hclof_noflag_missense0.5_POPMAX0.01")
+   
+        class(f1$pos) <- class(f2$pos) <- class(f3$pos) <- "numeric"
+        class(f1$chr) <- class(f2$chr) <- class(f3$chr) <- "numeric"
+        group <- bind_rows(f1, f2, f3)
+        
         group$varid <- paste0(group$chr, ":", group$pos, ":", group$ref, ":", group$alt)
-        group$group_id <- sub("_", "__", group$group_id)
-        group$group_id <- sub("_gnomAD_POPMAX0.01", "_POPMAX0.01", group$group_id)
         rm <- which(duplicated(paste0(group$group_id, "__", group$varid)))
         if(length(rm)>0){group <- group[-rm, ]}
       
