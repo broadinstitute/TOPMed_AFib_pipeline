@@ -20,6 +20,8 @@ library(data.table)
 library(dplyr)
 library(tidyr)
 
+run_chr_vec <- c(2, 10) # c(1:22) for all chromosomes
+
 #############################
 # Key file and overview files
 #############################
@@ -463,6 +465,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   cat("\t\textracting variant data from PLINK files for MAF<0.1% threshold ...\n")
   regenie <- NULL
   for(chr in c(1:22)){
+      if(chr %in% run_chr_vec){
         regenie_setfile <- NULL
         regenie_annotationfile <- NULL
         cat("\t\t\tbusy with chromosome ", chr, "...\n")
@@ -571,6 +574,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
 
           regenie <- bind_rows(regenie, fread(paste0(num, '__chr', chr, '_disease.regenie'), stringsAsFactors=F, data.table=F))
         }
+     }
   }
 
   regenie <- regenie[which(!grepl("singleton", regenie$ID)), ]
@@ -588,6 +592,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   cat("\t\textracting variant data from PLINK files for MAF<0.001% threshold ...\n")
   regenie <- NULL
   for(chr in c(1:22)){
+      if(chr %in% run_chr_vec){
         regenie_setfile <- NULL
         regenie_annotationfile <- NULL
         cat("\t\t\tbusy with chromosome ", chr, "...\n")
@@ -687,6 +692,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
 
             regenie <- bind_rows(regenie, fread(paste0(num, '__chr', chr, '_disease.regenie'), stringsAsFactors=F, data.table=F))
         }
+     }
   }
 
   regenie <- regenie[which(!grepl("singleton", regenie$ID)), ]
@@ -704,6 +710,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   cat("\t\textracting variant data from PLINK files for MAF<1% threshold ...\n")
   regenie <- NULL
   for(chr in c(1:22)){
+     if(chr %in% run_chr_vec){
         regenie_setfile <- NULL
         regenie_annotationfile <- NULL
         cat("\t\t\tbusy with chromosome ", chr, "...\n")
@@ -799,6 +806,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
             
             regenie <- bind_rows(regenie, fread(paste0(num, '__chr', chr, '_disease.regenie'), stringsAsFactors=F, data.table=F))
         }
+     }
   }
   
   regenie <- regenie[which(!grepl("singleton", regenie$ID)), ]
@@ -817,9 +825,15 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   cat('\tSaving final results...\n\n')
   rawassoc_res$ID  <- paste0(rawassoc_res$gene, "__", rawassoc_res$mask)
   rawassoc_res  <- merge(rawassoc_res, regenie_res_tot, by="ID", all=T)
+  rawassoc_res <- rawassoc_res[rawassoc_res$chr %in% run_chr_vec, ]
 
-  write.table(rawassoc_res, file=paste0('../summary_results_phewas_all_tests_phecode', num, '_with_firths_results.tsv'),
+  if(all(c(1:22) %in% run_chr_vec)){
+      write.table(rawassoc_res, file=paste0('../summary_results_phewas_all_tests_phecode', num, '_with_firths_results.tsv'),
                         col.names=T, row.names=F, quote=F, sep='\t', append=F)
+  }else{
+      write.table(rawassoc_res, file=paste0('../summary_results_phewas_all_tests_phecode', num, '_with_firths_results_partial.tsv'),
+                        col.names=T, row.names=F, quote=F, sep='\t', append=F)
+  }
 
 }
 #}
