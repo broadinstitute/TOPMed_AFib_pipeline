@@ -858,8 +858,8 @@ if(!all(file.exists(total_files))){
   regenie$firth.controls <- firth.n.controls
   ## can add code to make all results with firth carriers (or cases) <20 --> "MISSING". DON'T REMOVE THE LINE FROM THE DATA. 
 
-  regenie_res_tot <- rbind(regenie_res_tot, regenie)
-
+  regenie_res_tot <- rbind(regenie_res_tot, regenie)  
+  
   #########################
   # Merge and save results
   ##########################
@@ -867,8 +867,14 @@ if(!all(file.exists(total_files))){
   rawassoc_res$ID  <- paste0(rawassoc_res$gene, "__", rawassoc_res$mask)
   rawassoc_res  <- merge(rawassoc_res, regenie_res_tot, by="ID", all=T)
 
-  write.table(rawassoc_res, file=paste0('../summary_results_phewas_all_tests_phecode', num, '_with_firths_results.tsv'),
-                        col.names=T, row.names=F, quote=F, sep='\t', append=F)
+  ###### Perform check on the output
+  if(length(which(rawassoc_res$SPA.converged & is.na(rawassoc_res$firth.Est)))>0){
+      cat("WARNING: some results were not re-estimated even though they should have been....\n")
+      outfile <- paste0('../summary_results_phewas_all_tests_phecode', num, '_with_firths_results_WARNINGS.tsv')
+  }else{
+      outfile <- paste0('../summary_results_phewas_all_tests_phecode', num, '_with_firths_results.tsv')
+  }
+  write.table(rawassoc_res, file=outfile, col.names=T, row.names=F, quote=F, sep='\t', append=F)
 
 }
 #}
