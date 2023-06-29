@@ -875,6 +875,8 @@ if(!all(file.exists(total_files))){
       outfile <- paste0('../summary_results_phewas_all_tests_phecode', num, '_with_firths_results.tsv')
   }
   write.table(rawassoc_res, file=outfile, col.names=T, row.names=F, quote=F, sep='\t', append=F)
-
+  ### Move to output directory!
+  system(paste0("gsutil cp ", outfile, " gs://path/to/collected_results/dir/"))
+  
 }
 #}
