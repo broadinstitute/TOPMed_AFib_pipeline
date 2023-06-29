@@ -294,7 +294,7 @@ if(!all(file.exists(total_files))){
     inter1$phenotype <- phenoname
     inter1$cases <- n.cases
     inter1$controls <- n.controls
-    write.table(inter1, file=paste0('../summary_results_phewas_cauchy_phecode', num, '.tsv'), col.names=T, row.names=F, quote=F, sep='\t', append=T) # This one is important!
+    write.table(inter1, file=paste0('summary_results_phewas_cauchy_phecode', num, '.tsv'), col.names=T, row.names=F, quote=F, sep='\t', append=F) # This one is important!
 
   #############################
   # Build phenotype files; Will depend strongly on how you did the phenotype files!!!
@@ -870,13 +870,15 @@ if(!all(file.exists(total_files))){
   ###### Perform check on the output
   if(length(which(rawassoc_res$SPA.converged & is.na(rawassoc_res$firth.Est)))>0){
       cat("WARNING: some results were not re-estimated even though they should have been....\n")
-      outfile <- paste0('../summary_results_phewas_all_tests_phecode', num, '_with_firths_results_WARNINGS.tsv')
+      outfile <- paste0('summary_results_phewas_all_tests_phecode', num, '_with_firths_results_WARNINGS.tsv')
   }else{
-      outfile <- paste0('../summary_results_phewas_all_tests_phecode', num, '_with_firths_results.tsv')
+      outfile <- paste0('summary_results_phewas_all_tests_phecode', num, '_with_firths_results.tsv')
   }
   write.table(rawassoc_res, file=outfile, col.names=T, row.names=F, quote=F, sep='\t', append=F)
-  ### Move to output directory!
+  ###### Move outputs to output directory!
+  # All effect size file
   system(paste0("gsutil cp ", outfile, " gs://path/to/collected_results/dir/"))
-  
+  # Cauchy file
+  system(paste0("gsutil cp summary_results_phewas_cauchy_phecode", num, ".tsv  gs://path/to/collected_results/dir/Cauchy/")
 }
 #}
