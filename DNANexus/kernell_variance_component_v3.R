@@ -29,7 +29,7 @@ source("UKBB_200KWES_CVD/GENESIS_adaptation_source.R")
 source("TOPMed_AFib_pipeline/DNANexus/kernell_variance_component_modfied.R")
 source("TOPMed_AFib_pipeline/DNANexus/ExtractKernelStatistics_error_fixed.R")
 
-kernell_variance_component_v2(gdsfile=gdsfile,groupfile=groupfile,phenfile=phenfile,ID_col=ID_col,nullfile=nullfile,outfile=outfile, test="ExtractKernelStatistics", vc.test="Score", AF.max=0.001, MAC.max=Inf,use.weights=FALSE)
+kernell_variance_component_v3(gdsfile=gdsfile,groupfile=groupfile,phenfile=phenfile,ID_col=ID_col,nullfile=nullfile,outfile=outfile, test="ExtractKernelStatistics", vc.test="Score", AF.max=0.001, MAC.max=Inf,use.weights=FALSE)
 
 sessionInfo()
 quit("no")
