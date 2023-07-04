@@ -9,6 +9,8 @@ chunk_num=as.numeric(args[4])
 
 .libPaths(c("rpackages4_1_3",.libPaths()))
 
+reestimate_effects <- F
+
 #git clone --branch v1.2 https://github.com/seanjosephjurgens/UKBB_200KWES_CVD.git
 #git pull --branch v1.2 https://github.com/seanjosephjurgens/UKBB_200KWES_CVD.git
 #source("/medpop/afib/sjurgens/Rscripts/association_source_v2.R")
@@ -287,6 +289,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   # Build phenotype files 
   #############################
 
+  if(reestimate_effects){
   cat('\tcreating phenotype and helper files for analysis...\n\n')
   # Example phenotype file from the same phenotype freeze
   exdat0 <- fread("/mnt/project/sjj/projects/phewas/v1/data/pheno/Hypertrophic_cardiomyopathy.tab.tsv.gz",header=T,data.table=F)
@@ -819,6 +822,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
 
   write.table(rawassoc_res, file=paste0('../summary_results_phewas_all_tests_phecode', num, '_with_firths_results_EUR.tsv'),
                         col.names=T, row.names=F, quote=F, sep='\t', append=F)
-
+  }
+      
 }
 #}
