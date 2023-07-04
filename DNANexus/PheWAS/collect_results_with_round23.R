@@ -20,7 +20,7 @@ library(data.table)
 library(dplyr)
 library(tidyr)
 
-run_chr_vec <- c(2, 10) # c(1:22) for all chromosomes
+reestimate_effects <- F
 
 #############################
 # Key file and overview files
@@ -288,6 +288,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   # Build phenotype files 
   #############################
 
+  if(reestimate_effects){
   cat('\tcreating phenotype and helper files for analysis...\n\n')
   # Example phenotype file from the same phenotype freeze
   exdat0 <- fread("/mnt/project/sjj/projects/phewas/v1/data/pheno/Hypertrophic_cardiomyopathy.tab.tsv.gz",header=T,data.table=F)
@@ -833,6 +834,7 @@ if(!(all(file.exists(maf0.001_files)) & all(file.exists(maf0.00001_files)) & all
   }else{
       write.table(rawassoc_res, file=paste0('../summary_results_phewas_all_tests_phecode', num, '_with_firths_results_partial.tsv'),
                         col.names=T, row.names=F, quote=F, sep='\t', append=F)
+  }
   }
 
 }
