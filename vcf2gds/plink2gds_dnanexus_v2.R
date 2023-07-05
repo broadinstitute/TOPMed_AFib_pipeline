@@ -27,7 +27,7 @@ bed.fn<-bedfile
 fam.fn<-famfile
 bim.fn<-bimfile
 out.fn<-paste0(outfile,".gds")
-seqBED2GDS(bed.fn, fam.fn, bim.fn, out.fn,parallel=cpusnum, verbose=TRUE)
+seqBED2GDS(bed.fn, fam.fn, bim.fn, out.fn,parallel=96, verbose=TRUE)
 
 ##### complete conversion
 end_time <- Sys.time()
