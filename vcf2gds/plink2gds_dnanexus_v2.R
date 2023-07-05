@@ -20,7 +20,7 @@ bedfile <- args[1]
 famfile <- args[2]
 bimfile <- args[3]
 outfile <- args[4]
-cpusnum <- as.numeric(args[5])
+cpusnum <- as.numeric(as.character(args[5]))
 
 ##### convert vcf to gds
 bed.fn<-bedfile
