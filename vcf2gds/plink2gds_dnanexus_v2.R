@@ -15,23 +15,24 @@ library(SeqArray)
 
 ##### call arguments
 args <- commandArgs(trailingOnly=T)
+print(args)
 bedfile <- args[1]
 famfile <- args[2]
 bimfile <- args[3]
 outfile <- args[4]
-ncpus <- as.numeric(args[5])
+cpusnum <- as.numeric(args[5])
 
 ##### convert vcf to gds
 bed.fn<-bedfile
 fam.fn<-famfile
 bim.fn<-bimfile
 out.fn<-paste0(outfile,".gds")
-seqBED2GDS(bed.fn, fam.fn, bim.fn, out.fn,parallel=ncpus, verbose=TRUE)
+seqBED2GDS(bed.fn, fam.fn, bim.fn, out.fn,parallel=cpusnum, verbose=TRUE)
 
 ##### complete conversion
 end_time <- Sys.time()
 difftime<-end_time - start_time
-print(paste("Comuptational time of",round(difftime[[1]],digits=2),"secs"))
+difftime
 
 ###### quit R
 sessionInfo()
