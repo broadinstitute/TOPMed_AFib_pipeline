@@ -27,10 +27,7 @@ cat('\nReading in packages for analysis...\n')
 source("UKBB_200KWES_CVD/GENESIS_adaptation_source.R")
 source("TOPMed_AFib_pipeline/DNANexus/kernell_variance_component_modfied.R")
 source("TOPMed_AFib_pipeline/DNANexus/ExtractKernelStatistics_error_fixed.R")
-
 #.libPaths(c("rpackages4_1_3",.libPaths()))
-
-
 kernell_variance_component_v3(gdsfile=gdsfile,groupfile=groupfile,phenfile=phenfile,ID_col=ID_col,nullfile=nullfile,outfile=outfile, test="ExtractKernelStatistics", vc.test=testtype, AF.max=afcutoff, MAC.max=Inf,use.weights=FALSE)
 
 sessionInfo()
