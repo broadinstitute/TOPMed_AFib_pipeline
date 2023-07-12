@@ -1,5 +1,4 @@
 #########!/usr/bin/env Rscript
-
 #### binary traits
 args=(commandArgs(TRUE))
 gdsfile=as.character(args[1])
