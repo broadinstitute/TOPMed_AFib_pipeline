@@ -37,9 +37,12 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
         colnames(SKAT)[c(2:3)] <- paste0("SKAT_", colnames(SKAT)[c(2:3)])
         ACATO <- dat[dat$TEST=="ADD-ACATO", c("ID", "CHISQ", "LOG10P")]
         colnames(ACATO)[c(2:3)] <- paste0("ACATO_", colnames(ACATO)[c(2:3)])
+        SBAT <- dat[which(grepl("SBAT", dat$TEST)), c("ID", "CHISQ", "LOG10P")]
+        colnames(SBAT)[c(2:3)] <- paste0("SBAT_", colnames(SBAT)[c(2:3)])
         burden <- merge(burden, ACATV, by="ID", all.x=T, all.y=F)
         burden <- merge(burden, SKAT, by="ID", all.x=T, all.y=F)
         burden <- merge(burden, ACATO, by="ID", all.x=T, all.y=F)
+        burden <- merge(burden, SBAT, by="ID", all.x=T, all.y=F)
         rm(dat)
         
         ### Merge by mask groupings, e.g. LOF, missense and LOF+missense
@@ -50,7 +53,9 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
                        c("ID", "TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N")],
                      burden[which(!grepl("missense", burden$ALLELE1)),                
                        c(which(grepl("BURDEN_", colnames(burden))),
-                       which(grepl("ACATV_", colnames(burden))), which(grepl("SKAT_", colnames(burden))))]
+                         which(grepl("ACATV_", colnames(burden))),
+                         which(grepl("SKAT_", colnames(burden))),
+                         which(grepl("SBAT_", colnames(burden))))]
         )
         uniques <- unique(lof$ALLELE1)
         length <- length(uniques)
@@ -58,17 +63,17 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
             lof <- NULL
         }else if(length==1){
             lof <- lof[,c("TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N", 
-                          "BURDEN_LOG10P", "ACATV_LOG10P", "SKAT_LOG10P")]
+                          "BURDEN_LOG10P", "ACATV_LOG10P", "SKAT_LOG10P", "SBAT_LOG10P")]
             colnames(lof)[c(7:ncol(lof))] <- paste0(uniques[1], "_", colnames(lof)[c(7:(ncol(lof)))])
             lof$LOF_cauchy_LOG10P <- apply(X=lof[,which(grepl("LOG10P", colnames(lof)))], MARGIN=1, FUN=cauchy)
         }else{
             i<-1
             lofnew <- lof[lof$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N", 
-                                                      "BURDEN_LOG10P", "ACATV_LOG10P", "SKAT_LOG10P")]
+                                                      "BURDEN_LOG10P", "ACATV_LOG10P", "SKAT_LOG10P", "SBAT_LOG10P")]
             colnames(lofnew)[c(7:ncol(lofnew))] <- paste0(uniques[i], "_", colnames(lofnew)[c(7:ncol(lofnew))])
             for(i in c(2:length)){
-                inter <- lof[lof$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "BURDEN_LOG10P", "ACATV_LOG10P", "SKAT_LOG10P")]
-                colnames(inter)[c(2:4)] <-  paste0(uniques[i], "_", colnames(inter)[c(2:4)])
+                inter <- lof[lof$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "BURDEN_LOG10P", "ACATV_LOG10P", "SKAT_LOG10P", "SBAT_LOG10P")]
+                colnames(inter)[c(2:ncol(inter))] <-  paste0(uniques[i], "_", colnames(inter)[c(2:ncol(inter))])
                 lofnew <- merge(lofnew, inter, by="TRANSCRIPT_ID", all=T)
             }
             lof <- lofnew
@@ -80,7 +85,9 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
                             c("ID", "TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N")],
                      burden[which(!grepl("LOF", burden$ALLELE1) &!grepl("lof", burden$ALLELE1)),                
                             c(which(grepl("BURDEN_", colnames(burden))),
-                              which(grepl("ACATV_", colnames(burden))), which(grepl("SKAT_", colnames(burden))))]
+                              which(grepl("ACATV_", colnames(burden))), 
+                              which(grepl("SKAT_", colnames(burden))),
+                              which(grepl("SBAT_", colnames(burden))))]
         )
         uniques <- unique(missense$ALLELE1)
         length <- length(uniques)
@@ -88,17 +95,17 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
             missense <- NULL
         }else if(length==1){
             missense <- missense[,c("TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N", 
-                          "BURDEN_LOG10P", "ACATV_LOG10P", "SKAT_LOG10P")]
+                          "BURDEN_LOG10P", "ACATV_LOG10P", "SKAT_LOG10P", "SBAT_LOG10P")]
             colnames(missense)[c(7:ncol(missense))] <- paste0(uniques[1], "_", colnames(missense)[c(7:(ncol(missense)))])
             missense$missense_cauchy_LOG10P <- apply(X=missense[,which(grepl("LOG10P", colnames(missense)))], MARGIN=1, FUN=cauchy)
         }else{
             i<-1
             missensenew <- missense[missense$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N", 
-                                                     "BURDEN_LOG10P", "ACATV_LOG10P", "SKAT_LOG10P")]
+                                                     "BURDEN_LOG10P", "ACATV_LOG10P", "SKAT_LOG10P", "SBAT_LOG10P")]
             colnames(missensenew)[c(7:ncol(missensenew))] <- paste0(uniques[i], "_", colnames(missensenew)[c(7:ncol(missensenew))])
             for(i in c(2:length)){
-                inter <- missense[missense$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "BURDEN_LOG10P", "ACATV_LOG10P", "SKAT_LOG10P")]
-                colnames(inter)[c(2:4)] <-  paste0(uniques[i], "_", colnames(inter)[c(2:4)])
+                inter <- missense[missense$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "BURDEN_LOG10P", "ACATV_LOG10P", "SKAT_LOG10P", "SBAT_LOG10P")]
+                colnames(inter)[c(2:ncol(inter))] <-  paste0(uniques[i], "_", colnames(inter)[c(2:ncol(inter))])
                 missensenew <- merge(missensenew, inter, by="TRANSCRIPT_ID", all=T)
             }
             missense <- missensenew
@@ -110,7 +117,9 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
                             c("ID", "TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N")],
                      burden[which(grepl("LOFmissense", burden$ALLELE1) | grepl("lofmissense", burden$ALLELE1)),                
                             c(which(grepl("BURDEN_", colnames(burden))),
-                              which(grepl("ACATV_", colnames(burden))), which(grepl("SKAT_", colnames(burden))))]
+                              which(grepl("ACATV_", colnames(burden))),
+                              which(grepl("SKAT_", colnames(burden))),
+                              which(grepl("SBAT_", colnames(burden))))]
         )
         uniques <- unique(lofmissense$ALLELE1)
         length <- length(uniques)
@@ -118,17 +127,17 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
             lofmissense <- NULL
         }else if(length==1){
             lofmissense <- lofmissense[,c("TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N", 
-                          "BURDEN_LOG10P", "ACATV_LOG10P", "SKAT_LOG10P")]
+                          "BURDEN_LOG10P", "ACATV_LOG10P", "SKAT_LOG10P", "SBAT_LOG10P")]
             colnames(lofmissense)[c(7:ncol(lofmissense))] <- paste0(uniques[1], "_", colnames(lofmissense)[c(7:(ncol(lofmissense)))])
             lofmissense$lofmissense_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("LOG10P", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
         }else{
             i<-1
             lofmissensenew <- lofmissense[lofmissense$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N", 
-                                                     "BURDEN_LOG10P", "ACATV_LOG10P", "SKAT_LOG10P")]
+                                                     "BURDEN_LOG10P", "ACATV_LOG10P", "SKAT_LOG10P", "SBAT_LOG10P")]
             colnames(lofmissensenew)[c(7:ncol(lofmissensenew))] <- paste0(uniques[i], "_", colnames(lofmissensenew)[c(7:ncol(lofmissensenew))])
             for(i in c(2:length)){
-                inter <- lofmissense[lofmissense$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "BURDEN_LOG10P", "ACATV_LOG10P", "SKAT_LOG10P")]
-                colnames(inter)[c(2:4)] <-  paste0(uniques[i], "_", colnames(inter)[c(2:4)])
+                inter <- lofmissense[lofmissense$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "BURDEN_LOG10P", "ACATV_LOG10P", "SKAT_LOG10P", "SBAT_LOG10P")]
+                colnames(inter)[c(2:ncol(inter))] <-  paste0(uniques[i], "_", colnames(inter)[c(2:ncol(inter))])
                 lofmissensenew <- merge(lofmissensenew, inter, by="TRANSCRIPT_ID", all=T)
             }
             lofmissense <- lofmissensenew
