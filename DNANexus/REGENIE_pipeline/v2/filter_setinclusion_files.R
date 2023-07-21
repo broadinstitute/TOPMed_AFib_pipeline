@@ -9,7 +9,6 @@ regenie_setinclusionfile_out=as.character(args[5])
 
 library(data.table)
 .libPaths(c("rpackages4_1_3",.libPaths()))
-source("UKBB_200KWES_CVD/Cauchy_test.R")
 
 group <- fread(regenie_setinclusionfile, stringsAsFactors = F, data.table=F, header=F, sep='\t')
 genes <- unique(gsub("__.*", "", group$V1))
