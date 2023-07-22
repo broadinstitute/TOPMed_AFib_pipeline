@@ -24,7 +24,7 @@ group <- group[which(gsub("__.*", "", group$V1) %in% genes_chunk), ]
 ## Filter to needed tissues
 tissues_to_keep <- strsplit(tissues_to_keep, split=",")
 tissues_to_keep_vec <- NULL
-for(i in length(tissues_to_keep[[1]])){
+for(i in c(1:length(tissues_to_keep[[1]]))){
   tissues_to_keep_vec <- c(tissues_to_keep_vec, tissues_to_keep[[1]][i])
 }
 group <- group[which(gsub(".*__", "", group$V1) %in% tissues_to_keep_vec), ]
