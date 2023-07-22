@@ -19,7 +19,8 @@ splitz <- base::split(c(1:length(genes)), ceiling(seq_along(c(1:length(genes)))/
 genes_chunk <- genes[splitz[[gene_chunk_num]]]
 
 ## Filter to chunk genes
-group <- group[which(gsub("__.*", "", group$V1) %in% genes_chunk), ]
+group <- as.data.frame(group[which(gsub("__.*", "", group$V1) %in% genes_chunk), ], stringsAsFactors=FALSE)
+colnames(group) <- "V1"
 
 ## Filter to needed tissues
 tissues_to_keep <- strsplit(tissues_to_keep, split=",")
