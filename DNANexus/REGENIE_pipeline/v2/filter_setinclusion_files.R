@@ -28,7 +28,8 @@ tissues_to_keep_vec <- NULL
 for(i in c(1:length(tissues_to_keep[[1]]))){
   tissues_to_keep_vec <- c(tissues_to_keep_vec, tissues_to_keep[[1]][i])
 }
-group <- group[which(gsub(".*__", "", group$V1) %in% tissues_to_keep_vec), ]
+group <- as.data.frame(group[which(gsub(".*__", "", group$V1) %in% tissues_to_keep_vec), ], stringsAsFactors=FALSE)
+colnames(group) <- "V1"
 
 ## Save result
 write.table(group, file=regenie_setinclusionfile_out, col.names=F, row.names=F, quote=F, sep='\t')
