@@ -11,6 +11,8 @@ library(data.table)
 source("UKBB_200KWES_CVD/Cauchy_test.R")
 
 dat <- fread(regenie_outfile, stringsAsFactors = F, data.table=F)
+# filter failed tests
+dat <- dat[is.na(dat$EXTRA), ]
 if(nrow(dat)==0 | "V2" %in% colnames(dat)){
     cat("\n\n\nNo tests in REGENIE output!! Perhaps no REGENIE tests passing filters.\n\n\n")
     burden <- NULL
