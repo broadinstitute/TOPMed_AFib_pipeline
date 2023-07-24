@@ -39,7 +39,6 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
         ACATO <- dat[dat$TEST=="ADD-ACATO", c("ID", "CHISQ", "LOG10P")]
         colnames(ACATO)[c(2:3)] <- paste0("ACATO_", colnames(ACATO)[c(2:3)])
         SBAT <- dat[which(grepl("SBAT", dat$TEST)), c("TRANSCRIPT_ID", "LOG10P")] ### gets added later in pipeline
-        colnames(SBAT)[c(2:3)] <- paste0("SBAT_", colnames(SBAT)[c(2:3)])
         burden <- merge(burden, ACATV, by="ID", all.x=T, all.y=F)
         burden <- merge(burden, SKAT, by="ID", all.x=T, all.y=F)
         burden <- merge(burden, ACATO, by="ID", all.x=T, all.y=F)
