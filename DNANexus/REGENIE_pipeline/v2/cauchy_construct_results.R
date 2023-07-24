@@ -56,7 +56,7 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
                      burden[which(!grepl("missense", burden$ALLELE1)),                
                        c(which(grepl("BURDEN_", colnames(burden))),
                          which(grepl("ACATV_", colnames(burden))),
-                         which(grepl("SKAT_", colnames(burden)))]
+                         which(grepl("SKAT_", colnames(burden))))]
         )
         uniques <- unique(lof$ALLELE1)
         length <- length(uniques)
@@ -87,7 +87,7 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
                      burden[which(!grepl("LOF", burden$ALLELE1) &!grepl("lof", burden$ALLELE1)),                
                             c(which(grepl("BURDEN_", colnames(burden))),
                               which(grepl("ACATV_", colnames(burden))), 
-                              which(grepl("SKAT_", colnames(burden)))]
+                              which(grepl("SKAT_", colnames(burden))))]
         )
         uniques <- unique(missense$ALLELE1)
         length <- length(uniques)
@@ -118,7 +118,7 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
                      burden[which(grepl("LOFmissense", burden$ALLELE1) | grepl("lofmissense", burden$ALLELE1) | grepl("LOFnoflagmissense", burden$ALLELE1) | grepl("lofnoflagmissense", burden$ALLELE1)),                
                             c(which(grepl("BURDEN_", colnames(burden))),
                               which(grepl("ACATV_", colnames(burden))),
-                              which(grepl("SKAT_", colnames(burden)))]
+                              which(grepl("SKAT_", colnames(burden))))]
         )
         uniques <- unique(lofmissense$ALLELE1)
         length <- length(uniques)
