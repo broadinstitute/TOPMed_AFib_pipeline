@@ -159,7 +159,7 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
 
         ### Add SBAT results
         #SBAT <- dat[which(grepl("SBAT", dat$TEST)), c("TRANSCRIPT_ID", "LOG10P")]
-        colnames(SBAT)[2] <- "SBAT_LOG10P"
+        colnames(SBAT)[2] <- "SBAT_transcript_cauchy_LOG10P"
         lofmissense <- merge(lofmissense, SBAT, by="TRANSCRIPT_ID", all=T) 
                             
         ### Merge by gene ###
