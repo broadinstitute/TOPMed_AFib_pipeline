@@ -163,6 +163,7 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
         #SBAT <- dat[which(grepl("SBAT", dat$TEST)), c("TRANSCRIPT_ID", "LOG10P")]
         colnames(SBAT)[2] <- "SBAT_transcript_cauchy_LOG10P"
         lofmissense <- merge(lofmissense, SBAT, by="TRANSCRIPT_ID", all=T) 
+        lofmissense <- lofmissense[,c(2, 1, 3:ncol(lofmissense))]
                             
         ### Merge by gene ###
         uniques <- unique(lofmissense$transcript_type)
