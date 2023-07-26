@@ -17,6 +17,9 @@ dat <- fread(regenie_outfile, stringsAsFactors = F, data.table=F)
 dat <- dat[which(is.na(dat$EXTRA) | is.null(dat$EXTRA) | grepl("DF=", dat$EXTRA)), ]
 # remove singleton masks
 dat <- dat[which(!grepl("singleton", dat$ALLELE1)), ]
+# fix pext coding issues
+dat$ID <- gsub("pext0.8", "pext80", dat$ID)
+dat$ID <- gsub("pext0.9", "pext90", dat$ID)
 
 if(nrow(dat)==0 | "V2" %in% colnames(dat)){
     cat("\n\n\nNo tests in REGENIE output!! Perhaps no REGENIE tests passing filters.\n\n\n")
@@ -198,7 +201,7 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
         if(length==0 | is.null(length)){
             lofmissense <- NULL
         }else if(length==1){
-            if(lessthanvcMAFthreshold_remove & !grepl(paste0(vcMAFthreshold), uniques[i])){
+            if(lessthan_vcMAXAAF_remove & !grepl(paste0(vcMAXAAF), uniques[i])){
                 lofmissense <- lofmissense[,c("TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N", "BURDEN_LOG10P")]
             }else{
                 lofmissense <- lofmissense[,c("TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N", 
@@ -208,7 +211,7 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
             lofmissense$lofmissense_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("LOG10P", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
         }else{
             i<-1
-            if(lessthanvcMAFthreshold_remove & !grepl(paste0(vcMAFthreshold), uniques[i])){
+            if(lessthan_vcMAXAAF_remove & !grepl(paste0(vcMAXAAF), uniques[i])){
                 lofmissensenew <- lofmissense[lofmissense$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N", "BURDEN_LOG10P")]
             }else{
                 lofmissensenew <- lofmissense[lofmissense$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N", 
@@ -216,7 +219,7 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
             }
             colnames(lofmissensenew)[c(7:ncol(lofmissensenew))] <- paste0(uniques[i], "_", colnames(lofmissensenew)[c(7:ncol(lofmissensenew))])
             for(i in c(2:length)){
-                if(lessthanvcMAFthreshold_remove & !grepl(paste0(vcMAFthreshold), uniques[i])){
+                if(lessthan_vcMAXAAF_remove & !grepl(paste0(vcMAXAAF), uniques[i])){
                     inter <- lofmissense[lofmissense$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "BURDEN_LOG10P")]
                 }else{
                     inter <- lofmissense[lofmissense$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "BURDEN_LOG10P", "ACATV_LOG10P", "SKAT_LOG10P")]
@@ -230,10 +233,16 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
         lofmissense <- lofmissense[,-(which(colnames(lofmissense)=="ALLELE1"))]
         lofmissense <- lofmissense[,c(1, 6:ncol(lofmissense))]
         lofmissense <- merge(lofmissense1, lofmissense, by="TRANSCRIPT_ID", all=T)
-        
-        ### Merge by transcript ###
+        lofmissense$LOFmissense_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("LOG10P", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
+               
+        ############ Merge by transcript ############
         try(lofmissense <- merge(lofmissense, missense[,c(1, 6:ncol(missense))], by="TRANSCRIPT_ID", all=T))
         try(lofmissense <- merge(lofmissense, lof[,c(1, 6:ncol(lof))], by="TRANSCRIPT_ID", all=T))
+        ### Add SBAT results
+        #SBAT <- dat[which(grepl("SBAT", dat$TEST)), c("TRANSCRIPT_ID", "LOG10P")]
+        colnames(SBAT)[2] <- "SBAT_cauchy_LOG10P"
+        lofmissense <- merge(lofmissense, SBAT, by="TRANSCRIPT_ID", all=T) 
+        #lofmissense <- lofmissense[,c(2, 1, 3:ncol(lofmissense))]
         if(length(which(grepl("_cauchy_LOG10P", colnames(lofmissense))))>1){          
             lofmissense$transcript_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("_cauchy_LOG10P", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
         }else{
@@ -244,14 +253,8 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
         lofmissense$transcript_type <- gsub(".*__", "", lofmissense$TRANSCRIPT_ID)
         lofmissense <- lofmissense[,c(2, 1, 3:5, (ncol(lofmissense)), c(6:(ncol(lofmissense)-1)))]
         rm(lof, missense)
-
-        ### Add SBAT results
-        #SBAT <- dat[which(grepl("SBAT", dat$TEST)), c("TRANSCRIPT_ID", "LOG10P")]
-        colnames(SBAT)[2] <- "SBAT_transcript_cauchy_LOG10P"
-        lofmissense <- merge(lofmissense, SBAT, by="TRANSCRIPT_ID", all=T) 
-        lofmissense <- lofmissense[,c(2, 1, 3:ncol(lofmissense))]
                             
-        ### Merge by gene ###
+        ############ Merge by gene ############
         uniques <- unique(lofmissense$transcript_type)
         length <- length(uniques)
         if(length==0 | is.null(length)){
