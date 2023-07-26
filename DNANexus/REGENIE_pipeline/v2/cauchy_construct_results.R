@@ -5,8 +5,8 @@ args=(commandArgs(TRUE))
 regenie_outfile=as.character(args[1])
 cauchy_outfile=as.character(args[2])
 minMAC=as.numeric(args[3])
-vcMAFthreshold=as.numeric(args[4])
-lessthanvcMAFthreshold_remove=as.logical(args[5])
+vcMAXAAF=as.numeric(args[4])
+lessthan_vcMAXAAF_remove=as.logical(args[5])
 
 library(data.table)
 .libPaths(c("rpackages4_1_3",.libPaths()))
@@ -68,7 +68,7 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
         if(length==0 | is.null(length)){
             lof <- NULL
         }else if(length==1){
-            if(lessthanvcMAFthreshold_remove & !grepl(paste0(vcMAFthreshold), uniques[i])){
+            if(lessthan_vcMAXAAF_remove & !grepl(paste0(vcMAXAAF), uniques[i])){
                 lof <- lof[,c("TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N", "BURDEN_LOG10P")]
             }else{
                 lof <- lof[,c("TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N", 
@@ -78,7 +78,7 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
             lof$LOF_cauchy_LOG10P <- apply(X=lof[,which(grepl("LOG10P", colnames(lof)))], MARGIN=1, FUN=cauchy)
         }else{
             i<-1
-            if(lessthanvcMAFthreshold_remove & !grepl(paste0(vcMAFthreshold), uniques[i])){
+            if(lessthan_vcMAXAAF_remove & !grepl(paste0(vcMAXAAF), uniques[i])){
                 lofnew <- lof[lof$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N", "BURDEN_LOG10P")]
             }else{
                 lofnew <- lof[lof$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N", 
@@ -86,7 +86,7 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
             }
             colnames(lofnew)[c(7:ncol(lofnew))] <- paste0(uniques[i], "_", colnames(lofnew)[c(7:ncol(lofnew))])
             for(i in c(2:length)){
-                if(lessthanvcMAFthreshold_remove & !grepl(paste0(vcMAFthreshold), uniques[i])){
+                if(lessthan_vcMAXAAF_remove & !grepl(paste0(vcMAXAAF), uniques[i])){
                     inter <- lof[lof$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "BURDEN_LOG10P")]
                 }else{
                     inter <- lof[lof$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "BURDEN_LOG10P", "ACATV_LOG10P", "SKAT_LOG10P")]
@@ -111,7 +111,7 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
         if(length==0 | is.null(length)){
             missense <- NULL
         }else if(length==1){
-            if(lessthanvcMAFthreshold_remove & !grepl(paste0(vcMAFthreshold), uniques[i])){
+            if(lessthan_vcMAXAAF_remove & !grepl(paste0(vcMAXAAF), uniques[i])){
                 missense <- missense[,c("TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N", "BURDEN_LOG10P")]
             }else{
                 missense <- missense[,c("TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N", 
@@ -121,7 +121,7 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
             missense$missense_cauchy_LOG10P <- apply(X=missense[,which(grepl("LOG10P", colnames(missense)))], MARGIN=1, FUN=cauchy)
         }else{
             i<-1
-            if(lessthanvcMAFthreshold_remove & !grepl(paste0(vcMAFthreshold), uniques[i])){
+            if(lessthan_vcMAXAAF_remove & !grepl(paste0(vcMAXAAF), uniques[i])){
                 missensenew <- missense[missense$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N", "BURDEN_LOG10P")]
             }else{
                 missensenew <- missense[missense$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N", 
@@ -129,7 +129,7 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
             }
             colnames(missensenew)[c(7:ncol(missensenew))] <- paste0(uniques[i], "_", colnames(missensenew)[c(7:ncol(missensenew))])
             for(i in c(2:length)){
-                if(lessthanvcMAFthreshold_remove & !grepl(paste0(vcMAFthreshold), uniques[i])){
+                if(lessthan_vcMAXAAF_remove & !grepl(paste0(vcMAXAAF), uniques[i])){
                     inter <- missense[missense$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "BURDEN_LOG10P")]
                 }else{
                     inter <- missense[missense$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "BURDEN_LOG10P", "ACATV_LOG10P", "SKAT_LOG10P")]
@@ -154,7 +154,7 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
         if(length==0 | is.null(length)){
             lofmissense <- NULL
         }else if(length==1){
-            if(lessthanvcMAFthreshold_remove & !grepl(paste0(vcMAFthreshold), uniques[i])){
+            if(lessthan_vcMAXAAF_remove & !grepl(paste0(vcMAXAAF), uniques[i])){
                 lofmissense <- lofmissense[,c("TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N", "BURDEN_LOG10P")]
             }else{
                 lofmissense <- lofmissense[,c("TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N", 
@@ -164,7 +164,7 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
             lofmissense$lofmissense_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("LOG10P", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
         }else{
             i<-1
-            if(lessthanvcMAFthreshold_remove & !grepl(paste0(vcMAFthreshold), uniques[i])){
+            if(lessthan_vcMAXAAF_remove & !grepl(paste0(vcMAXAAF), uniques[i])){
                 lofmissensenew <- lofmissense[lofmissense$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N", "BURDEN_LOG10P")]
             }else{
                 lofmissensenew <- lofmissense[lofmissense$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N", 
@@ -172,7 +172,7 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
             }
             colnames(lofmissensenew)[c(7:ncol(lofmissensenew))] <- paste0(uniques[i], "_", colnames(lofmissensenew)[c(7:ncol(lofmissensenew))])
             for(i in c(2:length)){
-                if(lessthanvcMAFthreshold_remove & !grepl(paste0(vcMAFthreshold), uniques[i])){
+                if(lessthan_vcMAXAAF_remove & !grepl(paste0(vcMAXAAF), uniques[i])){
                     inter <- lofmissense[lofmissense$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "BURDEN_LOG10P")]
                 }else{
                     inter <- lofmissense[lofmissense$ALLELE1==uniques[i], c("TRANSCRIPT_ID", "BURDEN_LOG10P", "ACATV_LOG10P", "SKAT_LOG10P")]
