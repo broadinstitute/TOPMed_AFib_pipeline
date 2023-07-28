@@ -59,15 +59,19 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
         cauchy <- function(line){
             return(CCT(pvals=line, weights=NULL, log10p=TRUE, ignore0s=FALSE, ignore1s=TRUE))
         }
-        lof <- cbind(burden[which(!grepl("missense", burden$ALLELE1)), 
+        
+        lof <- NULL
+        uniques <- NULL
+        length <- NULL
+        try(lof <- cbind(burden[which(!grepl("missense", burden$ALLELE1)), 
                        c("ID", "TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N")],
                      burden[which(!grepl("missense", burden$ALLELE1)),                
                        c(which(grepl("BURDEN_", colnames(burden))),
                          which(grepl("ACATV_", colnames(burden))),
                          which(grepl("SKAT_", colnames(burden))))]
-        )
-        uniques <- unique(lof$ALLELE1)
-        length <- length(uniques)
+        ))
+        try(uniques <- unique(lof$ALLELE1))
+        try(length <- length(uniques))
         if(length==0 | is.null(length)){
             lof <- NULL
         }else if(length==1){
@@ -79,6 +83,7 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
             }
             colnames(lof)[c(7:ncol(lof))] <- paste0(uniques[1], "_", colnames(lof)[c(7:(ncol(lof)))])
             lof$LOF_cauchy_LOG10P <- apply(X=lof[,which(grepl("LOG10P", colnames(lof)))], MARGIN=1, FUN=cauchy)
+            lof <- lof[,-(which(colnames(lof)=="ALLELE1"))]
         }else{
             i<-1
             if(lessthan_vcMAXAAF_remove & !grepl(paste0(vcMAXAAF), uniques[i])){
@@ -99,18 +104,21 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
             }
             lof <- lofnew
             lof$LOF_cauchy_LOG10P <- apply(X=lof[,which(grepl("LOG10P", colnames(lof)))], MARGIN=1, FUN=cauchy)
+            lof <- lof[,-(which(colnames(lof)=="ALLELE1"))]
         }
-        lof <- lof[,-(which(colnames(lof)=="ALLELE1"))]
-        
-        missense <- cbind(burden[which(!grepl("LOF", burden$ALLELE1) & !grepl("lof", burden$ALLELE1)), 
+
+        missense <- NULL
+        uniques <- NULL
+        length <- NULL
+        try(missense <- cbind(burden[which(!grepl("LOF", burden$ALLELE1) & !grepl("lof", burden$ALLELE1)), 
                             c("ID", "TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N")],
                      burden[which(!grepl("LOF", burden$ALLELE1) &!grepl("lof", burden$ALLELE1)),                
                             c(which(grepl("BURDEN_", colnames(burden))),
                               which(grepl("ACATV_", colnames(burden))), 
                               which(grepl("SKAT_", colnames(burden))))]
-        )
-        uniques <- unique(missense$ALLELE1)
-        length <- length(uniques)
+        ))
+        try(uniques <- unique(missense$ALLELE1))
+        try(length <- length(uniques))
         if(length==0 | is.null(length)){
             missense <- NULL
         }else if(length==1){
@@ -122,6 +130,7 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
             }
             colnames(missense)[c(7:ncol(missense))] <- paste0(uniques[1], "_", colnames(missense)[c(7:(ncol(missense)))])
             missense$missense_cauchy_LOG10P <- apply(X=missense[,which(grepl("LOG10P", colnames(missense)))], MARGIN=1, FUN=cauchy)
+            missense <- missense[,-(which(colnames(missense)=="ALLELE1"))]
         }else{
             i<-1
             if(lessthan_vcMAXAAF_remove & !grepl(paste0(vcMAXAAF), uniques[i])){
@@ -142,20 +151,23 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
             }
             missense <- missensenew
             missense$missense_cauchy_LOG10P <- apply(X=missense[,which(grepl("LOG10P", colnames(missense)))], MARGIN=1, FUN=cauchy)
+            missense <- missense[,-(which(colnames(missense)=="ALLELE1"))]
         }
-        missense <- missense[,-(which(colnames(missense)=="ALLELE1"))]
-        
-        lofmissense <- cbind(burden[which(grepl("LOFmissense", burden$ALLELE1) | grepl("lofmissense", burden$ALLELE1)), 
+
+        lofmissense1 <- lofmissense <- NULL
+        uniques <- NULL
+        length <- NULL
+        try(lofmissense <- cbind(burden[which(grepl("LOFmissense", burden$ALLELE1) | grepl("lofmissense", burden$ALLELE1)), 
                             c("ID", "TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N")],
                      burden[which(grepl("LOFmissense", burden$ALLELE1) | grepl("lofmissense", burden$ALLELE1)),                
                             c(which(grepl("BURDEN_", colnames(burden))),
                               which(grepl("ACATV_", colnames(burden))),
                               which(grepl("SKAT_", colnames(burden))))]
-        )
-        uniques <- unique(lofmissense$ALLELE1)
-        length <- length(uniques)
+        ))
+        try(uniques <- unique(lofmissense$ALLELE1))
+        try(length <- length(uniques))
         if(length==0 | is.null(length)){
-            lofmissense <- NULL
+            lofmissense1 <- lofmissense <- NULL
         }else if(length==1){
             if(lessthan_vcMAXAAF_remove & !grepl(paste0(vcMAXAAF), uniques[i])){
                 lofmissense <- lofmissense[,c("TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N", "BURDEN_LOG10P")]
@@ -165,6 +177,8 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
             }
             colnames(lofmissense)[c(7:ncol(lofmissense))] <- paste0(uniques[1], "_", colnames(lofmissense)[c(7:(ncol(lofmissense)))])
             lofmissense$lofmissense_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("LOG10P", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
+            lofmissense <- lofmissense[,-(which(colnames(lofmissense)=="ALLELE1"))]
+            lofmissense1 <- lofmissense
         }else{
             i<-1
             if(lessthan_vcMAXAAF_remove & !grepl(paste0(vcMAXAAF), uniques[i])){
@@ -184,20 +198,23 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
                 lofmissensenew <- merge(lofmissensenew, inter, by="TRANSCRIPT_ID", all=T)
             }
             lofmissense <- lofmissensenew
-            #lofmissense$LOFmissense_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("LOG10P", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
+            lofmissense$LOFwithflagmissense_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("LOG10P", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
+            lofmissense <- lofmissense[,-(which(colnames(lofmissense)=="ALLELE1"))]
+            lofmissense1 <- lofmissense
         }
-        lofmissense <- lofmissense[,-(which(colnames(lofmissense)=="ALLELE1"))]
-        lofmissense1 <- lofmissense
-                
-        lofmissense <- cbind(burden[which(grepl("LOFnoflagmissense", burden$ALLELE1) | grepl("lofnoflagmissense", burden$ALLELE1)), 
+
+        lofmissense <- NULL
+        uniques <- NULL
+        length <- NULL
+        try(lofmissense <- cbind(burden[which(grepl("LOFnoflagmissense", burden$ALLELE1) | grepl("lofnoflagmissense", burden$ALLELE1)), 
                             c("ID", "TRANSCRIPT_ID", "GENE_ID", "ALLELE1", "CHROM", "GENPOS", "N")],
                      burden[which(grepl("LOFnoflagmissense", burden$ALLELE1) | grepl("lofnoflagmissense", burden$ALLELE1)),                
                             c(which(grepl("BURDEN_", colnames(burden))),
                               which(grepl("ACATV_", colnames(burden))),
                               which(grepl("SKAT_", colnames(burden))))]
-        )
-        uniques <- unique(lofmissense$ALLELE1)
-        length <- length(uniques)
+        ))
+        try(uniques <- unique(lofmissense$ALLELE1))
+        try(length <- length(uniques))
         if(length==0 | is.null(length)){
             lofmissense <- NULL
         }else if(length==1){
@@ -228,13 +245,23 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
                 lofmissensenew <- merge(lofmissensenew, inter, by="TRANSCRIPT_ID", all=T)
             }
             lofmissense <- lofmissensenew
-            #lofmissense$LOFmissense_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("LOG10P", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
+            lofmissense$LOFnoflagmissense_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("LOG10P", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
+            lofmissense <- lofmissense[,-(which(colnames(lofmissense)=="ALLELE1"))]
+            lofmissense <- lofmissense[,c(1, 6:ncol(lofmissense))]
         }
-        lofmissense <- lofmissense[,-(which(colnames(lofmissense)=="ALLELE1"))]
-        lofmissense <- lofmissense[,c(1, 6:ncol(lofmissense))]
-        lofmissense <- merge(lofmissense1, lofmissense, by="TRANSCRIPT_ID", all=T)
-        lofmissense$LOFmissense_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("LOG10P", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
-               
+        ### Combine the LOFmissense masks
+        if(!is.null(lofmissense1) & !is.null(lofmissense)){
+            lofmissense <- merge(lofmissense1, lofmissense, by="TRANSCRIPT_ID", all=T)
+            lofmissense$LOFmissense_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("LOG10P", colnames(lofmissense)) & !grepl("_cauchy", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
+            lofmissense <- lofmissense[,-(which(colnames(lofmissense) %in% c("LOFwithflagmissense_cauchy_LOG10P", "LOFnoflagmissense_cauchy_LOG10P")))]
+        }else if(!is.null(lofmissense1)){
+            lofmissense$LOFmissense_cauchy_LOG10P <- lofmissense$LOFwithflagmissense_cauchy_LOG10P 
+            lofmissense <- lofmissense[,-(which(colnames(lofmissense) %in% c("LOFwithflagmissense_cauchy_LOG10P", "LOFnoflagmissense_cauchy_LOG10P")))]
+        }else if(!is.null(lofmissense)){
+            lofmissense$LOFmissense_cauchy_LOG10P <- lofmissense$LOFnoflagmissense_cauchy_LOG10P 
+            lofmissense <- lofmissense[,-(which(colnames(lofmissense) %in% c("LOFwithflagmissense_cauchy_LOG10P", "LOFnoflagmissense_cauchy_LOG10P")))]
+        }
+        
         ############ Merge by transcript ############
         try(lofmissense <- merge(lofmissense, missense[,c(1, 6:ncol(missense))], by="TRANSCRIPT_ID", all=T))
         try(lofmissense <- merge(lofmissense, lof[,c(1, 6:ncol(lof))], by="TRANSCRIPT_ID", all=T))
