@@ -176,7 +176,7 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
                                               "BURDEN_LOG10P", "ACATV_LOG10P", "SKAT_LOG10P")]
             }
             colnames(lofmissense)[c(7:ncol(lofmissense))] <- paste0(uniques[1], "_", colnames(lofmissense)[c(7:(ncol(lofmissense)))])
-            lofmissense$lofmissense_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("LOG10P", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
+            lofmissense$LOFwithflagmissense_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("LOG10P", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
             lofmissense <- lofmissense[,-(which(colnames(lofmissense)=="ALLELE1"))]
             lofmissense1 <- lofmissense
         }else{
@@ -225,7 +225,7 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
                                               "BURDEN_LOG10P", "ACATV_LOG10P", "SKAT_LOG10P")]
             }
             colnames(lofmissense)[c(7:ncol(lofmissense))] <- paste0(uniques[1], "_", colnames(lofmissense)[c(7:(ncol(lofmissense)))])
-            lofmissense$lofmissense_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("LOG10P", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
+            lofmissense$LOFnoflagmissense_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("LOG10P", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
         }else{
             i<-1
             if(lessthan_vcMAXAAF_remove & !grepl(paste0(vcMAXAAF), uniques[i])){
