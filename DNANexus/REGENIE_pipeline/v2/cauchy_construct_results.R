@@ -255,6 +255,7 @@ if(nrow(dat)==0 | "V2" %in% colnames(dat)){
             lofmissense$LOFmissense_cauchy_LOG10P <- apply(X=lofmissense[,which(grepl("LOG10P", colnames(lofmissense)) & !grepl("_cauchy", colnames(lofmissense)))], MARGIN=1, FUN=cauchy)
             lofmissense <- lofmissense[,-(which(colnames(lofmissense) %in% c("LOFwithflagmissense_cauchy_LOG10P", "LOFnoflagmissense_cauchy_LOG10P")))]
         }else if(!is.null(lofmissense1)){
+            lofmissense <- lofmissense1
             lofmissense$LOFmissense_cauchy_LOG10P <- lofmissense$LOFwithflagmissense_cauchy_LOG10P 
             lofmissense <- lofmissense[,-(which(colnames(lofmissense) %in% c("LOFwithflagmissense_cauchy_LOG10P", "LOFnoflagmissense_cauchy_LOG10P")))]
         }else if(!is.null(lofmissense)){
