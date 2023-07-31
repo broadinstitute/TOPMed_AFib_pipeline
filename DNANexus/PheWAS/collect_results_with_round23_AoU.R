@@ -255,6 +255,7 @@ if(!all(file.exists(total_files))){
     cat('\trunning Cauchy combinations for MAF<0.1% and 0.001% masks...\n\n')
     inter <- rawassoc_res
     inter <- inter[inter$n.sample.alt>=20, ]
+    inter$gene <- gsub("__.*", "", inter$gene)    
     inter1 <- inter[inter$mask=="hclof_noflag_POPMAX0.001", c("phenotype", "cases", "controls", "gene", "Score", "Score.SE", "Est", "Est.SE", "SPA.pval")]
     colnames(inter1)[c(5:9)] <- paste0(colnames(inter1)[c(5:9)], "__hclof_noflag_POPMAX0.001")
     inter2 <- inter[inter$mask=="hclof_noflag_missense0.8_POPMAX0.001", c("gene", "Score", "Score.SE", "Est", "Est.SE", "SPA.pval")]
