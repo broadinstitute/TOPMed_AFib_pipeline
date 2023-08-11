@@ -3,8 +3,8 @@
 #### binary traits
 args=(commandArgs(TRUE))
 keyfile=as.character(args[1])
-chunk_size=as.numeric(args[3])
-chunk_num=as.numeric(args[4])
+chunk_size=as.numeric(args[2])
+chunk_num=as.numeric(args[3])
 
 .libPaths(c("rpackages4_1_3",.libPaths()))
 
