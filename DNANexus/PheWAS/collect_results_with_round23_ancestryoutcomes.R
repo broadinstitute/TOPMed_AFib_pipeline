@@ -27,8 +27,8 @@ reestimate_effects <- F
 
 ## Read in key file to find the phenotype
 key <- fread(keyfile, stringsAsFactors=F, data.table=F)
-key <- key[key$Ancestry=="ALL", ]
-key <- key[key$N_cases >= 50 & key$N_controls >=50, ]
+#key <- key[key$Ancestry=="ALL", ]
+#key <- key[key$N_cases >= 50 & key$N_controls >=50, ]
 dim(key)
 
 #overv <- fread(overvfile, stringsAsFactors = F, data.table=F)
