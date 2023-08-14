@@ -113,19 +113,36 @@ maf0.001_nfilesets <- 5
 #    try(system(paste0("dx download exome-seq:/sjj/projects/phewas/v1/results/association/", num, "_results_chr", chr, "_maf0.00001.RData")))
 #}
 for(chr in c(1:22)){
-    files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/lowmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round2_lowmem.RData"))
-    files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/highmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round2_highmem.RData"))
-    files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/highhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round2_highhighmem.RData"))
-    if(chr %in% c(1:17, 19:20)){
-        files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/veryhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round2_veryhighmem.RData"))
-    }
-    files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/lowmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_lowmem.RData"))
-    files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/highmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_highmem.RData"))
-    if(chr %in% c(1:20, 22)){
-        files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/highhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_highhighmem.RData"))
-    }
-    if(chr %in% c(1:6, 8, 12:13, 15:16, 19)){
-        files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/veryhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_veryhighmem.RData"))
+    if(!grepl("ageoutcomes", keyfile)){
+        files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/lowmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round2_lowmem.RData"))
+        files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/highmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round2_highmem.RData"))
+        files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/highhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round2_highhighmem.RData"))
+        if(chr %in% c(1:17, 19:20)){
+            files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/veryhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round2_veryhighmem.RData"))
+        }
+        files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/lowmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_lowmem.RData"))
+        files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/highmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_highmem.RData"))
+        if(chr %in% c(1:20, 22)){
+            files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/highhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_highhighmem.RData"))
+        }
+        if(chr %in% c(1:6, 8, 12:13, 15:16, 19)){
+            files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/veryhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_veryhighmem.RData"))
+        }
+    }else{
+        files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/lowmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round2_lowmem.RData"))
+        files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/highmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round2_highmem.RData"))
+        files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/highhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round2_highhighmem.RData"))
+        if(chr %in% c(1:17, 19:20)){
+            files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round2/veryhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round2_veryhighmem.RData"))
+        }
+        files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/lowmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_lowmem.RData"))
+        files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/highmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_highmem.RData"))
+        if(chr %in% c(1:20, 22)){
+            files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/highhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_highhighmem.RData"))
+        }
+        if(chr %in% c(1:6, 8, 13, 15:16, 19)){
+            files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/round3/veryhighmem/chr", chr, '/', num, "_results_chr", chr, "_maf0.00001_round3_veryhighmem.RData"))
+        }        
     }
     # Old MAF<0.001% run with some errors
     ####if(chunk_num %in% c(1:535)){files <- paste0(files, " ", paste0("exome-seq:/sjj/projects/phewas/v1/results/association/", num, "_results_chr", chr, "_maf0.00001.RData"))}
