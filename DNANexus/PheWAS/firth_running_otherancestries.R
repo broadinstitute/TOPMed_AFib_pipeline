@@ -454,18 +454,21 @@ if(length(genes_to_run)<1){
                 ), intern=FALSE))
 
                 regenie_ancestry_inter <- NULL
-                try(regenie_ancestry_inter <- fread(paste0(num, '__chr', chr, '_', ancestry, '_disease.regenie'), stringsAsFactors=F, data.table=F, skip="##MASK", header=T))
-                if(!is.null(regenie_ancestry_inter) & nrow(regenie_ancestry_inter)>0){
-                    regenie_ancestry_inter <- regenie_ancestry_inter[which(!grepl("singleton", regenie_ancestry_inter$ID)), ]
-                    regenie_ancestry_inter$ID <- gsub(".Mask1.0.5", "", regenie_ancestry_inter$ID)
-                    regenie_ancestry_inter$firth.n.sample.alt <- round(regenie_ancestry_inter$A1FREQ * 2 * regenie_ancestry_inter$N)
-                    regenie_ancestry_inter <- regenie_ancestry_inter[,c("ID", "firth.n.sample.alt", "LOG10P", "BETA", "SE", "EXTRA")]
-                    colnames(regenie_ancestry_inter)[4:6] <- c("firth.Est", "firth.Est.SE", "firth.failed")
-                    regenie_ancestry_inter$firth.cases <- get(paste0("firth.n.cases.", ancestry))
-                    regenie_ancestry_inter$firth.controls <- get(paste0("firth.n.controls.", ancestry))
-                    regenie_ancestry_inter$Ancestry <- ancestry
+                if(file.exists(paste0(num, '__chr', chr, '_', ancestry, '_disease.regenie'))){
+                    try(regenie_ancestry_inter <- fread(paste0(num, '__chr', chr, '_', ancestry, '_disease.regenie'), stringsAsFactors=F, data.table=F, skip="##MASK", header=T))
+                    if(!is.null(regenie_ancestry_inter) & nrow(regenie_ancestry_inter)>0){
+                        regenie_ancestry_inter <- regenie_ancestry_inter[which(!grepl("singleton", regenie_ancestry_inter$ID)), ]
+                        regenie_ancestry_inter$ID <- gsub(".Mask1.0.5", "", regenie_ancestry_inter$ID)
+                        regenie_ancestry_inter$firth.n.sample.alt <- round(regenie_ancestry_inter$A1FREQ * 2 * regenie_ancestry_inter$N)
+                        regenie_ancestry_inter <- regenie_ancestry_inter[,c("ID", "firth.n.sample.alt", "LOG10P", "BETA", "SE", "EXTRA")]
+                        colnames(regenie_ancestry_inter)[4:6] <- c("firth.Est", "firth.Est.SE", "firth.failed")
+                        regenie_ancestry_inter$firth.cases <- get(paste0("firth.n.cases.", ancestry))
+                        regenie_ancestry_inter$firth.controls <- get(paste0("firth.n.controls.", ancestry))
+                        regenie_ancestry_inter$Ancestry <- ancestry
                 
-                    regenie <- bind_rows(regenie, regenie_ancestry_inter)
+                        regenie <- bind_rows(regenie, regenie_ancestry_inter)
+                    }
+                    try(system(paste0('rm  ', num, '__chr', chr, '_', ancestry, '_disease.regenie')))
                 }
             
             }
@@ -601,27 +604,29 @@ if(length(genes_to_run)<1){
                 ), intern=FALSE))
 
                 regenie_ancestry_inter <- NULL
-                try(regenie_ancestry_inter <- fread(paste0(num, '__chr', chr, '_', ancestry, '_disease.regenie'), stringsAsFactors=F, data.table=F, skip="##MASK", header=T))
-                if(!is.null(regenie_ancestry_inter) & nrow(regenie_ancestry_inter)>0){
-                    regenie_ancestry_inter <- regenie_ancestry_inter[which(!grepl("singleton", regenie_ancestry_inter$ID)), ]
-                    regenie_ancestry_inter$ID <- gsub(".Mask1.0.5", "", regenie_ancestry_inter$ID)
-                    regenie_ancestry_inter$firth.n.sample.alt <- round(regenie_ancestry_inter$A1FREQ * 2 * regenie_ancestry_inter$N)
-                    regenie_ancestry_inter <- regenie_ancestry_inter[,c("ID", "firth.n.sample.alt", "LOG10P", "BETA", "SE", "EXTRA")]
-                    colnames(regenie_ancestry_inter)[4:6] <- c("firth.Est", "firth.Est.SE", "firth.failed")
-                    regenie_ancestry_inter$firth.cases <- get(paste0("firth.n.cases.", ancestry))
-                    regenie_ancestry_inter$firth.controls <- get(paste0("firth.n.controls.", ancestry))
-                    regenie_ancestry_inter$Ancestry <- ancestry
+                if(file.exists(paste0(num, '__chr', chr, '_', ancestry, '_disease.regenie'))){
+                    try(regenie_ancestry_inter <- fread(paste0(num, '__chr', chr, '_', ancestry, '_disease.regenie'), stringsAsFactors=F, data.table=F, skip="##MASK", header=T))
+                    if(!is.null(regenie_ancestry_inter) & nrow(regenie_ancestry_inter)>0){
+                        regenie_ancestry_inter <- regenie_ancestry_inter[which(!grepl("singleton", regenie_ancestry_inter$ID)), ]
+                        regenie_ancestry_inter$ID <- gsub(".Mask1.0.5", "", regenie_ancestry_inter$ID)
+                        regenie_ancestry_inter$firth.n.sample.alt <- round(regenie_ancestry_inter$A1FREQ * 2 * regenie_ancestry_inter$N)
+                        regenie_ancestry_inter <- regenie_ancestry_inter[,c("ID", "firth.n.sample.alt", "LOG10P", "BETA", "SE", "EXTRA")]
+                        colnames(regenie_ancestry_inter)[4:6] <- c("firth.Est", "firth.Est.SE", "firth.failed")
+                        regenie_ancestry_inter$firth.cases <- get(paste0("firth.n.cases.", ancestry))
+                        regenie_ancestry_inter$firth.controls <- get(paste0("firth.n.controls.", ancestry))
+                        regenie_ancestry_inter$Ancestry <- ancestry
                 
-                    regenie <- bind_rows(regenie, regenie_ancestry_inter)
+                        regenie <- bind_rows(regenie, regenie_ancestry_inter)
+                    }
+                    try(system(paste0('rm  ', num, '__chr', chr, '_', ancestry, '_disease.regenie')))
                 }
-    
 
             }
             try(system(paste0("rm  ", num, '__annotationfile_chr', chr, '.tsv ')))
             try(system(paste0("rm  ", num, '__setfile_chr', chr, '.tsv')))
             try(system(paste0("rm  ", num, '__maskdef_chr', chr, '.tsv')))
             try(system(paste0("rm  ", num, '__varz_chr', chr, '.*')))
-            
+
         }
      }
   }
@@ -746,20 +751,22 @@ if(length(genes_to_run)<1){
                 ), intern=FALSE))
 
                 regenie_ancestry_inter <- NULL
-                try(regenie_ancestry_inter <- fread(paste0(num, '__chr', chr, '_', ancestry, '_disease.regenie'), stringsAsFactors=F, data.table=F, skip="##MASK", header=T))
-                if(!is.null(regenie_ancestry_inter) & nrow(regenie_ancestry_inter)>0){
-                    regenie_ancestry_inter <- regenie_ancestry_inter[which(!grepl("singleton", regenie_ancestry_inter$ID)), ]
-                    regenie_ancestry_inter$ID <- gsub(".Mask1.0.5", "", regenie_ancestry_inter$ID)
-                    regenie_ancestry_inter$firth.n.sample.alt <- round(regenie_ancestry_inter$A1FREQ * 2 * regenie_ancestry_inter$N)
-                    regenie_ancestry_inter <- regenie_ancestry_inter[,c("ID", "firth.n.sample.alt", "LOG10P", "BETA", "SE", "EXTRA")]
-                    colnames(regenie_ancestry_inter)[4:6] <- c("firth.Est", "firth.Est.SE", "firth.failed")
-                    regenie_ancestry_inter$firth.cases <- get(paste0("firth.n.cases.", ancestry))
-                    regenie_ancestry_inter$firth.controls <- get(paste0("firth.n.controls.", ancestry))
-                    regenie_ancestry_inter$Ancestry <- ancestry
+                if(file.exists(paste0(num, '__chr', chr, '_', ancestry, '_disease.regenie'))){
+                    try(regenie_ancestry_inter <- fread(paste0(num, '__chr', chr, '_', ancestry, '_disease.regenie'), stringsAsFactors=F, data.table=F, skip="##MASK", header=T))
+                    if(!is.null(regenie_ancestry_inter) & nrow(regenie_ancestry_inter)>0){
+                        regenie_ancestry_inter <- regenie_ancestry_inter[which(!grepl("singleton", regenie_ancestry_inter$ID)), ]
+                        regenie_ancestry_inter$ID <- gsub(".Mask1.0.5", "", regenie_ancestry_inter$ID)
+                        regenie_ancestry_inter$firth.n.sample.alt <- round(regenie_ancestry_inter$A1FREQ * 2 * regenie_ancestry_inter$N)
+                        regenie_ancestry_inter <- regenie_ancestry_inter[,c("ID", "firth.n.sample.alt", "LOG10P", "BETA", "SE", "EXTRA")]
+                        colnames(regenie_ancestry_inter)[4:6] <- c("firth.Est", "firth.Est.SE", "firth.failed")
+                        regenie_ancestry_inter$firth.cases <- get(paste0("firth.n.cases.", ancestry))
+                        regenie_ancestry_inter$firth.controls <- get(paste0("firth.n.controls.", ancestry))
+                        regenie_ancestry_inter$Ancestry <- ancestry
                 
-                    regenie <- bind_rows(regenie, regenie_ancestry_inter)
+                        regenie <- bind_rows(regenie, regenie_ancestry_inter)
+                    }
+                    try(system(paste0('rm  ', num, '__chr', chr, '_', ancestry, '_disease.regenie')))
                 }
-            
             }
             try(system(paste0("rm  ", num, '__annotationfile_chr', chr, '.tsv ')))
             try(system(paste0("rm  ", num, '__setfile_chr', chr, '.tsv')))
