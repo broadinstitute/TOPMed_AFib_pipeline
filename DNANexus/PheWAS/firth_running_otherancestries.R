@@ -775,7 +775,7 @@ if(length(genes_to_run)<1){
   # Merge and save results
   ##########################
   cat('\tSaving final results...\n\n')
-  write.table(regenie_res_tot, file=paste0('summary_results_otherancestries_Firth_phecode', num, '.tsv'), col.names=T, row.names=F, quote=F, sep='\t')
+  write.table(regenie_res_tot, file=paste0('../summary_results_otherancestries_Firth_phecode', num, '.tsv'), col.names=T, row.names=F, quote=F, sep='\t')
       
 }
 #}
