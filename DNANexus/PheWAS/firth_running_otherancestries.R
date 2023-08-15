@@ -450,7 +450,7 @@ if(length(genes_to_run)<1){
                     '--anno-file  ', num, '__annotationfile_chr', chr, '.tsv ',
                     '--set-list  ', num, '__setfile_chr', chr, '.tsv ',
                     '--mask-def  ', num, '__maskdef_chr', chr, '.tsv ',
-                    '--pThresh  0.1  --out ', num, '__chr', chr, '_', ancestry, ' '
+                    '--pThresh  0.99  --out ', num, '__chr', chr, '_', ancestry, ' '
                 ), intern=FALSE))
 
                 regenie_ancestry_inter <- fread(paste0(num, '__chr', chr, '_', ancestry, '_disease.regenie'), stringsAsFactors=F, data.table=F)
@@ -594,7 +594,7 @@ if(length(genes_to_run)<1){
                     '--anno-file  ', num, '__annotationfile_chr', chr, '.tsv ',
                     '--set-list  ', num, '__setfile_chr', chr, '.tsv ',
                     '--mask-def  ', num, '__maskdef_chr', chr, '.tsv ',
-                    '--pThresh  0.1  --out ', num, '__chr', chr, '_', ancestry, ' '
+                    '--pThresh  0.99  --out ', num, '__chr', chr, '_', ancestry, ' '
                 ), intern=FALSE))
 
                 regenie_ancestry_inter <- fread(paste0(num, '__chr', chr, '_', ancestry, '_disease.regenie'), stringsAsFactors=F, data.table=F)
@@ -736,7 +736,7 @@ if(length(genes_to_run)<1){
                     '--anno-file  ', num, '__annotationfile_chr', chr, '.tsv ',
                     '--set-list  ', num, '__setfile_chr', chr, '.tsv ',
                     '--mask-def  ', num, '__maskdef_chr', chr, '.tsv ',
-                    '--pThresh  0.1  --out ', num, '__chr', chr, '_', ancestry, ' '
+                    '--pThresh  0.99  --out ', num, '__chr', chr, '_', ancestry, ' '
                 ), intern=FALSE))
 
                 regenie_ancestry_inter <- fread(paste0(num, '__chr', chr, '_', ancestry, '_disease.regenie'), stringsAsFactors=F, data.table=F)
