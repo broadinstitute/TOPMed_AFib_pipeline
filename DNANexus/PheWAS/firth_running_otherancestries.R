@@ -413,17 +413,7 @@ if(length(genes_to_run)<1){
             ### Save annot information for REGENIE
             write.table(regenie_annotationfile, file=paste0(num, '__annotationfile_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
             write.table(regenie_setfile, file=paste0(num, '__setfile_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
-            write.table(c("Mask1 REGENIE"), file=paste0(num, '__maskdef_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
-
-            ## Run REGENIE for the MAF<0.1% thresholds; keep only the unrel samples
-            try(system(paste0('rm  ', num, '__chr', chr, '_disease.regenie')))
-            try(system(paste0("head ", num, '__regenie_phenofile.tsv')))
-            try(system(paste0("head ", num, '__sampleIDs_unrel.tsv')))
-            try(system(paste0("head ", num, '__annotationfile_chr', chr, '.tsv')))
-            try(system(paste0("head ", num, '__annotationfile_chr', chr, '.tsv')))
-            try(system(paste0("head ", num, '__setfile_chr', chr, '.tsv')))
-            try(system(paste0("head ", num, '__maskdef_chr', chr, '.tsv')))
-            
+            write.table(c("Mask1 REGENIE"), file=paste0(num, '__maskdef_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)            
             
             ######### HERE IT IS DIFFERENT! ##########
 
