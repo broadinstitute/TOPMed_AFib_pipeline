@@ -215,6 +215,7 @@ if(length(genes_to_run)<1){
   write.table(phen0[phen0$POP_tight=="AFR", c("FID", "IID")], file=paste0(num, '__sampleIDs_AFR.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
   write.table(phen0[phen0$POP_tight=="SAS", c("FID", "IID")], file=paste0(num, '__sampleIDs_SAS.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
   write.table(phen0[phen0$POP_tight=="EAS", c("FID", "IID")], file=paste0(num, '__sampleIDs_EAS.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
+  write.table(phen0[phen0$POP_tight %in% c("AMR", "AFR", "EAS", "SAS"), c("FID", "IID")], file=paste0(num, '__sampleIDs_nonEUR.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
   
   cat(paste0("\t\ttotal sample size is: ", nrow(phen0), "\n"))
   cat(paste0("\t\tn cases is: ", nrow(phen0[phen0$disease==1, ]), "\n"))
@@ -240,6 +241,10 @@ if(length(genes_to_run)<1){
   cat(paste0("\t\tn cases is: ", nrow(phen0[phen0$disease==1 & phen0$POP_tight=="SAS", ]), "\n"))
   cat(paste0("\t\tn controls is: ", nrow(phen0[phen0$disease==0 & phen0$POP_tight=="SAS", ]), "\n\n\n"))
 
+  cat(paste0("\t\tnonEUR sample size is: ", nrow(phen0[phen0$POP_tight %in% c("AMR", "AFR", "EAS", "SAS"), ]), "\n"))
+  cat(paste0("\t\tn cases is: ", nrow(phen0[phen0$disease==1 & phen0$POP_tight %in% c("AMR", "AFR", "EAS", "SAS"), ]), "\n"))
+  cat(paste0("\t\tn controls is: ", nrow(phen0[phen0$disease==0 & phen0$POP_tight %in% c("AMR", "AFR", "EAS", "SAS"), ]), "\n\n\n"))
+
   # For running Firth's we need to also define unrelated samples for running in REGENIE...
   system('dx download exome-seq:/exome_450k_plink/PCA/ukbb_450k_unrelatedsamples.tsv')
   unrel <- fread('ukbb_450k_unrelatedsamples.tsv', stringsAsFactors = F, data.table=F)
@@ -261,6 +266,8 @@ if(length(genes_to_run)<1){
   firth.n.controls.EAS <- nrow(phen_unrel[phen_unrel$disease==0 & phen_unrel$POP_tight=="EAS", ])
   firth.n.cases.SAS <- nrow(phen_unrel[phen_unrel$disease==1 & phen_unrel$POP_tight=="SAS", ])
   firth.n.controls.SAS <- nrow(phen_unrel[phen_unrel$disease==0 & phen_unrel$POP_tight=="SAS", ])
+  firth.n.cases.nonEUR <- nrow(phen_unrel[phen_unrel$disease==1 & phen_unrel$POP_tight %in% c("AMR", "AFR", "EAS", "SAS"), ])
+  firth.n.controls.nonEUR <- nrow(phen_unrel[phen_unrel$disease==0 & phen_unrel$POP_tight %in% c("AMR", "AFR", "EAS", "SAS"), ])
       
   cat(paste0("\n\n\n\t\tunrelated sample size is: ", nrow(phen_unrel), "\n"))
   cat(paste0("\t\tn cases is: ", firth.n.cases, "\n"))
@@ -286,6 +293,9 @@ if(length(genes_to_run)<1){
   cat(paste0("\t\tn cases is: ", firth.n.cases.SAS, "\n"))
   cat(paste0("\t\tn controls is: ", firth.n.controls.SAS, "\n\n\n"))
 
+  cat(paste0("\t\tnonEUR unrelated sample size is: ", nrow(phen_unrel[phen_unrel$POP_tight %in% c("AMR", "AFR", "EAS", "SAS"), ]), "\n"))
+  cat(paste0("\t\tn cases is: ", firth.n.cases.nonEUR, "\n"))
+  cat(paste0("\t\tn controls is: ", firth.n.controls.nonEUR, "\n\n\n"))
 
       
   ##########################################
@@ -429,7 +439,7 @@ if(length(genes_to_run)<1){
             #    '--pThresh  0.99  --out ', num, '__chr', chr, ' '
             #), intern=FALSE))
 
-            for(ancestry in c("EUR", "AMR", "AFR", "EAS", "SAS")){
+            for(ancestry in c("EUR", "AMR", "AFR", "EAS", "SAS", "nonEUR")){
                 cat(paste0("\t\trunning Firth for ", ancestry, " ancestry...\n"))
                 try(system(paste0(regenie_path, ' ',
                     '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chr', chr, ' ',
@@ -573,7 +583,7 @@ if(length(genes_to_run)<1){
             #    '--pThresh  0.99  --out ', num, '__chr', chr, ' '
             #), intern=FALSE))
 
-            for(ancestry in c("EUR", "AMR", "AFR", "EAS", "SAS")){
+            for(ancestry in c("EUR", "AMR", "AFR", "EAS", "SAS", "nonEUR")){
                 cat(paste0("\t\trunning Firth for ", ancestry, " ancestry...\n"))
                 try(system(paste0(regenie_path, ' ',
                     '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chr', chr, ' ',
@@ -715,7 +725,7 @@ if(length(genes_to_run)<1){
             #    '--pThresh  0.99  --out ', num, '__chr', chr, ' '
             #), intern=FALSE))
 
-            for(ancestry in c("EUR", "AMR", "AFR", "EAS", "SAS")){
+            for(ancestry in c("EUR", "AMR", "AFR", "EAS", "SAS", "nonEUR")){
                 cat(paste0("\t\trunning Firth for ", ancestry, " ancestry...\n"))
                 try(system(paste0(regenie_path, ' ',
                     '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chr', chr, ' ',
