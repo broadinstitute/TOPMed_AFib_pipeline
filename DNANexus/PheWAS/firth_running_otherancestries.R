@@ -73,7 +73,7 @@ if(length(genes_to_run)<1){
   # Build phenotype files 
   #############################
 
-  if(reestimate_effects){
+  #if(reestimate_effects){
   cat('\tcreating phenotype and helper files for analysis...\n\n')
   # Example phenotype file from the same phenotype freeze
   exdat0 <- fread("/mnt/project/sjj/projects/phewas/v1/data/pheno/Hypertrophic_cardiomyopathy.tab.tsv.gz",header=T,data.table=F)
