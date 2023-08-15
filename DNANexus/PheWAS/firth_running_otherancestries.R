@@ -22,6 +22,9 @@ library(data.table)
 library(dplyr)
 library(tidyr)
 
+reestimate_effects <- T
+run_chr_vec <- c(1:22)
+
 #############################
 # Key file and overview files
 #############################
@@ -322,7 +325,6 @@ if(length(genes_to_run)<1){
   }
   
   regenie_res_tot <- NULL
-  regenie_res_tot_nonEUR <- NULL
 
   ############# FROM HERE: it should be very comparable to the total cohort analyses scripts shard before; differences are highlighted explicitly!  #############
       
