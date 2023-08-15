@@ -309,14 +309,14 @@ if(length(genes_to_run)<1){
   gene_masks <- NULL
   for(jj in c(1:length(genes_to_run))){
     gene_masks <- c(gene_masks, paste0(genes_to_run[jj], c("__hclofnoflag_POPMAX0.001", 
-                                                             "__hclofnoflag_missense0.8_POPMAX0.001",
-                                                             "__hclofnoflag_missense0.5_POPMAX0.001",
-                                                             "__hclofnoflag_missense0.5_POPMAX0.00001",
+                                                             "__hclof_noflag_missense0.8_POPMAX0.001",
+                                                             "__hclof_noflag_missense0.5_POPMAX0.001",
+                                                             "__hclof_noflag_missense0.5_POPMAX0.00001",
                                                              "__missense0.5_POPMAX0.00001",
                                                              "__missense0.2_POPMAX0.00001",
-                                                             "__hclofnoflag_POPMAX0.01",
-                                                             "__hclofnoflag_missense0.8_POPMAX0.01",
-                                                             "__hclofnoflag_missense0.8_POPMAX0.01"))
+                                                             "__hclof_noflag_POPMAX0.01",
+                                                             "__hclof_noflag_missense0.8_POPMAX0.01",
+                                                             "__hclof_noflag_missense0.8_POPMAX0.01"))
                      )
   }
   
