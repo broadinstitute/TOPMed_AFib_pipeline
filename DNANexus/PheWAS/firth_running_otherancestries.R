@@ -22,8 +22,6 @@ library(data.table)
 library(dplyr)
 library(tidyr)
 
-reestimate_effects <- F
-
 #############################
 # Key file and overview files
 #############################
@@ -315,6 +313,8 @@ if(length(genes_to_run)<1){
   regenie_res_tot <- NULL
   regenie_res_tot_nonEUR <- NULL
 
+  ############# FROM HERE: it should be very comparable to the total cohort analyses scripts shard before; differences are highlighted explicitly!  #############
+      
   ######### MAF<0.1% masks
   #Create set files for regenie; filter PLINK files to needed variants only!
   cat("\t\textracting variant data from PLINK files for MAF<0.1% threshold ...\n")
@@ -410,37 +410,66 @@ if(length(genes_to_run)<1){
             try(system(paste0("head ", num, '__annotationfile_chr', chr, '.tsv')))
             try(system(paste0("head ", num, '__setfile_chr', chr, '.tsv')))
             try(system(paste0("head ", num, '__maskdef_chr', chr, '.tsv')))
-            try(system(paste0(regenie_path, ' ',
-                '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chr', chr, ' ',
-                '--firth --approx --firth-se --aaf-bins 0.5  --minMAC  1  ',
-                '--covarFile  ', num, '__regenie_phenofile.tsv   ',
-                '--covarCol ', paste(fixef, collapse=","), '  --catCovarList  ', paste(catCovarList, collapse=","), '  ',
-                '--phenoFile  ', num, '__regenie_phenofile.tsv  --phenoCol disease  ',
-                '--keep  ', num, '__sampleIDs_unrel.tsv  ',
-                '--anno-file  ', num, '__annotationfile_chr', chr, '.tsv ',
-                '--set-list  ', num, '__setfile_chr', chr, '.tsv ',
-                '--mask-def  ', num, '__maskdef_chr', chr, '.tsv ',
-                '--pThresh  0.99  --out ', num, '__chr', chr, ' '
-          ), intern=FALSE))
-          try(system(paste0("rm  ", num, '__annotationfile_chr', chr, '.tsv ')))
-          try(system(paste0("rm  ", num, '__setfile_chr', chr, '.tsv')))
-          try(system(paste0("rm  ", num, '__maskdef_chr', chr, '.tsv')))
-          try(system(paste0("rm  ", num, '__varz_chr', chr, '.*')))
+            
+            
+            ######### HERE IT IS DIFFERENT! ##########
 
-          regenie <- bind_rows(regenie, fread(paste0(num, '__chr', chr, '_disease.regenie'), stringsAsFactors=F, data.table=F))
+            
+            ## Run REGENIE for the MAF<0.1% thresholds; keep only the unrel samples
+            #try(system(paste0(regenie_path, ' ',
+            #    '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chr', chr, ' ',
+            #    '--firth --approx --firth-se --aaf-bins 0.5  --minMAC  1  ',
+            #    '--covarFile  ', num, '__regenie_phenofile.tsv   ',
+            #    '--covarCol ', paste(fixef, collapse=","), '  --catCovarList  ', paste(catCovarList, collapse=","), '  ',
+            #    '--phenoFile  ', num, '__regenie_phenofile.tsv  --phenoCol disease  ',
+            #    '--keep  ', num, '__sampleIDs_unrel.tsv  ',
+            #    '--anno-file  ', num, '__annotationfile_chr', chr, '.tsv ',
+            #    '--set-list  ', num, '__setfile_chr', chr, '.tsv ',
+            #    '--mask-def  ', num, '__maskdef_chr', chr, '.tsv ',
+            #    '--pThresh  0.99  --out ', num, '__chr', chr, ' '
+            #), intern=FALSE))
+
+            for(ancestry in c("EUR", "AMR", "AFR", "EAS", "SAS")){
+                cat(paste0("\t\trunning Firth for ", ancestry, " ancestry...\n"))
+                try(system(paste0(regenie_path, ' ',
+                    '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chr', chr, ' ',
+                    '--firth --approx --firth-se --aaf-bins 0.5  --minMAC  1  ',
+                    '--covarFile  ', num, '__regenie_phenofile.tsv   ',
+                    '--covarCol ', paste(fixef, collapse=","), '  --catCovarList  ', paste(catCovarList, collapse=","), '  ',
+                    '--phenoFile  ', num, '__regenie_phenofile.tsv  --phenoCol disease  ',
+                    '--keep  ', num, '__sampleIDs_unrel_', ancestry, '.tsv  ',
+                    '--anno-file  ', num, '__annotationfile_chr', chr, '.tsv ',
+                    '--set-list  ', num, '__setfile_chr', chr, '.tsv ',
+                    '--mask-def  ', num, '__maskdef_chr', chr, '.tsv ',
+                    '--pThresh  0.1  --out ', num, '__chr', chr, '_', ancestry, ' '
+                ), intern=FALSE))
+
+                regenie_ancestry_inter <- fread(paste0(num, '__chr', chr, '_', ancestry, '_disease.regenie'), stringsAsFactors=F, data.table=F)
+                regenie_ancestry_inter <- regenie_ancestry_inter[which(!grepl("singleton", regenie_ancestry_inter$ID)), ]
+                regenie_ancestry_inter$ID <- gsub(".Mask1.0.5", "", regenie_ancestry_inter$ID)
+                regenie_ancestry_inter$firth.n.sample.alt <- round(regenie_ancestry_inter$A1FREQ * 2 * regenie_ancestry_inter$N)
+                regenie_ancestry_inter <- regenie_ancestry_inter[,c("ID", "firth.n.sample.alt", "P", "BETA", "SE", "EXTRA")]
+                colnames(regenie_ancestry_inter)[4:6] <- c("firth.Est", "firth.Est.SE", "firth.failed")
+                regenie_ancestry_inter$firth.cases <- get(paste0("firth.cases.", ancestry))
+                regenie_ancestry_inter$firth.controls <- get(paste0("firth.controls.", ancestry))
+                regenie_ancestry_inter$Ancestry <- ancestry
+                
+                regenie <- bind_rows(regenie, regenie_ancestry_inter)
+            
+            }
+            try(system(paste0("rm  ", num, '__annotationfile_chr', chr, '.tsv ')))
+            try(system(paste0("rm  ", num, '__setfile_chr', chr, '.tsv')))
+            try(system(paste0("rm  ", num, '__maskdef_chr', chr, '.tsv')))
+            try(system(paste0("rm  ", num, '__varz_chr', chr, '.*')))
         }
      }
   }
-
-  regenie <- regenie[which(!grepl("singleton", regenie$ID)), ]
-  regenie$ID <- gsub(".Mask1.0.5", "", regenie$ID)
-  regenie$firth.n.sample.alt <- round(regenie$A1FREQ * 2 * regenie$N)
-  regenie <- regenie[,c("ID", "firth.n.sample.alt", "BETA", "SE", "EXTRA")]
-  colnames(regenie)[3:5] <- c("firth.Est", "firth.Est.SE", "firth.failed")
-  regenie$firth.cases <- firth.n.cases
-  regenie$firth.controls <- firth.n.controls
-
   regenie_res_tot <- rbind(regenie_res_tot, regenie)
+
+
+      
+  ######### HERE IT IS THE SAME AGAIN. next difference will be explicitly shown! ##########
+
 
   ######### MAF<0.0001% masks
   #Create set files for regenie; filter PLINK files to needed variants only!
@@ -526,40 +555,69 @@ if(length(genes_to_run)<1){
             write.table(regenie_setfile, file=paste0(num, '__setfile_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
             write.table(c("Mask1 REGENIE"), file=paste0(num, '__maskdef_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
 
+           
+            ######### HERE IT IS DIFFERENT! ##########
+            
+            
             ## Run REGENIE for the MAF<0.001% thresholds; keep only the unrel samples
-            try(system(paste0('rm  ', num, '__chr', chr, '_disease.regenie')))
-            try(system(paste0(regenie_path, ' ',
-                '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chr', chr, '  ',
-                '--firth --approx --firth-se --aaf-bins 0.5  --minMAC  1  ',
-                '--covarFile  ', num, '__regenie_phenofile.tsv   ',
-                '--covarCol ', paste(fixef, collapse=","), '  --catCovarList  ', paste(catCovarList, collapse=","), '  ',
-                '--phenoFile  ', num, '__regenie_phenofile.tsv  --phenoCol disease  ',
-                '--keep  ', num, '__sampleIDs_unrel.tsv  ',
-                '--anno-file  ', num, '__annotationfile_chr', chr, '.tsv ',
-                '--set-list  ', num, '__setfile_chr', chr, '.tsv ',
-                '--mask-def  ', num, '__maskdef_chr', chr, '.tsv ',
-                '--pThresh  0.99  --out ', num, '__chr', chr
-            ), intern=FALSE))
+            #try(system(paste0(regenie_path, ' ',
+            #    '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chr', chr, ' ',
+            #    '--firth --approx --firth-se --aaf-bins 0.5  --minMAC  1  ',
+            #    '--covarFile  ', num, '__regenie_phenofile.tsv   ',
+            #    '--covarCol ', paste(fixef, collapse=","), '  --catCovarList  ', paste(catCovarList, collapse=","), '  ',
+            #    '--phenoFile  ', num, '__regenie_phenofile.tsv  --phenoCol disease  ',
+            #    '--keep  ', num, '__sampleIDs_unrel.tsv  ',
+            #    '--anno-file  ', num, '__annotationfile_chr', chr, '.tsv ',
+            #    '--set-list  ', num, '__setfile_chr', chr, '.tsv ',
+            #    '--mask-def  ', num, '__maskdef_chr', chr, '.tsv ',
+            #    '--pThresh  0.99  --out ', num, '__chr', chr, ' '
+            #), intern=FALSE))
+
+            for(ancestry in c("EUR", "AMR", "AFR", "EAS", "SAS")){
+                cat(paste0("\t\trunning Firth for ", ancestry, " ancestry...\n"))
+                try(system(paste0(regenie_path, ' ',
+                    '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chr', chr, ' ',
+                    '--firth --approx --firth-se --aaf-bins 0.5  --minMAC  1  ',
+                    '--covarFile  ', num, '__regenie_phenofile.tsv   ',
+                    '--covarCol ', paste(fixef, collapse=","), '  --catCovarList  ', paste(catCovarList, collapse=","), '  ',
+                    '--phenoFile  ', num, '__regenie_phenofile.tsv  --phenoCol disease  ',
+                    '--keep  ', num, '__sampleIDs_unrel_', ancestry, '.tsv  ',
+                    '--anno-file  ', num, '__annotationfile_chr', chr, '.tsv ',
+                    '--set-list  ', num, '__setfile_chr', chr, '.tsv ',
+                    '--mask-def  ', num, '__maskdef_chr', chr, '.tsv ',
+                    '--pThresh  0.1  --out ', num, '__chr', chr, '_', ancestry, ' '
+                ), intern=FALSE))
+
+                regenie_ancestry_inter <- fread(paste0(num, '__chr', chr, '_', ancestry, '_disease.regenie'), stringsAsFactors=F, data.table=F)
+                regenie_ancestry_inter <- regenie_ancestry_inter[which(!grepl("singleton", regenie_ancestry_inter$ID)), ]
+                regenie_ancestry_inter$ID <- gsub(".Mask1.0.5", "", regenie_ancestry_inter$ID)
+                regenie_ancestry_inter$firth.n.sample.alt <- round(regenie_ancestry_inter$A1FREQ * 2 * regenie_ancestry_inter$N)
+                regenie_ancestry_inter <- regenie_ancestry_inter[,c("ID", "firth.n.sample.alt", "P", "BETA", "SE", "EXTRA")]
+                colnames(regenie_ancestry_inter)[4:6] <- c("firth.Est", "firth.Est.SE", "firth.failed")
+                regenie_ancestry_inter$firth.cases <- get(paste0("firth.cases.", ancestry))
+                regenie_ancestry_inter$firth.controls <- get(paste0("firth.controls.", ancestry))
+                regenie_ancestry_inter$Ancestry <- ancestry
+                
+                regenie <- bind_rows(regenie, regenie_ancestry_inter)
+    
+
+            }
             try(system(paste0("rm  ", num, '__annotationfile_chr', chr, '.tsv ')))
             try(system(paste0("rm  ", num, '__setfile_chr', chr, '.tsv')))
             try(system(paste0("rm  ", num, '__maskdef_chr', chr, '.tsv')))
             try(system(paste0("rm  ", num, '__varz_chr', chr, '.*')))
-
-            regenie <- bind_rows(regenie, fread(paste0(num, '__chr', chr, '_disease.regenie'), stringsAsFactors=F, data.table=F))
+            
         }
      }
   }
-
-  regenie <- regenie[which(!grepl("singleton", regenie$ID)), ]
-  regenie$ID <- gsub(".Mask1.0.5", "", regenie$ID)
-  regenie$firth.n.sample.alt <- round(regenie$A1FREQ * 2 * regenie$N)
-  regenie <- regenie[,c("ID", "firth.n.sample.alt", "BETA", "SE", "EXTRA")]
-  colnames(regenie)[3:5] <- c("firth.Est", "firth.Est.SE", "firth.failed")
-  regenie$firth.cases <- firth.n.cases
-  regenie$firth.controls <- firth.n.controls
-
   regenie_res_tot <- rbind(regenie_res_tot, regenie)
 
+
+
+  ######### HERE IT IS THE SAME AGAIN. next difference will be explicitly shown! ##########
+
+
+      
   ######### MAF<1% masks
   #Create set files for regenie; filter PLINK files to needed variants only!
   cat("\t\textracting variant data from PLINK files for MAF<1% threshold ...\n")
@@ -640,56 +698,66 @@ if(length(genes_to_run)<1){
             write.table(regenie_setfile, file=paste0(num, '__setfile_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
             write.table(c("Mask1 REGENIE"), file=paste0(num, '__maskdef_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
 
+          ######### HERE IT IS DIFFERENT! ##########
+
+            
             ## Run REGENIE for the MAF<1% thresholds; keep only the unrel samples
-            try(system(paste0('rm  ', num, '__chr', chr, '_disease.regenie')))
-            try(system(paste0(regenie_path, ' ',
-                '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chr', chr, '  ',
-                '--firth --approx --firth-se --aaf-bins 0.5  --minMAC  1  ',
-                '--covarFile  ', num, '__regenie_phenofile.tsv   ',
-                '--covarCol ', paste(fixef, collapse=","), '  --catCovarList  ', paste(catCovarList, collapse=","), '  ',
-                '--phenoFile  ', num, '__regenie_phenofile.tsv  --phenoCol disease  ',
-                '--keep  ', num, '__sampleIDs_unrel.tsv  ',
-                '--anno-file  ', num, '__annotationfile_chr', chr, '.tsv ',
-                '--set-list  ', num, '__setfile_chr', chr, '.tsv ',
-                '--mask-def  ', num, '__maskdef_chr', chr, '.tsv ',
-                '--pThresh  0.99  --out ', num, '__chr', chr
-            ), intern=FALSE))
+            #try(system(paste0(regenie_path, ' ',
+            #    '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chr', chr, ' ',
+            #    '--firth --approx --firth-se --aaf-bins 0.5  --minMAC  1  ',
+            #    '--covarFile  ', num, '__regenie_phenofile.tsv   ',
+            #    '--covarCol ', paste(fixef, collapse=","), '  --catCovarList  ', paste(catCovarList, collapse=","), '  ',
+            #    '--phenoFile  ', num, '__regenie_phenofile.tsv  --phenoCol disease  ',
+            #    '--keep  ', num, '__sampleIDs_unrel.tsv  ',
+            #    '--anno-file  ', num, '__annotationfile_chr', chr, '.tsv ',
+            #    '--set-list  ', num, '__setfile_chr', chr, '.tsv ',
+            #    '--mask-def  ', num, '__maskdef_chr', chr, '.tsv ',
+            #    '--pThresh  0.99  --out ', num, '__chr', chr, ' '
+            #), intern=FALSE))
+
+            for(ancestry in c("EUR", "AMR", "AFR", "EAS", "SAS")){
+                cat(paste0("\t\trunning Firth for ", ancestry, " ancestry...\n"))
+                try(system(paste0(regenie_path, ' ',
+                    '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chr', chr, ' ',
+                    '--firth --approx --firth-se --aaf-bins 0.5  --minMAC  1  ',
+                    '--covarFile  ', num, '__regenie_phenofile.tsv   ',
+                    '--covarCol ', paste(fixef, collapse=","), '  --catCovarList  ', paste(catCovarList, collapse=","), '  ',
+                    '--phenoFile  ', num, '__regenie_phenofile.tsv  --phenoCol disease  ',
+                    '--keep  ', num, '__sampleIDs_unrel_', ancestry, '.tsv  ',
+                    '--anno-file  ', num, '__annotationfile_chr', chr, '.tsv ',
+                    '--set-list  ', num, '__setfile_chr', chr, '.tsv ',
+                    '--mask-def  ', num, '__maskdef_chr', chr, '.tsv ',
+                    '--pThresh  0.1  --out ', num, '__chr', chr, '_', ancestry, ' '
+                ), intern=FALSE))
+
+                regenie_ancestry_inter <- fread(paste0(num, '__chr', chr, '_', ancestry, '_disease.regenie'), stringsAsFactors=F, data.table=F)
+                regenie_ancestry_inter <- regenie_ancestry_inter[which(!grepl("singleton", regenie_ancestry_inter$ID)), ]
+                regenie_ancestry_inter$ID <- gsub(".Mask1.0.5", "", regenie_ancestry_inter$ID)
+                regenie_ancestry_inter$firth.n.sample.alt <- round(regenie_ancestry_inter$A1FREQ * 2 * regenie_ancestry_inter$N)
+                regenie_ancestry_inter <- regenie_ancestry_inter[,c("ID", "firth.n.sample.alt", "P", "BETA", "SE", "EXTRA")]
+                colnames(regenie_ancestry_inter)[4:6] <- c("firth.Est", "firth.Est.SE", "firth.failed")
+                regenie_ancestry_inter$firth.cases <- get(paste0("firth.cases.", ancestry))
+                regenie_ancestry_inter$firth.controls <- get(paste0("firth.controls.", ancestry))
+                regenie_ancestry_inter$Ancestry <- ancestry
+                
+                regenie <- bind_rows(regenie, regenie_ancestry_inter)
+            
+            }
             try(system(paste0("rm  ", num, '__annotationfile_chr', chr, '.tsv ')))
             try(system(paste0("rm  ", num, '__setfile_chr', chr, '.tsv')))
             try(system(paste0("rm  ", num, '__maskdef_chr', chr, '.tsv')))
             try(system(paste0("rm  ", num, '__varz_chr', chr, '.*')))
-            
-            regenie <- bind_rows(regenie, fread(paste0(num, '__chr', chr, '_disease.regenie'), stringsAsFactors=F, data.table=F))
         }
      }
   }
-  
-  regenie <- regenie[which(!grepl("singleton", regenie$ID)), ]
-  regenie$ID <- gsub(".Mask1.0.5", "", regenie$ID)
-  regenie$firth.n.sample.alt <- round(regenie$A1FREQ * 2 * regenie$N)
-  regenie <- regenie[,c("ID", "firth.n.sample.alt", "BETA", "SE", "EXTRA")]
-  colnames(regenie)[3:5] <- c("firth.Est", "firth.Est.SE", "firth.failed")
-  regenie$firth.cases <- firth.n.cases
-  regenie$firth.controls <- firth.n.controls
-
   regenie_res_tot <- rbind(regenie_res_tot, regenie)
+
 
   #########################
   # Merge and save results
   ##########################
   cat('\tSaving final results...\n\n')
-  rawassoc_res$ID  <- paste0(rawassoc_res$gene, "__", rawassoc_res$mask)
-  rawassoc_res  <- merge(rawassoc_res, regenie_res_tot, by="ID", all=T)
-  rawassoc_res <- rawassoc_res[rawassoc_res$chr %in% run_chr_vec, ]
-
-  if(all(c(1:22) %in% run_chr_vec)){
-      write.table(rawassoc_res, file=paste0('../summary_results_phewas_all_tests_phecode', num, '_with_firths_results.tsv'),
-                        col.names=T, row.names=F, quote=F, sep='\t', append=F)
-  }else{
-      write.table(rawassoc_res, file=paste0('../summary_results_phewas_all_tests_phecode', num, '_with_firths_results_partial.tsv'),
-                        col.names=T, row.names=F, quote=F, sep='\t', append=F)
-  }
-  }
-
+  write.table(regenie_res_tot, file=paste0('summary_results_otherancestries_Firth_phecode', num, '.tsv'), col.names=T, row.names=F, quote=F, sep='\t')
+      
 }
 #}
