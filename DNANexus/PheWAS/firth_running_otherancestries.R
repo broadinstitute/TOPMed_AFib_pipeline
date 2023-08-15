@@ -52,7 +52,7 @@ category <- overv[overv$meaning==phenoname, 'category']
 cat('\n\n\nBusy with phenotype', num, 'which is', phenoname, 'and task', i, 'out of 535 tasks...\n\n')
 
 ## Restrict to needed assocs; should be in format gene__phenotype
-need_to_run_assocs <- fread(need_to_run_assocs_file, stringsAsFactors=F, data.table=F, header=F)
+need_to_run_assocs <- fread(need_to_run_assocs_file, stringsAsFactors=F, data.table=F, header=F, sep="")
 colnames(need_to_run_assocs) <- "assocs"
 need_to_run_assocs <- tidyr::separate(need_to_run_assocs, col=assocs, into=c("gene", "phenotype"), sep="__")
 need_to_run_assocs <- need_to_run_assocs[need_to_run_assocs$phenotype==phenoname, ]
