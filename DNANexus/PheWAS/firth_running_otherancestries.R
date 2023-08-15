@@ -257,6 +257,12 @@ if(length(genes_to_run)<1){
   unrel_samples <- cbind(phen_unrel$FID,phen_unrel$IID)
   colnames(unrel_samples) <- c("FID", "IID")
   write.table(unrel_samples, file=paste0(num, '__sampleIDs_unrel.tsv'), col.names=T, row.names=F, quote=F, sep='\t')
+  write.table(phen_unrel[phen_unrel$POP_tight=="EUR", c("FID", "IID")], file=paste0(num, '__sampleIDs_unrel_EUR.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
+  write.table(phen_unrel[phen_unrel$POP_tight=="AMR", c("FID", "IID")], file=paste0(num, '__sampleIDs_unrel_AMR.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
+  write.table(phen_unrel[phen_unrel$POP_tight=="AFR", c("FID", "IID")], file=paste0(num, '__sampleIDs_unrel_AFR.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
+  write.table(phen_unrel[phen_unrel$POP_tight=="SAS", c("FID", "IID")], file=paste0(num, '__sampleIDs_unrel_SAS.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
+  write.table(phen_unrel[phen_unrel$POP_tight=="EAS", c("FID", "IID")], file=paste0(num, '__sampleIDs_unrel_EAS.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
+  write.table(phen_unrel[phen_unrel$POP_tight %in% c("AMR", "AFR", "EAS", "SAS"), c("FID", "IID")], file=paste0(num, '__sampleIDs_unrel_nonEUR.tsv'), col.names=F, row.names=F, quote=F, sep='\t')
   
   firth.n.cases <- nrow(phen_unrel[phen_unrel$disease==1, ])
   firth.n.controls <- nrow(phen_unrel[phen_unrel$disease==0, ])
