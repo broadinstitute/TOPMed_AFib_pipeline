@@ -250,12 +250,46 @@ if(length(genes_to_run)<1){
   unrel_samples <- cbind(phen_unrel$FID,phen_unrel$IID)
   colnames(unrel_samples) <- c("FID", "IID")
   write.table(unrel_samples, file=paste0(num, '__sampleIDs_unrel.tsv'), col.names=T, row.names=F, quote=F, sep='\t')
+  
   firth.n.cases <- nrow(phen_unrel[phen_unrel$disease==1, ])
   firth.n.controls <- nrow(phen_unrel[phen_unrel$disease==0, ])
-  cat(paste0("\t\tunrelated sample size is: ", nrow(phen_unrel), "\n"))
+  firth.n.cases.EUR <- nrow(phen_unrel[phen_unrel$disease==1 & phen_unrel$POP_tight=="EUR", ])
+  firth.n.controls.EUR <- nrow(phen_unrel[phen_unrel$disease==0 & phen_unrel$POP_tight=="EUR", ])    
+  firth.n.cases.AMR <- nrow(phen_unrel[phen_unrel$disease==1 & phen_unrel$POP_tight=="AMR", ])
+  firth.n.controls.AMR <- nrow(phen_unrel[phen_unrel$disease==0 & phen_unrel$POP_tight=="AMR", ])
+  firth.n.cases.AFR <- nrow(phen_unrel[phen_unrel$disease==1 & phen_unrel$POP_tight=="AFR", ])
+  firth.n.controls.AFR <- nrow(phen_unrel[phen_unrel$disease==0 & phen_unrel$POP_tight=="AFR", ])
+  firth.n.cases.EAS <- nrow(phen_unrel[phen_unrel$disease==1 & phen_unrel$POP_tight=="EAS", ])
+  firth.n.controls.EAS <- nrow(phen_unrel[phen_unrel$disease==0 & phen_unrel$POP_tight=="EAS", ])
+  firth.n.cases.SAS <- nrow(phen_unrel[phen_unrel$disease==1 & phen_unrel$POP_tight=="SAS", ])
+  firth.n.controls.SAS <- nrow(phen_unrel[phen_unrel$disease==0 & phen_unrel$POP_tight=="SAS", ])
+      
+  cat(paste0("\n\n\n\t\tunrelated sample size is: ", nrow(phen_unrel), "\n"))
   cat(paste0("\t\tn cases is: ", firth.n.cases, "\n"))
   cat(paste0("\t\tn controls is: ", firth.n.controls, "\n\n\n"))
 
+  cat(paste0("\t\tEUR unrelated sample size is: ", nrow(phen_unrel[phen_unrel$POP_tight=="EUR", ]), "\n"))
+  cat(paste0("\t\tn cases is: ", firth.n.cases.EUR, "\n"))
+  cat(paste0("\t\tn controls is: ", firth.n.controls.EUR, "\n\n\n"))
+
+  cat(paste0("\t\tAMR unrelated sample size is: ", nrow(phen_unrel[phen_unrel$POP_tight=="AMR", ]), "\n"))
+  cat(paste0("\t\tn cases is: ", firth.n.cases.AMR, "\n"))
+  cat(paste0("\t\tn controls is: ", firth.n.controls.AMR, "\n\n\n"))
+  
+  cat(paste0("\t\tAFR unrelated sample size is: ", nrow(phen_unrel[phen_unrel$POP_tight=="AFR", ]), "\n"))
+  cat(paste0("\t\tn cases is: ", firth.n.cases.AFR, "\n"))
+  cat(paste0("\t\tn controls is: ", firth.n.controls.AFR, "\n\n\n"))
+
+  cat(paste0("\t\tEAS unrelated sample size is: ", nrow(phen_unrel[phen_unrel$POP_tight=="EAS", ]), "\n"))
+  cat(paste0("\t\tn cases is: ", firth.n.cases.EAS, "\n"))
+  cat(paste0("\t\tn controls is: ", firth.n.controls.EAS, "\n\n\n"))
+
+  cat(paste0("\t\tSAS unrelated sample size is: ", nrow(phen_unrel[phen_unrel$POP_tight=="SAS", ]), "\n"))
+  cat(paste0("\t\tn cases is: ", firth.n.cases.SAS, "\n"))
+  cat(paste0("\t\tn controls is: ", firth.n.controls.SAS, "\n\n\n"))
+
+
+      
   ##########################################
   ## Run PLINK -> REGENIE Firth pipeline
   ##########################################
