@@ -318,7 +318,7 @@ if(length(genes_to_run)<1){
   #assocs <- rawassoc_res[(rawassoc_res$SPA.converged & !is.na(rawassoc_res$SPA.converged)) | (rawassoc_res$SPA.pval<0.1 & rawassoc_res$Est>0), ]
   gene_masks <- NULL
   for(jj in c(1:length(genes_to_run))){
-    gene_masks <- c(gene_masks, paste0(genes_to_run[jj], c("__hclofnoflag_POPMAX0.001", 
+    gene_masks <- c(gene_masks, paste0(genes_to_run[jj], c("__hclof_noflag_POPMAX0.001", 
                                                              "__hclof_noflag_missense0.8_POPMAX0.001",
                                                              "__hclof_noflag_missense0.5_POPMAX0.001",
                                                              "__hclof_noflag_missense0.5_POPMAX0.00001",
@@ -326,7 +326,7 @@ if(length(genes_to_run)<1){
                                                              "__missense0.2_POPMAX0.00001",
                                                              "__hclof_noflag_POPMAX0.01",
                                                              "__hclof_noflag_missense0.8_POPMAX0.01",
-                                                             "__hclof_noflag_missense0.8_POPMAX0.01"))
+                                                             "__hclof_noflag_missense0.5_POPMAX0.01"))
                      )
   }
   
