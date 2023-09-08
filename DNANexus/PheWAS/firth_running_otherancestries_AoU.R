@@ -346,7 +346,7 @@ if(length(genes_to_run)<1){
         #carz <- NULL
         #phen1 <- phen0
 
-        ##Use the grouping files used for the analyses; MAF<0.1% groupings
+        ##Use the grouping files used for the analyses; MAF<0.1% groupings; only need the LOF and LOF+missense0.5 masks here, so you can subset the below code a bit!
         system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask1/lowmem/* mask1/lowmem/"))
         system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask1/midmem/* mask1/midmem/"))
         system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask1/highmem/* mask1/highmem/"))
@@ -507,7 +507,7 @@ if(length(genes_to_run)<1){
         #carz <- NULL
         #phen1 <- phen0
 
-        ## Use the grouping files; MAF<0.0001% files
+        ## Use the grouping files; MAF<0.0001% files; only need the missense0.5 masks here, so you can subset the below code a bit!
         system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask4/lowmem/* mask4/lowmem/"))
         system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask4/midmem/* mask4/midmem/"))
         system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask4/highmem/* mask4/highmem/"))
@@ -650,156 +650,156 @@ if(length(genes_to_run)<1){
 
 
       
-  ######### MAF<1% masks
+  ########## MAF<1% masks
   #Create set files for regenie; filter PLINK files to needed variants only!
-  cat("\t\textracting variant data from PLINK files for MAF<1% threshold ...\n")
-  regenie <- NULL
-  for(chr in c(1:22)){
-        regenie_setfile <- NULL
-        regenie_annotationfile <- NULL
-        cat("\t\t\tbusy with chromosome ", chr, "...\n")
-        plink_path <- './plink2'
-        regenie_path <- './regenie_v3.2.2.gz_x86_64_Linux_mkl'
-        #plinkfile <- paste0('/mnt/project/exome_450k_plink/merged/genotype_variant_sample_QCed/plink/ukb23156_c', chr, '_genotype_variant_sample_QCed')
-        plinkfile <- paste0('ukb23156_c', chr, '_genotype_variant_sample_QCed')
-        plinkfile_type <- "pfile"
-        max_maf=0.01
-        max_mac='100000000'
-        #carz <- NULL
-        #phen1 <- phen0
+  #cat("\t\textracting variant data from PLINK files for MAF<1% threshold ...\n")
+  #regenie <- NULL
+  #for(chr in c(1:22)){
+  #      regenie_setfile <- NULL
+  #      regenie_annotationfile <- NULL
+  #      cat("\t\t\tbusy with chromosome ", chr, "...\n")
+  #      plink_path <- './plink2'
+  #      regenie_path <- './regenie_v3.2.2.gz_x86_64_Linux_mkl'
+  #      #plinkfile <- paste0('/mnt/project/exome_450k_plink/merged/genotype_variant_sample_QCed/plink/ukb23156_c', chr, '_genotype_variant_sample_QCed')
+  #      plinkfile <- paste0('ukb23156_c', chr, '_genotype_variant_sample_QCed')
+  #      plinkfile_type <- "pfile"
+  #      max_maf=0.01
+  #      max_mac='100000000'
+  #      #carz <- NULL
+  #      #phen1 <- phen0
 
-        ## Use the grouping files; MAF<1% files
-        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask7/lowmem/* mask7/lowmem/"))
-        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask7/midmem/* mask7/midmem/"))
-        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask7/highmem/* mask7/highmem/"))
-        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask8/lowmem/* mask8/lowmem/"))
-        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask8/midmem/* mask8/midmem/"))
-        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask8/highmem/* mask8/highmem/"))
-        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask9/lowmem/* mask9/lowmem/"))
-        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask9/midmem/* mask9/midmem/"))
-        system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask9/highmem/* mask9/highmem/"))
+#        ## Use the grouping files; MAF<1% files
+ #       system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask7/lowmem/* mask7/lowmem/"))
+ #       system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask7/midmem/* mask7/midmem/"))
+ #       system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask7/highmem/* mask7/highmem/"))
+ #       system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask8/lowmem/* mask8/lowmem/"))
+ #       system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask8/midmem/* mask8/midmem/"))
+ #       system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask8/highmem/* mask8/highmem/"))
+ #       system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask9/lowmem/* mask9/lowmem/"))
+ #       system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask9/midmem/* mask9/midmem/"))
+ #       system(paste0("gsutil -m cp gs://path/to/groupingfiles/", num, "/mask9/highmem/* mask9/highmem/"))
          
-        files1_1 <- paste0("mask7/lowmem/groupingfile_chr", chr, ".RData")
-        files1_2 <- paste0("mask7/lowmem/groupingfile_chr", chr, ".RData")
-        files1_3 <- paste0("mask7/lowmem/groupingfile_chr", chr, ".RData")
-        files2_1 <- paste0("mask8/lowmem/groupingfile_chr", chr, ".RData")
-        files2_2 <- paste0("mask8/lowmem/groupingfile_chr", chr, ".RData")
-        files2_3 <- paste0("mask8/lowmem/groupingfile_chr", chr, ".RData")
-        files3_1 <- paste0("mask9/lowmem/groupingfile_chr", chr, ".RData")
-        files3_2 <- paste0("mask9/lowmem/groupingfile_chr", chr, ".RData")
-        files3_3 <- paste0("mask9/lowmem/groupingfile_chr", chr, ".RData")
-    
-        f1 <- bind_rows(get(load(files1_1)), get(load(files1_2)) , get(load(files1_3))) 
-        f1$group_id <- paste0(f1$group_id, "__hclof_noflag_POPMAX0.01")
+ #       files1_1 <- paste0("mask7/lowmem/groupingfile_chr", chr, ".RData")
+ #       files1_2 <- paste0("mask7/lowmem/groupingfile_chr", chr, ".RData")
+ #       files1_3 <- paste0("mask7/lowmem/groupingfile_chr", chr, ".RData")
+ #       files2_1 <- paste0("mask8/lowmem/groupingfile_chr", chr, ".RData")
+ #       files2_2 <- paste0("mask8/lowmem/groupingfile_chr", chr, ".RData")
+ #       files2_3 <- paste0("mask8/lowmem/groupingfile_chr", chr, ".RData")
+ #       files3_1 <- paste0("mask9/lowmem/groupingfile_chr", chr, ".RData")
+ #       files3_2 <- paste0("mask9/lowmem/groupingfile_chr", chr, ".RData")
+ #       files3_3 <- paste0("mask9/lowmem/groupingfile_chr", chr, ".RData")
+ #   
+ #       f1 <- bind_rows(get(load(files1_1)), get(load(files1_2)) , get(load(files1_3))) 
+ #       f1$group_id <- paste0(f1$group_id, "__hclof_noflag_POPMAX0.01")#
 
-        f2 <- bind_rows(get(load(files2_1)), get(load(files2_2)) , get(load(files2_3))) 
-        f1$group_id <- paste0(f1$group_id, "__hclof_noflag_missense0.8_POPMAX0.01")
+ #       f2 <- bind_rows(get(load(files2_1)), get(load(files2_2)) , get(load(files2_3))) 
+ #       f1$group_id <- paste0(f1$group_id, "__hclof_noflag_missense0.8_POPMAX0.01")
 
-        f3 <- bind_rows(get(load(files3_1)), get(load(files3_2)) , get(load(files3_3))) 
-        f1$group_id <- paste0(f1$group_id, "__hclof_noflag_missense0.5_POPMAX0.01")
+ #       f3 <- bind_rows(get(load(files3_1)), get(load(files3_2)) , get(load(files3_3))) 
+ #       f1$group_id <- paste0(f1$group_id, "__hclof_noflag_missense0.5_POPMAX0.01")
    
-        class(f1$pos) <- class(f2$pos) <- class(f3$pos) <- "numeric"
-        class(f1$chr) <- class(f2$chr) <- class(f3$chr) <- "numeric"
-        group <- bind_rows(f1, f2, f3)
+ #       class(f1$pos) <- class(f2$pos) <- class(f3$pos) <- "numeric"
+ #       class(f1$chr) <- class(f2$chr) <- class(f3$chr) <- "numeric"
+ #       group <- bind_rows(f1, f2, f3)
         
-        group$varid <- paste0(group$chr, ":", group$pos, ":", group$ref, ":", group$alt)
-        rm <- which(duplicated(paste0(group$group_id, "__", group$varid)))
-        if(length(rm)>0){group <- group[-rm, ]}
+ #       group$varid <- paste0(group$chr, ":", group$pos, ":", group$ref, ":", group$alt)
+ #       rm <- which(duplicated(paste0(group$group_id, "__", group$varid)))
+ #       if(length(rm)>0){group <- group[-rm, ]}
       
-        ## Filter to the masks we want to test
-        group <- group[group$group_id %in% gene_masks, ]
-        if(nrow(group)>0){
-            #group <- group[,c("varid", "alt", "group_id")]
-            group$varid <- paste0("chr", group$varid)
+ #       ## Filter to the masks we want to test
+ #       group <- group[group$group_id %in% gene_masks, ]
+ #       if(nrow(group)>0){
+ #           #group <- group[,c("varid", "alt", "group_id")]
+ #           group$varid <- paste0("chr", group$varid)
 
-            ## Make part of REGENIE grouping files; collect groupings; will use later on
-            group$pseudo_annot <- "REGENIE"
-            regenie_annotationfile <- group[,c("varid", "group_id", "pseudo_annot")]
-            set_inter <- NULL
-            for(gr in unique(group$group_id)){
-                gr_inter <- group[group$group_id==gr, ]
-                chromosome <- gr_inter[1,'chr']
-                position <- gr_inter[1,'pos']
-                collapse <- paste(gr_inter$varid, collapse=",")
-                set_inter <- rbind(set_inter, c(gr, chromosome, position, collapse))
-            }
-            regenie_setfile <- set_inter
+ #           ## Make part of REGENIE grouping files; collect groupings; will use later on
+ #           group$pseudo_annot <- "REGENIE"
+ #           regenie_annotationfile <- group[,c("varid", "group_id", "pseudo_annot")]
+ #           set_inter <- NULL
+ #           for(gr in unique(group$group_id)){
+ #               gr_inter <- group[group$group_id==gr, ]
+ #               chromosome <- gr_inter[1,'chr']
+ #               position <- gr_inter[1,'pos']
+ #               collapse <- paste(gr_inter$varid, collapse=",")
+ #               set_inter <- rbind(set_inter, c(gr, chromosome, position, collapse))
+ #           }
+ #           regenie_setfile <- set_inter
         
-            ## Use PLINK2 to filter to a PLINK file that has the needed variants and samples used in the discovery analysis
-            rm <- which(group$varid == "chr9:109080945:T:C") # error variant
-            if(length(rm)>0){group <- group[-rm, ]}
-            write.table(group$varid, file=paste0(num, '__varz_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
-            try(system(paste0(plink_path, ' ',
-                '--', plinkfile_type, '  ', plinkfile, '  ',
-                '--max-maf ', max_maf, '  --max-mac ', max_mac, '  ',
-                '--keep  ', num, '__sampleIDs.tsv  ',
-                '--extract  ', num, '__varz_chr', chr, '.tsv  ',
-                '--make-bed --out  ', num, '__varz_chr', chr
-            ), intern=T))
-    
-            ### Save annot information for REGENIE
-            write.table(regenie_annotationfile, file=paste0(num, '__annotationfile_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
-            write.table(regenie_setfile, file=paste0(num, '__setfile_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
-            write.table(c("Mask1 REGENIE"), file=paste0(num, '__maskdef_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
+ #           ## Use PLINK2 to filter to a PLINK file that has the needed variants and samples used in the discovery analysis
+ #           rm <- which(group$varid == "chr9:109080945:T:C") # error variant
+ #           if(length(rm)>0){group <- group[-rm, ]}
+ #           write.table(group$varid, file=paste0(num, '__varz_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
+ #           try(system(paste0(plink_path, ' ',
+ #               '--', plinkfile_type, '  ', plinkfile, '  ',
+ #               '--max-maf ', max_maf, '  --max-mac ', max_mac, '  ',
+ #               '--keep  ', num, '__sampleIDs.tsv  ',
+ #               '--extract  ', num, '__varz_chr', chr, '.tsv  ',
+ #               '--make-bed --out  ', num, '__varz_chr', chr
+ #           ), intern=T))
+ #   
+ #           ### Save annot information for REGENIE
+ #           write.table(regenie_annotationfile, file=paste0(num, '__annotationfile_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
+ #           write.table(regenie_setfile, file=paste0(num, '__setfile_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
+ #           write.table(c("Mask1 REGENIE"), file=paste0(num, '__maskdef_chr', chr, '.tsv'), col.names=F, row.names=F, quote=F)
 
           ######### HERE IT IS DIFFERENT! ##########
 
             
-            ## Run REGENIE for the MAF<1% thresholds; keep only the unrel samples
-            #try(system(paste0(regenie_path, ' ',
-            #    '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chr', chr, ' ',
-            #    '--firth --approx --firth-se --aaf-bins 0.5  --minMAC  1  ',
-            #    '--covarFile  ', num, '__regenie_phenofile.tsv   ',
-            #    '--covarCol ', paste(fixef, collapse=","), '  --catCovarList  ', paste(catCovarList, collapse=","), '  ',
-            #    '--phenoFile  ', num, '__regenie_phenofile.tsv  --phenoCol disease  ',
-            #    '--keep  ', num, '__sampleIDs_unrel.tsv  ',
-            #    '--anno-file  ', num, '__annotationfile_chr', chr, '.tsv ',
-            #    '--set-list  ', num, '__setfile_chr', chr, '.tsv ',
-            #    '--mask-def  ', num, '__maskdef_chr', chr, '.tsv ',
-            #    '--pThresh  0.99  --out ', num, '__chr', chr, ' '
-            #), intern=FALSE))
+ #           ## Run REGENIE for the MAF<1% thresholds; keep only the unrel samples
+ #           #try(system(paste0(regenie_path, ' ',
+ #           #    '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chr', chr, ' ',
+ #           #    '--firth --approx --firth-se --aaf-bins 0.5  --minMAC  1  ',
+ #           #    '--covarFile  ', num, '__regenie_phenofile.tsv   ',
+ #           #    '--covarCol ', paste(fixef, collapse=","), '  --catCovarList  ', paste(catCovarList, collapse=","), '  ',
+ #           #    '--phenoFile  ', num, '__regenie_phenofile.tsv  --phenoCol disease  ',
+ #           #    '--keep  ', num, '__sampleIDs_unrel.tsv  ',
+ #           #    '--anno-file  ', num, '__annotationfile_chr', chr, '.tsv ',
+ #           #    '--set-list  ', num, '__setfile_chr', chr, '.tsv ',
+ #           #    '--mask-def  ', num, '__maskdef_chr', chr, '.tsv ',
+ #           #    '--pThresh  0.99  --out ', num, '__chr', chr, ' '
+ #           #), intern=FALSE))
 
-            for(ancestry in c("EUR", "AMR", "AFR", "EAS", "SAS", "nonEUR")){
-                cat(paste0("\t\trunning Firth for ", ancestry, " ancestry...\n"))
-                try(system(paste0(regenie_path, ' ',
-                    '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chr', chr, ' ',
-                    '--firth --approx --firth-se --aaf-bins 0.5  --minMAC  1  ',
-                    '--covarFile  ', num, '__regenie_phenofile.tsv   ',
-                    '--covarCol ', paste(fixef, collapse=","), '  --catCovarList  ', paste(catCovarList, collapse=","), '  ',
-                    '--phenoFile  ', num, '__regenie_phenofile.tsv  --phenoCol disease  ',
-                    '--keep  ', num, '__sampleIDs_unrel_', ancestry, '.tsv  ',
-                    '--anno-file  ', num, '__annotationfile_chr', chr, '.tsv ',
-                    '--set-list  ', num, '__setfile_chr', chr, '.tsv ',
-                    '--mask-def  ', num, '__maskdef_chr', chr, '.tsv ',
-                    '--pThresh  0.99  --out ', num, '__chr', chr, '_', ancestry, ' '
-                ), intern=FALSE))
+#            for(ancestry in c("EUR", "AMR", "AFR", "EAS", "SAS", "nonEUR")){
+ #               cat(paste0("\t\trunning Firth for ", ancestry, " ancestry...\n"))
+ #               try(system(paste0(regenie_path, ' ',
+ #                   '--step 2  --bt  --ignore-pred  --bed  ', num, '__varz_chr', chr, ' ',
+ #                   '--firth --approx --firth-se --aaf-bins 0.5  --minMAC  1  ',
+ #                   '--covarFile  ', num, '__regenie_phenofile.tsv   ',
+ #                   '--covarCol ', paste(fixef, collapse=","), '  --catCovarList  ', paste(catCovarList, collapse=","), '  ',
+ #                   '--phenoFile  ', num, '__regenie_phenofile.tsv  --phenoCol disease  ',
+ #                   '--keep  ', num, '__sampleIDs_unrel_', ancestry, '.tsv  ',
+ #                   '--anno-file  ', num, '__annotationfile_chr', chr, '.tsv ',
+ #                   '--set-list  ', num, '__setfile_chr', chr, '.tsv ',
+ #                   '--mask-def  ', num, '__maskdef_chr', chr, '.tsv ',
+ #                   '--pThresh  0.99  --out ', num, '__chr', chr, '_', ancestry, ' '
+ #               ), intern=FALSE))
 
-                regenie_ancestry_inter <- NULL
-                if(file.exists(paste0(num, '__chr', chr, '_', ancestry, '_disease.regenie'))){
-                    try(regenie_ancestry_inter <- fread(paste0(num, '__chr', chr, '_', ancestry, '_disease.regenie'), stringsAsFactors=F, data.table=F, skip="##MASK", header=T))
-                    if(!is.null(regenie_ancestry_inter) & nrow(regenie_ancestry_inter)>0){
-                        regenie_ancestry_inter <- regenie_ancestry_inter[which(!grepl("singleton", regenie_ancestry_inter$ID)), ]
-                        regenie_ancestry_inter$ID <- gsub(".Mask1.0.5", "", regenie_ancestry_inter$ID)
-                        regenie_ancestry_inter$firth.n.sample.alt <- round(regenie_ancestry_inter$A1FREQ * 2 * regenie_ancestry_inter$N)
-                        regenie_ancestry_inter <- regenie_ancestry_inter[,c("ID", "firth.n.sample.alt", "LOG10P", "BETA", "SE", "EXTRA")]
-                        colnames(regenie_ancestry_inter)[4:6] <- c("firth.Est", "firth.Est.SE", "firth.failed")
-                        regenie_ancestry_inter$firth.cases <- get(paste0("firth.n.cases.", ancestry))
-                        regenie_ancestry_inter$firth.controls <- get(paste0("firth.n.controls.", ancestry))
-                        regenie_ancestry_inter$Ancestry <- ancestry
+  #              regenie_ancestry_inter <- NULL
+  #              if(file.exists(paste0(num, '__chr', chr, '_', ancestry, '_disease.regenie'))){
+  #                  try(regenie_ancestry_inter <- fread(paste0(num, '__chr', chr, '_', ancestry, '_disease.regenie'), stringsAsFactors=F, data.table=F, skip="##MASK", header=T))
+  #                  if(!is.null(regenie_ancestry_inter) & nrow(regenie_ancestry_inter)>0){
+  #                      regenie_ancestry_inter <- regenie_ancestry_inter[which(!grepl("singleton", regenie_ancestry_inter$ID)), ]
+  #                      regenie_ancestry_inter$ID <- gsub(".Mask1.0.5", "", regenie_ancestry_inter$ID)
+  #                      regenie_ancestry_inter$firth.n.sample.alt <- round(regenie_ancestry_inter$A1FREQ * 2 * regenie_ancestry_inter$N)
+  #                      regenie_ancestry_inter <- regenie_ancestry_inter[,c("ID", "firth.n.sample.alt", "LOG10P", "BETA", "SE", "EXTRA")]
+  #                      colnames(regenie_ancestry_inter)[4:6] <- c("firth.Est", "firth.Est.SE", "firth.failed")
+  #                      regenie_ancestry_inter$firth.cases <- get(paste0("firth.n.cases.", ancestry))
+  #                      regenie_ancestry_inter$firth.controls <- get(paste0("firth.n.controls.", ancestry))
+  #                      regenie_ancestry_inter$Ancestry <- ancestry
                 
-                        regenie <- bind_rows(regenie, regenie_ancestry_inter)
-                    }
-                    try(system(paste0('rm  ', num, '__chr', chr, '_', ancestry, '_disease.regenie')))
-                }
-            }
-            try(system(paste0("rm  ", num, '__annotationfile_chr', chr, '.tsv ')))
-            try(system(paste0("rm  ", num, '__setfile_chr', chr, '.tsv')))
-            try(system(paste0("rm  ", num, '__maskdef_chr', chr, '.tsv')))
-            try(system(paste0("rm  ", num, '__varz_chr', chr, '.*')))
-        }
+  #                      regenie <- bind_rows(regenie, regenie_ancestry_inter)
+  #                  }
+  #                  try(system(paste0('rm  ', num, '__chr', chr, '_', ancestry, '_disease.regenie')))
+  #              }
+  #          }
+  #          try(system(paste0("rm  ", num, '__annotationfile_chr', chr, '.tsv ')))
+  #          try(system(paste0("rm  ", num, '__setfile_chr', chr, '.tsv')))
+  #          try(system(paste0("rm  ", num, '__maskdef_chr', chr, '.tsv')))
+  #          try(system(paste0("rm  ", num, '__varz_chr', chr, '.*')))
+  #      }
      
-  }
-  regenie_res_tot <- rbind(regenie_res_tot, regenie)
+  #}
+  #regenie_res_tot <- rbind(regenie_res_tot, regenie)
 
   
 
