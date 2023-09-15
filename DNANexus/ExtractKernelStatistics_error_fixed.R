@@ -47,7 +47,8 @@ testVariantSet_ExtractKernelStatistics_ScoresAndCovarianceMatrices_Sean <- funct
 	burden_out <- GENESIS:::.testGenoSingleVarScore(burdentilde, G = burden, resid = nullmod$resid, RSS0 = nullmod$RSS0)
         colnames(burden_out) <- paste0("Burden_", colnames(burden_out))
         single_var_out <- GENESIS:::.testGenoSingleVarScore(Gtilde, G = G, resid = nullmod$resid, RSS0 = nullmod$RSS0)
-        rownames(single_var_out)<-var.id.name # added
+        colnames(V)<-rownames(V)<-rownames(single_var_out)<-var.id.name # added
+
         out <- list(NULL)
         out[['burden_out']] <- burden_out
         out[['single_var_out']] <- single_var_out
